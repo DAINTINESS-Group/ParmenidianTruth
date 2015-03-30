@@ -5,12 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import loader.GraphmlLoader;
-
 @SuppressWarnings({ "rawtypes", "unused" })
 public class DiachronicGraph extends Episode {
 
-	private ArrayList<DatabaseVersion> versions = new ArrayList<DatabaseVersion>();
+	private ArrayList<Episode> versions = new ArrayList<Episode>();
 	private static ConcurrentHashMap<String, Table> graph = new ConcurrentHashMap<String, Table>();
 	private ConcurrentHashMap<String, ForeignKey> graphEdges = new ConcurrentHashMap<String, ForeignKey>();
 	
@@ -19,7 +17,7 @@ public class DiachronicGraph extends Episode {
 
 	
 	
-	public DiachronicGraph(ArrayList<DatabaseVersion> vrs) {
+	public DiachronicGraph(ArrayList<Episode> vrs) {
 		
 		versions = vrs;
 		createDiachronicGraph();
@@ -36,7 +34,7 @@ public class DiachronicGraph extends Episode {
 	}
 
 	//se periptwsh pou o UniversalGraph kataskeuazetai apto graphml
-	//ektos apo tis listes exw enhmerwmeno kai to graph gia thn grigorh
+	//ektos apo tis listes exw enhmerwmeno kai to graph gia thn grhgorh
 	//prospelash twn komvwn
 	private void fixGraph() {
 		
@@ -100,7 +98,6 @@ public class DiachronicGraph extends Episode {
 	public void showDiachronicGraph(){
 		
 		//info about tables
-			System.out.println(graph.size());
 			
 			Iterator i=graph.entrySet().iterator();
 			
@@ -112,14 +109,11 @@ public class DiachronicGraph extends Episode {
 
 				  Table value = (Table)entry.getValue();
 
-//				  System.out.println("Key = " + key + ", Value = " + value.getKey());
-				  System.out.println(key);
 			}
 			
 			
-			System.out.println("----------------------------------------------------------------------");
 		//info about FK
-			System.out.println(graphEdges.size());
+//			System.out.println(graphEdges.size());
 			
 			i=graphEdges.entrySet().iterator();
 			
@@ -131,62 +125,17 @@ public class DiachronicGraph extends Episode {
 
 				  ForeignKey value = (ForeignKey)entry.getValue();
 
-//				  System.out.println("Key = " + key + ", Value = " + value.getKey());
-				  System.out.println(key);
 
 			}
 			
 			
 	}
 	
-	public static void showV(){
-		
-		
-		s("----------------------------");
-		Iterator i=graph.entrySet().iterator();
-		
-		while(i.hasNext()){
-			
-			  Map.Entry entry = (Map.Entry) i.next();
-
-			  String key = (String)entry.getKey();
-
-			  Table value = (Table)entry.getValue();
-
-			  System.out.println(key+": "+ value.getCoords());
-		}
-		
-		
-	}
-	
-
-	private static void s(String string) {
-
-		System.out.println(string);
-		
-	}
 
 	@Override
 	public ArrayList<Table> getNodes() {
 
 		return vertices;
-//		ArrayList<Table> t = new ArrayList<Table>();
-//		
-//		//metatroph tou hashmap se ArrayList kai sthn sunexeia return
-//		Iterator i=graph.entrySet().iterator();		
-//		while(i.hasNext()){
-//			
-//			  Map.Entry entry = (Map.Entry) i.next();
-//
-//			  String key = (String)entry.getKey();
-//
-//			  Table value = (Table)entry.getValue();
-//			  
-//			  t.add(value);
-//
-//		}
-//		
-//		return t;		
 		
 	}
 
@@ -194,22 +143,6 @@ public class DiachronicGraph extends Episode {
 	public ArrayList<ForeignKey> getEdges() {
 		
 		return edges;
-//		ArrayList<ForeignKey> f = new ArrayList<ForeignKey>();
-//		
-//		Iterator i=graphEdges.entrySet().iterator();
-//		
-//		while(i.hasNext()){
-//			
-//			  Map.Entry entry = (Map.Entry) i.next();
-//
-//			  String key = (String)entry.getKey();
-//
-//			  ForeignKey value = (ForeignKey)entry.getValue();
-//			  
-//			  f.add(value);
-//		}
-//		
-//		return f;		
 
 	}
 
@@ -222,6 +155,28 @@ public class DiachronicGraph extends Episode {
 		
 		return "Universal Graph";
 		
+	}
+	
+	public void clear(){
+		
+		versions.clear();
+		graph.clear();
+		graphEdges.clear();
+		vertices.clear();
+		edges.clear();
+		
+	}
+
+	@Override
+	public ArrayList<Table> getTables() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<ForeignKey> getVersionForeignKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

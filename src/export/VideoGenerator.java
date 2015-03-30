@@ -14,12 +14,12 @@ import org.apache.poi.xslf.util.PPTX2PNG;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import com.xuggle.xuggler.ICodec;
-import fileFilter.PNGFileFilter;
+import fileFilter.ImageFileFilter;
 
 public class VideoGenerator {
 	private File selectedPresentation;
 	private String filenameOfPresentation;
-    private  final double FRAME_RATE = 120;
+    private  final double FRAME_RATE = 24;
     private  String outputFilename ;
     private String sourceFolder=new String();
 
@@ -35,6 +35,12 @@ public class VideoGenerator {
 		setSourceFolder();
 		
 	}
+	
+//	public VideoGenerator(String sourceFolder,String outputFilename){
+//		
+//		this.sourceFolder=sourceFolder;
+//		this.outputFilename=outputFilename+".mp4";
+//	}
 	
 	public void exportToVideo() throws IOException{
 		
@@ -67,7 +73,7 @@ public class VideoGenerator {
         File directory = new File(sourceFolder);
         ArrayList<File> filenames = new ArrayList<File> ();
         
-        File[] list= directory.listFiles(new PNGFileFilter());
+        File[] list= directory.listFiles(new ImageFileFilter());
 		for(int i=0;i<list.length;i++){
 			filenames.add(list[i]);
 		}
@@ -88,12 +94,12 @@ public class VideoGenerator {
 	            	++i;
 	            }
 	
-//	            // sleep for frame rate milliseconds
-//	            try {
-//	                Thread.sleep((long) (1000 / FRAME_RATE));
-//	            } 
-//	            catch (InterruptedException e) {
-//	            }
+	            // sleep for frame rate milliseconds
+	            try {
+	                Thread.sleep((long) (1000 / FRAME_RATE));
+	            } 
+	            catch (InterruptedException e) {
+	            }
             
         }
         
@@ -101,11 +107,72 @@ public class VideoGenerator {
 		
 	}
 	
+//	public void createVideo(String projectName){
+//		
+//		
+//		IMediaWriter writer = ToolFactory.makeWriter(projectName);
+//		Dimension screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
+//		
+//        writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_MPEG4,screenBounds.width, screenBounds.height);
+//
+//        long startTime = System.nanoTime();
+//
+//        
+//        File directory = new File(outputFilename.split("\\.")[0]);
+//        ArrayList<File> filenames = new ArrayList<File> ();
+//        
+//
+//        
+//        File[] list= directory.listFiles(new ImageFileFilter());
+//		for(int i=0;i<list.length;i++){
+//			filenames.add(list[i]);
+//		}
+//		
+//
+//		
+//		
+//		Collections.sort(filenames,new FilenameSorter2());
+//		
+//		try {
+//	        for (int index = 0; index < filenames.size(); index++) {
+//		            BufferedImage screen= ImageIO.read(filenames.get(index));;
+//	
+//		            // convert to the right image type
+//		            BufferedImage bgrScreen = convertToType(screen,BufferedImage.TYPE_3BYTE_BGR);
+//		
+//	            
+//		            int i=0;
+//		            while(i<FRAME_RATE){
+//		            	writer.encodeVideo(0, bgrScreen, System.nanoTime() - startTime, 
+//		                   TimeUnit.NANOSECONDS);
+//		            	++i;
+//		            }
+//		
+//		            // sleep for frame rate milliseconds
+//		            try {
+//		                Thread.sleep((long) (1000 / FRAME_RATE));
+//		            } 
+//		            catch (InterruptedException e) {
+//		            }
+//	            
+//	        }
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally{
+//			
+//	        writer.close();		
+//
+//		}
+//        
+//		
+//	}
+	
 	private void deleteGeneratedPng(){
 		
         File directory = new File(sourceFolder);
         
-        FileFilter filter =new PNGFileFilter();
+        FileFilter filter =new ImageFileFilter();
         File[] filesToBeDeleted =directory.listFiles(filter); 
 		
         for(int i=0;i<filesToBeDeleted.length;++i)
@@ -148,6 +215,13 @@ public class VideoGenerator {
         return image;
         
     }
+    
+	class FilenameSorter2 implements java.util.Comparator<File> {
+		
+		public int compare(File c1,File c2) {
+					return c1.compareTo(c2);
+		}
+	}
     
 	class FilenameSorter implements java.util.Comparator<File> {
 		

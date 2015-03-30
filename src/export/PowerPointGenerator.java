@@ -8,9 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
@@ -25,6 +23,8 @@ import org.apache.poi.xslf.usermodel.XSLFTextShape;
 public class PowerPointGenerator {
 	private String targetWorkspace;
 	private String presentation;
+	private int width,height;
+
 	
 	public PowerPointGenerator(String workspace,String pres){
 		
@@ -54,20 +54,33 @@ public class PowerPointGenerator {
 
         XSLFSlideMaster defaultMaster = ppt.getSlideMasters()[0];
         
+        
         for(int i=0;i<files.size();++i){
-        	if(files.get(i).contains("Universal Graph")){                
+        	if(files.get(i).contains("Universal Graph")){
+        		
+
+                XSLFSlideLayout title = defaultMaster.getLayout(SlideLayout.TITLE);                
+                XSLFSlide slide0 = ppt.createSlide(title);
                 
-                XSLFSlide slide0 = ppt.createSlide();
         		
                 BufferedImage bimg = ImageIO.read(new File(files.get(i)));
-                int width          = bimg.getWidth();
-                int height         = bimg.getHeight();                
+                width = bimg.getWidth();
+                height = bimg.getHeight(); 
+                
+                XSLFTextShape title1 = slide0.getPlaceholder(0);
+                title1.setAnchor(new Rectangle(0,0,width,100));
+                title1.setText("Diachronic Graph");
+                
                 
                 byte[] data = IOUtils.toByteArray(new FileInputStream(files.get(i)));
                 int pictureIndex = ppt.addPicture(data, XSLFPictureData.PICTURE_TYPE_JPEG);
                 XSLFPictureShape shape = slide0.createPicture(pictureIndex);
+                shape.setAnchor(new Rectangle(0,100,width,height));        
+
                 
-                ppt.setPageSize(new java.awt.Dimension(1100,height+100));               
+//                ppt.setPageSize(new java.awt.Dimension(1100,height+100));   
+                ppt.setPageSize(new java.awt.Dimension(width,height));
+                
         		
         	}
         }
@@ -76,7 +89,7 @@ public class PowerPointGenerator {
         XSLFSlide slide = ppt.createSlide(title);
         
         XSLFTextShape title1 = slide.getPlaceholder(0);
-        title1.setAnchor(new Rectangle(0,1200/4-100/2,1100,100));
+        title1.setAnchor(new Rectangle(0,width/4-100/2,height,100));
         title1.setText(setSlideTitle("Evolution Story"));
 		
 		return ppt;
@@ -94,13 +107,12 @@ public class PowerPointGenerator {
         XSLFSlide slide = ppt.createSlide(title);
        
         XSLFTextShape title1 = slide.getPlaceholder(0);
-        title1.setAnchor(new Rectangle(0,0,1100,100));
+        title1.setAnchor(new Rectangle(0,0,width,100));
         title1.setText(setSlideTitle(imgPath));
         
         
         BufferedImage bimg = ImageIO.read(new File(imgPath));
-        int width          = bimg.getWidth();
-        int height         = bimg.getHeight();
+
         
         
         byte[] data = IOUtils.toByteArray(new FileInputStream(imgPath));
@@ -108,7 +120,8 @@ public class PowerPointGenerator {
         XSLFPictureShape shape = slide.createPicture(pictureIndex);
         shape.setAnchor(new Rectangle(0,100,width,height));        
         
-        ppt.setPageSize(new java.awt.Dimension(1100,height+100));
+//        ppt.setPageSize(new java.awt.Dimension(1100,height+100));
+        ppt.setPageSize(new java.awt.Dimension(width,height+100));
         
         return ppt;			
 		

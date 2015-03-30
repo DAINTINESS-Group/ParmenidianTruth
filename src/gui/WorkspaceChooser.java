@@ -9,20 +9,11 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Scanner;
 import java.util.prefs.Preferences;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,11 +27,8 @@ public class WorkspaceChooser extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-//	private	DefaultComboBoxModel model = new DefaultComboBoxModel();
-	private String resourcesLocation;
 	private Gui parent=null;
 	private JTextField textField;
-	//public  Preferences prefs;
 	
 	public WorkspaceChooser(Gui g){
 		parent=g;
@@ -57,18 +45,11 @@ public class WorkspaceChooser extends JFrame{
 	public void init(){
 
 
-		
-		String string =WorkspaceChooser.class.getResource("/resources").toString();
-		String[] temp=string.split("/",2);
-		resourcesLocation=temp[1];
-
-		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkspaceChooser.class.getResource("/icons/omega.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkspaceChooser.class.getResource("/icons/pi.png")));
 		setResizable(false);
 		setTitle("Workspace Launcher");
 		setMinimumSize(new Dimension(475, 260));
 		getContentPane().setLayout(null);
-//		setLocation(new Point(500,250));
 		setLocation(new Point(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2-getSize().width/2,java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-getSize().height/2));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -80,20 +61,11 @@ public class WorkspaceChooser extends JFrame{
 		
 		Gui.prefs= Preferences.userRoot().node("preferences");
 		
-//		model.addElement();
-//		try {
-//			open();
-//		} catch (FileNotFoundException e1) {
-//        	model.addElement("");
-//
-//		}
-		
-		
 		
 		JButton btnBrowse = new JButton("Browse...");
 		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser a = new JFileChooser();
+				JFileChooser a = new JFileChooser(Gui.prefs.get("workspace", "66"));
 				a.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				
 				if(a.showOpenDialog(getContentPane())==JFileChooser.APPROVE_OPTION){
@@ -132,7 +104,7 @@ public class WorkspaceChooser extends JFrame{
 				saveWorkspace(textField.getText());
 				dispose();
 				if(parent==null){
-					Gui r = new Gui(textField.getText());
+					Gui r = new Gui();
 					r.setVisible(true);
 				}
 			}
@@ -198,49 +170,18 @@ public class WorkspaceChooser extends JFrame{
 	public void saveWorkspace(String workspace){
 		
 	Gui.prefs= Preferences.userRoot().node("preferences");
-
 	Gui.prefs.put("workspace",workspace);
+	
+	if(parent!=null)
+		parent.refreshWorkspace();
 		
-//		try{
-//			 FileOutputStream fop= new FileOutputStream(resourcesLocation+"/log.ascii");
-//		
-//			 fop.write((workspace+"\n").getBytes());
-//			 fop.flush();
-//             fop.close();
-//		
-//            System.out.println("Selected Workspace: "+workspace);
-//            
-//		}catch (IOException ex){}
 
 	}
-	
-//	public void open() throws FileNotFoundException{
-//		
-//		FileReader fr = null;
-//		
-//		fr = new FileReader(resourcesLocation+"/log.ascii");
-//			
-//        Scanner scanner = new Scanner(fr);
-//        
-//        while(scanner.hasNextLine())        	
-//        	model.addElement(scanner.nextLine());
-//	
-//  }
-	
    public void savePreferences(boolean token){
 	   
 	   Gui.prefs= Preferences.userRoot().node("preferences");
 	   Gui.prefs.putBoolean("useDefault",token);
 
 
-	   
-//		try{
-//			 FileOutputStream fop= new FileOutputStream(resourcesLocation+"/init.ascii");
-//		
-//			 fop.write((token).getBytes());
-//			 fop.flush();
-//             fop.close();
-//           
-//		}catch (IOException ex){}
    }
 }

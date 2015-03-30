@@ -12,5 +12,12 @@ public abstract class Episode {
 	public abstract String getVersion();
 	
 	public abstract ConcurrentHashMap<String, Table> getGraph();
+	
+	public abstract ArrayList<Table> getTables();
+	
+	public abstract void clear();
+	
+	public abstract ArrayList<ForeignKey> getVersionForeignKeys();
+
 
 }
