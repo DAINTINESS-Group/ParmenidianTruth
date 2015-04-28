@@ -56,7 +56,7 @@ public class PowerPointGenerator {
         
         
         for(int i=0;i<files.size();++i){
-        	if(files.get(i).contains("Universal Graph")){
+        	if(files.get(i).contains("Diachronic Graph")){
         		
 
                 XSLFSlideLayout title = defaultMaster.getLayout(SlideLayout.TITLE);                

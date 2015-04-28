@@ -1,6 +1,7 @@
-package externalTools;
+package managers;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,22 +14,29 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import model.Episode;
-import model.EpisodeFactory;
+import model.DBVersion;
 import model.ForeignKey;
 
 import org.antlr.v4.runtime.RecognitionException;
 
-import fileFilter.SQLFileFilter;
+import externalTools.Deletion;
+import externalTools.Delta;
+import externalTools.HecateParser;
+import externalTools.Insersion;
+import externalTools.Schema;
+import externalTools.Table;
+import externalTools.TransitionList;
+import externalTools.Transitions;
+import externalTools.Update;
 
-public class HecateIntermediate {
-	private ArrayList<Episode> lifetime= new ArrayList<Episode>();
+public class HecateManager {
+	private ArrayList<DBVersion> lifetime= new ArrayList<DBVersion>();
 	private ArrayList<Map<String,Integer>> transitions = new ArrayList<Map<String,Integer>>();
 	
 	
 	
 	
-	public ArrayList<Episode> parseSql(String sqlFiles){
+	public ArrayList<DBVersion> parseSql(String sqlFiles){
 		
 		//parsarw ta sql arxeia kai t organwnw sthn mnhmh
 		File[] versions = new File(sqlFiles).listFiles(new SQLFileFilter());
@@ -115,8 +123,9 @@ public class HecateIntermediate {
 			 for(int i=0;i<iterator.getValue().getfKey().getForeingKeys().size();++i)
 				 versionForeignKeys.add(iterator.getValue().getfKey().getForeingKeys().get(i));
 			  
-//		  DatabaseVersion current = new DatabaseVersion(tablesWithin,versionForeignKeys,version.getName());
-		  lifetime.add(EpisodeFactory.createEpisode(tablesWithin,versionForeignKeys,version.getName()));
+		  DBVersion current = new DBVersion(tablesWithin,versionForeignKeys,version.getName());
+		  lifetime.add(current);
+//		  lifetime.add(EpisodeFactory.createEpisode(tablesWithin,versionForeignKeys,version.getName()));
 			  
 
 		} catch (RecognitionException e) {
@@ -171,6 +180,17 @@ public class HecateIntermediate {
 			
 		}
 
+		
+	}
+	
+	public class SQLFileFilter implements FileFilter {
+		
+		public boolean accept(File pathname) {
+			if(pathname.getName().endsWith(".sql"))
+				return true;
+			return false;
+			
+		}
 		
 	}
 

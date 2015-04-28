@@ -1,74 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.8" icons="true" automaticImage="JPEG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
-  <package id="1" language="java" name="gui" project="ParmenidianTruth-master" file="/ParmenidianTruth-master/src/gui" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="438" y="524"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="2" language="java" name="loader" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/loader" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="246" y="316"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="3" language="java" name="externalTools" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/externalTools" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="442" y="151"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <package id="4" language="java" name="export" project="ParmenidianTruth-master" 
+  <package id="1" language="java" name="export" project="ParmenidianTruth-master" 
     file="/ParmenidianTruth-master/src/export" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="650" y="319"/>    
+    <position height="-1" width="-1" x="694" y="569"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="fileFilter" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/fileFilter" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="832" y="86"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="gui" project="ParmenidianTruth-master" file="/ParmenidianTruth-master/src/gui" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="465" y="116"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="4" language="java" name="loader" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/loader" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="217" y="286"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <package id="5" language="java" name="model" project="ParmenidianTruth-master" 
     file="/ParmenidianTruth-master/src/model" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="447" y="322"/>    
+    <position height="-1" width="-1" x="461" y="561"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <package id="6" language="java" name="fileFilter" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/fileFilter" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="650" y="150"/>    
-    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
+  <dependency id="6">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
   <dependency id="7">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="8">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="9">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="10">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="11">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
-  <dependency id="12">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="13">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="14">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <dependency id="15">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="16">    
+  <dependency id="8">    
     <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="9">    
+    <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 

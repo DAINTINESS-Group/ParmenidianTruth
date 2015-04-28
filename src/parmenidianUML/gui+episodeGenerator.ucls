@@ -10,8 +10,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="export.EpisodeGenerator" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/export/EpisodeGenerator.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="2" language="java" name="model.DiachronicGraphVisualRepresentation" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/model/DiachronicGraphVisualRepresentation.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="903" y="408"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -19,17 +20,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="model.Episode" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/model/Episode.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="900" y="905"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" name="model.DatabaseVersion" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/model/DatabaseVersion.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="model.DBVersion" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/model/DBVersion.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="657" y="1384"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -37,7 +29,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="model.DiachronicGraph" project="ParmenidianTruth-master" 
+  <class id="4" language="java" name="model.DiachronicGraph" project="ParmenidianTruth-master" 
     file="/ParmenidianTruth-master/src/model/DiachronicGraph.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1169" y="1447"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -46,56 +38,26 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
+  <dependency id="5">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
   <association id="6">    
-    <bendpoint x="500" y="144"/>    
-    <bendpoint x="523" y="147"/>    
-    <bendpoint x="556" y="137"/>    
-    <bendpoint x="571" y="136"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="7" name="eg"/>      
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="7" name="visualizationOfDiachronicGraph"/>      
       <multiplicity id="8" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="9">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="10" name="episode"/>      
-      <multiplicity id="11" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="12">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="13">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="14" name="versions"/>      
-      <multiplicity id="15" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="16">    
-    <bendpoint x="632" y="849"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="17" name="lifetime"/>      
-      <multiplicity id="18" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="19">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="20">    
-    <bendpoint x="575" y="922"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="21" name="wholeGraph"/>      
-      <multiplicity id="22" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="10" name="versions">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="11" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  

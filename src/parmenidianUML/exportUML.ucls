@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.8" icons="true" automaticImage="JPEG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="export.EpisodeGenerator" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/export/EpisodeGenerator.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="model.DiachronicGraphVisualRepresentation" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/model/DiachronicGraphVisualRepresentation.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="276" y="202"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -57,11 +58,11 @@
   </class>  
   <nesting id="7">    
     <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="6"/>  
+    <end type="TARGET" refId="5"/>  
   </nesting>  
   <nesting id="8">    
     <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="TARGET" refId="6"/>  
   </nesting>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

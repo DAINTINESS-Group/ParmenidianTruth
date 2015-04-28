@@ -91,8 +91,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="export.EpisodeGenerator" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/export/EpisodeGenerator.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="11" language="java" name="model.DiachronicGraphVisualRepresentation" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/model/DiachronicGraphVisualRepresentation.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1232" y="340"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -145,8 +146,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="model.DatabaseVersion" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/model/DatabaseVersion.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="17" language="java" name="model.DBVersion" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/model/DBVersion.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1481" y="1497"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -154,16 +155,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="model.Episode" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/model/Episode.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1361" y="838"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="19" language="java" name="model.DiachronicGraph" project="ParmenidianTruth-master" 
+  <class id="18" language="java" name="model.DiachronicGraph" project="ParmenidianTruth-master" 
     file="/ParmenidianTruth-master/src/model/DiachronicGraph.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="963" y="1543"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -172,8 +164,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="model.GraphmlLoader" project="ParmenidianTruth-master" 
-    file="/ParmenidianTruth-master/src/model/GraphmlLoader.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="19" language="java" name="loader.GraphmlLoader" project="ParmenidianTruth-master" 
+    file="/ParmenidianTruth-master/src/loader/GraphmlLoader.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="350" y="1557"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -181,210 +173,138 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="21">    
-    <bendpoint x="576" y="738"/>    
-    <bendpoint x="816" y="861"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="22" name="wholeGraph">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+  <association id="20">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="21" name="visualizationOfDiachronicGraph"/>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="24">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="20"/>  
-  </dependency>  
-  <dependency id="25">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="8"/>  
-  </dependency>  
-  <dependency id="26">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="7"/>  
-  </dependency>  
-  <dependency id="27">    
-    <bendpoint x="236" y="-336"/>    
-    <bendpoint x="231" y="-185"/>    
-    <bendpoint x="227" y="-138"/>    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <association id="28">    
+  <association id="23">    
     <bendpoint x="761" y="-71"/>    
     <bendpoint x="482" y="17"/>    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="29" name="parent">        
+      <attribute id="24" name="parent">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="30" minimum="0" maximum="1">        
+      <multiplicity id="25" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="31">    
+  <dependency id="26">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <dependency id="27">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="28">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <nesting id="29">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="9"/>  
   </nesting>  
-  <generalization id="32">    
-    <bendpoint x="1197" y="1331"/>    
-    <bendpoint x="1232" y="1285"/>    
-    <bendpoint x="1231" y="1172"/>    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="18"/>  
-  </generalization>  
+  <dependency id="30">    
+    <bendpoint x="236" y="-336"/>    
+    <bendpoint x="231" y="-185"/>    
+    <bendpoint x="227" y="-138"/>    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="31">    
+    <bendpoint x="441" y="-178"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <nesting id="32">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="10"/>  
+  </nesting>  
   <association id="33">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="34" name="episode">        
+    <bendpoint x="513" y="25"/>    
+    <bendpoint x="982" y="-82"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="34" name="edgeChooser">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="35" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="36">    
-    <bendpoint x="513" y="25"/>    
-    <bendpoint x="982" y="-82"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="37" name="edgeChooser">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="38" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="39">    
+  <dependency id="36">    
     <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="6"/>  
+    <end type="TARGET" refId="7"/>  
   </dependency>  
-  <association id="40">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="41" name="graphmlLoader">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="42" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="43">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="14"/>  
+  <dependency id="37">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="8"/>  
   </dependency>  
-  <association id="44">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="45" name="lifetime">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="46" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="47">    
+  <dependency id="38">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="6"/>  
   </dependency>  
-  <association id="48">    
-    <bendpoint x="183" y="1213"/>    
-    <bendpoint x="176" y="1358"/>    
-    <bendpoint x="256" y="1359"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="49" name="savedChanges">        
+  <dependency id="39">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="19"/>  
+  </dependency>  
+  <association id="40">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="41" name="versions">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="50" minimum="0" maximum="1">        
+      <multiplicity id="42" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
+    <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="51">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="12"/>  
-  </dependency>  
-  <dependency id="52">    
-    <bendpoint x="441" y="-178"/>    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <association id="53">    
-    <bendpoint x="1114" y="1259"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="54" name="versions">        
+  <association id="43">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="44" name="graphmlLoader">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="55" minimum="0" maximum="2147483647">        
+      <multiplicity id="45" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
+    <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="56">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="15"/>  
-  </dependency>  
-  <generalization id="57">    
+  <dependency id="46">    
     <end type="SOURCE" refId="17"/>    
     <end type="TARGET" refId="18"/>  
-  </generalization>  
-  <association id="58">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="59" name="eg">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="60" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="61">    
-    <bendpoint x="760" y="634"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="62" name="lifetime">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="63" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="64">    
-    <bendpoint x="38" y="-121"/>    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
   </dependency>  
-  <nesting id="65">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="10"/>  
-  </nesting>  
-  <dependency id="66">    
-    <bendpoint x="91" y="-298"/>    
+  <dependency id="47">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="4"/>  
   </dependency>  
+  <dependency id="48">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <dependency id="49">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="50">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="51" name="lifetime"/>      
+      <multiplicity id="52" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

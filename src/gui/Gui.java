@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -21,9 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.prefs.Preferences;
-
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,15 +45,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import loader.Parser;
-import model.Episode;
-import model.EpisodeFactory;
-import model.GraphmlLoader;
-import export.EpisodeGenerator;
-import export.HecateScript;
-import export.PowerPointGenerator;
-import export.VideoGenerator;
+import managers.ParmenidianTruthManager;
 
 
 public class Gui extends JFrame {
@@ -64,12 +53,12 @@ public class Gui extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<String> FileNames= new ArrayList<String>();
-	private ArrayList<Episode> lifetime= new ArrayList<Episode>();
-	private ArrayList<Map<String,Integer>> transitions = new ArrayList<Map<String,Integer>>();
-	private GraphmlLoader savedChanges;
+//	private ArrayList<DBVersion> lifetime= new ArrayList<DBVersion>();
+//	private ArrayList<Map<String,Integer>> transitions = new ArrayList<Map<String,Integer>>();
+//	private GraphmlLoader savedChanges;
 	private String workspace;
-	private EpisodeGenerator eg;
-	private Episode wholeGraph; 
+//	private EpisodeGenerator eg;
+//	private DiachronicGraph wholeGraph; 
 	private final JToolBar toolBar = new JToolBar();
 	private JToggleButton mvNode = new JToggleButton("");
 	private JToggleButton mvGraph = new JToggleButton("");
@@ -80,7 +69,7 @@ public class Gui extends JFrame {
 	private String targetFolder;
 	private EdgeChooser edgeChooser;
 	public static  Preferences prefs;
-	private int width,height;
+//	private int width,height;
 	private String projectName;
 	private JFileChooser fileChooser = new JFileChooser();
 	private String projectIni;
@@ -88,17 +77,14 @@ public class Gui extends JFrame {
 	private JRadioButton radio2 = new JRadioButton("Move Graph");
 	private JToolBar toolBar_1 = new JToolBar();
 	private JPopupMenu pop = new JPopupMenu();
-	private Component nowShowing;
-
-
-
-
-
-
-
-
+//	private Component nowShowing;
+//	private ModelManager manager;
+	private ParmenidianTruthManager manager= new ParmenidianTruthManager();;
+	
+	
 	
 	public Gui() {
+		setResizable(false);
 		getContentPane().setBackground(new Color(214,217,223));
 		this.workspace= prefs.get("workspace",null);
 
@@ -163,7 +149,9 @@ public class Gui extends JFrame {
 		mvNode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				eg.setPickingMode();
+				manager.setPickingMode();
+//				wholeGraph.setPickingMode();
+//				eg.setPickingMode();
 				radio1.setSelected(true);
 			}
 		});
@@ -176,8 +164,10 @@ public class Gui extends JFrame {
 		mvGraph.setToolTipText("Move Graph");
 		mvGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				eg.setTransformingMode();
+
+				manager.setTransformingMode();
+//				wholeGraph.setTransformingMode();
+//				eg.setTransformingMode();
 				radio2.setSelected(true);
 				
 			}
@@ -245,7 +235,9 @@ public class Gui extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					wholeGraph= eg.saveVertexCoordinates(wholeGraph,projectIni);
+					manager.saveVertexCoordinates(projectIni);
+//					wholeGraph.saveVertexCoordinates(projectIni);
+//					wholeGraph= eg.saveVertexCoordinates(wholeGraph,projectIni);
 					JOptionPane.showMessageDialog(Gui.this,"Layout changes have been saved");
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -441,9 +433,6 @@ public class Gui extends JFrame {
 		menuItem.setIcon(new ImageIcon(Gui.class.getResource("/icons/spread.png")));
 		pop.add(menuItem);
 		getContentPane().add(pop, BorderLayout.SOUTH);
-
-		
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Gui.class.getResource("/icons/pi.png")));
 		
@@ -618,7 +607,9 @@ public class Gui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try {
-					wholeGraph= eg.saveVertexCoordinates(wholeGraph,projectIni);
+					manager.saveVertexCoordinates(projectIni);
+//					wholeGraph.saveVertexCoordinates(projectIni);
+//					wholeGraph= eg.saveVertexCoordinates(wholeGraph,projectIni);
 					JOptionPane.showMessageDialog(Gui.this,"Layout changes have been saved");
 
 				} catch (IOException e) {
@@ -714,8 +705,9 @@ public class Gui extends JFrame {
 		
 		if(chooser.showOpenDialog(Gui.this)==JFileChooser.APPROVE_OPTION){
 			
-			VideoGenerator vg = new VideoGenerator(chooser.getSelectedFile());
-			vg.exportToVideo();
+//			VideoGenerator vg = new VideoGenerator(chooser.getSelectedFile());
+//			vg.exportToVideo();
+			manager.createVideo(chooser.getSelectedFile());
 			JOptionPane.showMessageDialog(Gui.this,"Video was created successfully");
 
 		}
@@ -725,8 +717,9 @@ public class Gui extends JFrame {
 	
 	protected void createVideo(File presentation) throws IOException{
 		
-		VideoGenerator vg = new VideoGenerator(presentation);
-		vg.exportToVideo();
+//		VideoGenerator vg = new VideoGenerator(presentation);
+//		vg.exportToVideo();
+		manager.createVideo(presentation);
 		JOptionPane.showMessageDialog(Gui.this,"Video was created successfully");
 
 		
@@ -740,8 +733,10 @@ public class Gui extends JFrame {
 		
 		 if(fileopen.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
 			 try {
-				HecateScript hecate= new HecateScript(fileopen.getSelectedFile());
-				hecate.createTransitions();
+//				HecateScript hecate= new HecateScript(fileopen.getSelectedFile());
+//				hecate.createTransitions();
+				 
+				 manager.createTransitions(fileopen.getSelectedFile());
 				
 				JOptionPane.showMessageDialog(this,"Transition file was created successfully");
 			} catch (Exception e) {
@@ -806,11 +801,27 @@ public class Gui extends JFrame {
 		if(FileNames.isEmpty())
 			return null;
 		
-		PowerPointGenerator pptx=new PowerPointGenerator(targetFolder,projectName);
+//		PowerPointGenerator pptx=new PowerPointGenerator(targetFolder,projectName);
+//		
+//		try {
+//			pptx.createPresentation(FileNames);
+//			JOptionPane.showMessageDialog(Gui.this,"Powerpoint Presentation was created successfully");
+//
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		finally{
+//			FileNames.clear();
+//		}
+		
 		
 		try {
-			pptx.createPresentation(FileNames);
+			
+			manager.createPowerPointPresentation(FileNames, targetFolder, projectName);
 			JOptionPane.showMessageDialog(Gui.this,"Powerpoint Presentation was created successfully");
+
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -821,24 +832,26 @@ public class Gui extends JFrame {
 			FileNames.clear();
 		}
 		
+		
+		
 		return new File(targetFolder+"\\"+projectName+".pptx");
 
 		
 	}
 
-	protected void createDiachronicGraph(int mode) {
-		this.setResizable(true);
-		this.setLocation(0, 0);
-
-		
-		if(mode==0)
-			wholeGraph= EpisodeFactory.createEpisode(lifetime);
-		else
-			wholeGraph = EpisodeFactory.createEpisode(savedChanges);
-		
-		
-
-	}
+//	protected void createDiachronicGraph(int mode, String sql,double frameX,double frameY, double scaleX,double scaleY,double centerX,double centerY) {
+//		this.setResizable(true);
+//		this.setLocation(0, 0);
+//
+//		
+//		if(mode==0)
+//			wholeGraph= new DiachronicGraph(lifetime,sql,targetFolder,edgeChooser.getEdgeType(),mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
+//		else
+//			wholeGraph = new DiachronicGraph(savedChanges,sql,targetFolder,edgeChooser.getEdgeType(),mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
+//		
+//		
+//
+//	}
 
 	public void loadLifetime(String selectedFile) throws Exception {
 		
@@ -847,6 +860,7 @@ public class Gui extends JFrame {
 		projectIni=selectedFile;
 		
 		edgeChooser = new EdgeChooser(this);
+//		manager = new ParmenidianTruthManager();
 		
 		String sql = null,xml = null,graphml=null;
 		double frameX = 0,frameY = 0,scaleX = 0,scaleY = 0,centerX = 0,centerY = 0;
@@ -882,64 +896,29 @@ public class Gui extends JFrame {
 		reader.close();
 
 		
-		int episodeGeneratorMode;
 
-		Parser myParser;
-			
-			myParser = new Parser(sql,xml,graphml);
-			lifetime=myParser.getLifetime();
-			transitions=myParser.getTransitions();
-			updateLifetimeWithTransitions();
-			
-			//an uparxei graphml ftiakse ton universal sumfwna me ton 
-			//graph alliws ftiakston me ton default tropo
-			if(myParser.hasGraphml()){
-				savedChanges=myParser.getGraphmlLoader();
-				createDiachronicGraph(1);
-				episodeGeneratorMode=1;
-			}else{
-				createDiachronicGraph(0);
-				episodeGeneratorMode=0;
-			}
-			
+		
+		getContentPane().add(manager.loadProject(sql,xml,graphml,frameX,frameY,scaleX,scaleY,centerX,centerY,targetFolder,edgeChooser.getEdgeType()));
 
-			eg = new EpisodeGenerator(wholeGraph,sql,targetFolder,edgeChooser.getEdgeType(),episodeGeneratorMode,frameX,frameY,scaleX,scaleY,centerX,centerY);
-			nowShowing=getContentPane().add(eg.show());
-			setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH);
+
+		setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH);
+		
+
+		
+		button.setEnabled(true);
+		btnNewButton_3.setEnabled(true);
+		mvNode.setEnabled(true);
+		mvGraph.setEnabled(true);
+		radio1.setEnabled(true);
+		radio2.setEnabled(true);
+		mvGraph.doClick();
+		radio2.setSelected(true);
+		this.setResizable(true);
+		this.setLocation(0, 0);
+
+		manager.stopConvergence();
+//		wholeGraph.stopConvergence();
 			
-			eg.getVv().addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					
-							if(arg0.getButton()==3 && !eg.getVv().getPickedVertexState().getPicked().isEmpty() ){
-								
-								Point point = new Point(arg0.getPoint());
-								
-//								pop.setFocusable(false);
-//								
-//								pop.show(eg.getVv(), point.x,point.y-20);
-							}
-				}
-			});
-			
-			button.setEnabled(true);
-			btnNewButton_3.setEnabled(true);
-			mvNode.setEnabled(true);
-			mvGraph.setEnabled(true);
-			radio1.setEnabled(true);
-			radio2.setEnabled(true);
-			mvGraph.doClick();
-			radio2.setSelected(true);
-//			toolBar_1.setVisible(true);
-			
-//			if(graphml!=null){
-//				toolBar_1.getComponent(0).setEnabled(false);
-//				toolBar_1.getComponent(1).setEnabled(false);
-//				toolBar_1.getComponent(2).setEnabled(false);
-//				toolBar_1.getComponent(3).setEnabled(false);
-//			}
-			
-			eg.stop();
 
 			
 	}
@@ -959,7 +938,9 @@ public class Gui extends JFrame {
 			if(array[0]){
 				visualize(false);
 
-				loadImagesForPptx(eg.getTargetFolder());
+				loadImagesForPptx(manager.getTargetFolder());
+//				loadImagesForPptx(eg.getTargetFolder());
+//				loadImagesForPptx(wholeGraph.getTargetFolder());
 				File pptx = createPowerPointPresentation();
 				
 				if(array[1])
@@ -977,17 +958,17 @@ public class Gui extends JFrame {
 		
 		try {
 			
-			wholeGraph= eg.saveVertexCoordinates(wholeGraph,projectIni);
-			width=eg.getVv().getSize().width;
-			height=eg.getVv().getSize().height;
-			eg.createEpisodes(wholeGraph,eg);
+//			wholeGraph.saveVertexCoordinates(projectIni);
+//			wholeGraph.createEpisode();
+//			
+//			
+//			for(int i=0;i<lifetime.size();++i){
+//				DBVersionVisualRepresentation episode = new DBVersionVisualRepresentation(lifetime.get(i),targetFolder,edgeChooser.getEdgeType());
+//				episode.createEpisodes(wholeGraph);
+//				episode=null;
+//			}
 			
-			
-			for(int i=0;i<lifetime.size();++i){
-				EpisodeGenerator episode = new EpisodeGenerator(lifetime.get(i),targetFolder,edgeChooser.getEdgeType());
-				episode.createEpisodes(wholeGraph,eg);
-				episode=null;
-			}
+			manager.visualize(projectIni, targetFolder, edgeChooser.getEdgeType());
 			
 			
 			if(atomically)
@@ -1047,19 +1028,21 @@ public class Gui extends JFrame {
 		
 		
 		FileNames.clear();
-		lifetime.clear();
-		transitions.clear();
-		savedChanges=null;
-		if(wholeGraph!=null)
-			wholeGraph.clear();
-		wholeGraph=null; 
+//		lifetime.clear();
+//		transitions.clear();
+//		savedChanges=null;
+//		if(wholeGraph!=null)
+//			wholeGraph.clear();
+//		wholeGraph=null;
+//		if(manager!=null)
+		manager.clear();
+//		manager=null;
 		targetFolder=null;
 		EdgeChooser edgeChooser=null;
 		projectName=null;
 		projectIni=null;
-		nowShowing=null;
+//		nowShowing=null;
 		
-		eg= null;
 		
 					
 //		panel.setVisible(true);
@@ -1082,69 +1065,69 @@ public class Gui extends JFrame {
 		
 	}
 
-	private void updateLifetimeWithTransitions(){
-		
-		for(int i=0;i<lifetime.size();++i)
-			if(i==0)
-				setFirstVersion(lifetime.get(i));
-			else if(i==lifetime.size()-1)
-				setFinalVersion(lifetime.get(i),i);
-			else
-				setIntermediateVersion(lifetime.get(i),i);
+//	private void updateLifetimeWithTransitions(){
+//		
+//		for(int i=0;i<lifetime.size();++i)
+//			if(i==0)
+//				setFirstVersion(lifetime.get(i));
+//			else if(i==lifetime.size()-1)
+//				setFinalVersion(lifetime.get(i),i);
+//			else
+//				setIntermediateVersion(lifetime.get(i),i);
+//	
+//			
+//		
+//	}
 	
-			
-		
-	}
-	
-	/**
-	 * Trexw thn prwth version me to prwto Dictionary kai checkarw n dw an sthn
-	 * 2h version exei svistei kapoios pinakas.Me endiaferei mono to deletion
-	 * An kapoioi exoun ginei updated tha tous vapsw sthn 2h ekdosh,oxi edw
-	 * @param fversion :firstVersion
-	 */
-	private void setFirstVersion(Episode fversion){
-		
-		for(int i=0;i<fversion.getTables().size();++i)
-			if(transitions.get(0).containsKey(fversion.getTables().get(i).getKey())
-			&& transitions.get(0).get(fversion.getTables().get(i).getKey())==1)
-				fversion.getTables().get(i).setColorCode(1);		
-		
-	}
-	
-	/**
-	 * Trexw thn teleutaia version mou me to teleutaio dictionary mou,h thesh tou
-	 * teleutaiou dictionary mou einai mia prin apo thn thesh ths teleutaias version mou.
-	 * Psaxnw gia tables pou periexontai st dictionary mou KAI DEN einai deletions,einai 
-	 * dhladh mono newTable kai UpdateTable kai tous vafw analoga me thn timh pou exei to
-	 * dictionary mou.
-	 * @param fversion :finalVersion
-	 * @param k :H thesh ths teleutaias Version mou sthn Lista
-	 */
-	private void setFinalVersion(Episode fversion,int k){
-		
-		for(int i=0;i<fversion.getTables().size();++i)
-			if(transitions.get(k-1).containsKey(fversion.getTables().get(i).getKey())
-			&& transitions.get(k-1).get(fversion.getTables().get(i).getKey())!=1)
-				fversion.getTables().get(i).setColorCode(transitions.get(k-1).get(fversion.getTables().get(i).getKey()));
-		
-	}
-	
-	private void setIntermediateVersion(Episode version,int k){
-		
-		for(int i=0;i<version.getTables().size();++i){
-			//koitaw to mellontiko m dictionary
-			if(transitions.get(k).containsKey(version.getTables().get(i).getKey())
-			&& transitions.get(k).get(version.getTables().get(i).getKey())==1)
-				version.getTables().get(i).setColorCode(1);
-			
-			//koitaw to palho m dictionary
-			if(transitions.get(k-1).containsKey(version.getTables().get(i).getKey())
-			&& transitions.get(k-1).get(version.getTables().get(i).getKey())!=1)
-				version.getTables().get(i).setColorCode(transitions.get(k-1).get(version.getTables().get(i).getKey()));
-		
-				
-		}
-	}
+//	/**
+//	 * Trexw thn prwth version me to prwto Dictionary kai checkarw n dw an sthn
+//	 * 2h version exei svistei kapoios pinakas.Me endiaferei mono to deletion
+//	 * An kapoioi exoun ginei updated tha tous vapsw sthn 2h ekdosh,oxi edw
+//	 * @param fversion :firstVersion
+//	 */
+//	private void setFirstVersion(DBVersion fversion){
+//		
+//		for(int i=0;i<fversion.getTables().size();++i)
+//			if(transitions.get(0).containsKey(fversion.getTables().get(i).getKey())
+//			&& transitions.get(0).get(fversion.getTables().get(i).getKey())==1)
+//				fversion.getTables().get(i).setColorCode(1);		
+//		
+//	}
+//	
+//	/**
+//	 * Trexw thn teleutaia version mou me to teleutaio dictionary mou,h thesh tou
+//	 * teleutaiou dictionary mou einai mia prin apo thn thesh ths teleutaias version mou.
+//	 * Psaxnw gia tables pou periexontai st dictionary mou KAI DEN einai deletions,einai 
+//	 * dhladh mono newTable kai UpdateTable kai tous vafw analoga me thn timh pou exei to
+//	 * dictionary mou.
+//	 * @param fversion :finalVersion
+//	 * @param k :H thesh ths teleutaias Version mou sthn Lista
+//	 */
+//	private void setFinalVersion(DBVersion fversion,int k){
+//		
+//		for(int i=0;i<fversion.getTables().size();++i)
+//			if(transitions.get(k-1).containsKey(fversion.getTables().get(i).getKey())
+//			&& transitions.get(k-1).get(fversion.getTables().get(i).getKey())!=1)
+//				fversion.getTables().get(i).setColorCode(transitions.get(k-1).get(fversion.getTables().get(i).getKey()));
+//		
+//	}
+//	
+//	private void setIntermediateVersion(DBVersion version,int k){
+//		
+//		for(int i=0;i<version.getTables().size();++i){
+//			//koitaw to mellontiko m dictionary
+//			if(transitions.get(k).containsKey(version.getTables().get(i).getKey())
+//			&& transitions.get(k).get(version.getTables().get(i).getKey())==1)
+//				version.getTables().get(i).setColorCode(1);
+//			
+//			//koitaw to palho m dictionary
+//			if(transitions.get(k-1).containsKey(version.getTables().get(i).getKey())
+//			&& transitions.get(k-1).get(version.getTables().get(i).getKey())!=1)
+//				version.getTables().get(i).setColorCode(transitions.get(k-1).get(version.getTables().get(i).getKey()));
+//		
+//				
+//		}
+//	}
 	
 	public static void main(String[] args) {
 
@@ -1213,7 +1196,11 @@ public class Gui extends JFrame {
 		return new File(array[0]);
 	}
 
-	public void setNowShowing(Component nowShowing) {
-		this.nowShowing = nowShowing;
+	public ParmenidianTruthManager getManager() {
+		return manager;
 	}
+
+//	public void setNowShowing(Component nowShowing) {
+//		this.nowShowing = nowShowing;
+//	}
 }

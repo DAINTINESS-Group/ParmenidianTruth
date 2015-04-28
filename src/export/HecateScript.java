@@ -1,14 +1,14 @@
 package export;
 
 import java.io.File;
+import java.io.FileFilter;
 
-import externalTools.HecateIntermediate;
-import fileFilter.SQLFileFilter;
+import managers.HecateManager;
 
 public class HecateScript {	
 	private File selectedDirectory;
 	private File[] sqlFiles;
-	private HecateIntermediate worker = new HecateIntermediate();
+	private HecateManager worker = new HecateManager();
 	
 	public HecateScript(File folder) throws Exception{
 		Exception wrong = new Exception();
@@ -69,6 +69,16 @@ public class HecateScript {
 //		
 //	}
 	
+	public class SQLFileFilter implements FileFilter {
+		
+		public boolean accept(File pathname) {
+			if(pathname.getName().endsWith(".sql"))
+				return true;
+			return false;
+			
+		}
+		
+	}
 	
 
 }

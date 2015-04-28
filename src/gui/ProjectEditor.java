@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import export.HecateScript;
+//import export.HecateScript;
 
 public class ProjectEditor extends JFrame {
 	
@@ -285,8 +285,9 @@ public class ProjectEditor extends JFrame {
 					
 					 if(fileChooser.showOpenDialog(ProjectEditor.this)==JFileChooser.APPROVE_OPTION){
 						 try {
-							HecateScript hecate= new HecateScript(fileChooser.getSelectedFile());
-							hecate.createTransitions();
+//							HecateScript hecate= new HecateScript(fileChooser.getSelectedFile());
+//							hecate.createTransitions();
+							 parent.getManager().createTransitions(fileChooser.getSelectedFile());
 							
 							JOptionPane.showMessageDialog(ProjectEditor.this,"Transition file was created successfully");
 						} catch (Exception e) {

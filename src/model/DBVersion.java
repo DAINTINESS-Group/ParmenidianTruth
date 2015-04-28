@@ -6,6 +6,8 @@ package model;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import edu.uci.ics.jung.visualization.decorators.EdgeShape;
+
 
 /**
  * 
@@ -15,13 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
  *kai periexei plirofories sxetika me thn anaparastash tou table ws komvo
  *
  */
-public class DatabaseVersion extends Episode {
+public class DBVersion  {
 	
 	private String versionName;
 	private ArrayList<Table> tablesWithin=new ArrayList<Table>();
-	private ArrayList<ForeignKey> versionForeignKeys= new ArrayList<ForeignKey>(); 
+	private ArrayList<ForeignKey> versionForeignKeys= new ArrayList<ForeignKey>();
+	private DBVersionVisualRepresentation visualizationsOfDBVersion;
 
-	public DatabaseVersion(ArrayList<Table> tablesWithin,ArrayList<ForeignKey> versionForeignKeys,String vn){
+	public DBVersion(ArrayList<Table> tablesWithin,ArrayList<ForeignKey> versionForeignKeys,String vn){
 		
 		//1 set VersionName				
 		String[] array =vn.split(".sql",2);
@@ -34,11 +37,21 @@ public class DatabaseVersion extends Episode {
 		//3 set all the FK dependencies of the current version
 		 this.versionForeignKeys=versionForeignKeys;
 
-		 
+		 visualizationsOfDBVersion = new DBVersionVisualRepresentation(tablesWithin,versionForeignKeys,versionName); 
+		
+	}
+	
+	public void visualizeEpisode(DiachronicGraph diachronicGraph){
+		
+		visualizationsOfDBVersion.createEpisodes(diachronicGraph.getGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
 		
 	}
 
-
+	public void setDetails(String tf, int et){
+		
+		visualizationsOfDBVersion.setDetails(tf, et);
+		
+	}
 
 	public ArrayList<Table> getTables() {
 		
@@ -55,7 +68,6 @@ public class DatabaseVersion extends Episode {
 	}
 
 
-	@Override
 	public ArrayList<Table> getNodes() {
 		
 		return getTables();
@@ -63,7 +75,6 @@ public class DatabaseVersion extends Episode {
 	}
 
 
-	@Override
 	public ArrayList<ForeignKey> getEdges() {
 		
 		return getVersionForeignKeys();
@@ -71,25 +82,11 @@ public class DatabaseVersion extends Episode {
 	}
 
 
-	@Override
 	public String getVersion() {
 		
 		return this.versionName;
 	}
 
 
-	@Override
-	public ConcurrentHashMap<String,Table> getGraph() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

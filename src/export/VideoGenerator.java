@@ -14,7 +14,6 @@ import org.apache.poi.xslf.util.PPTX2PNG;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import com.xuggle.xuggler.ICodec;
-import fileFilter.ImageFileFilter;
 
 public class VideoGenerator {
 	private File selectedPresentation;
@@ -242,6 +241,17 @@ public class VideoGenerator {
 			return Integer.parseInt(leftovers[1]);
 			
 		}
+	}
+	
+	public class ImageFileFilter implements FileFilter {
+		
+		public boolean accept(File pathname) {
+			if(pathname.getName().endsWith(".png") || pathname.getName().endsWith(".jpg"))
+				return true;
+			return false;
+			
+		}
+		
 	}
 	
 }
