@@ -38,23 +38,24 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 
 public class DiachronicGraphVisualRepresentation {
-	private Graph<String, String> g;
+//	private Graph<String, String> g;
 	private ArrayList<Table> nodes = new ArrayList<Table>();
 	private ArrayList<ForeignKey> edges= new ArrayList<ForeignKey>();
 	private String inputFolder;
 	private Layout<String, String> layout;
 	private static DefaultModalGraphMouse<String, Number> graphMouse = new DefaultModalGraphMouse<String, Number>();
 	private VisualizationViewer<String, String> vv;
-	private double frameX = 0;
-	private double frameY = 0;
-	private double scaleX =1;
-	private double scaleY =1;
+//	private double frameX = 0;
+//	private double frameY = 0;
+//	private double scaleX =1;
+//	private double scaleY =1;
+	private Dimension universalFrame;
+//	private Point2D universalCenter;
 	private String targetFolder;
 	private Transformer edgeType;
-	private Dimension universalFrame;
-	private Point2D universalCenter;
 	private MutableTransformer universalTransformerForTranslation;
 	private MutableTransformer universalTransformerForScaling;
+	private DiachronicGraph parent;
 
 	
 //	//for episodes
@@ -77,22 +78,22 @@ public class DiachronicGraphVisualRepresentation {
 //	}
 	
 	//for universalGraph mode==0 kainourgio layout,mode==1 savedLayout 
-	public DiachronicGraphVisualRepresentation(ArrayList tables,ArrayList fks,String in, String tf, int et,int mode,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY) {		
+	public DiachronicGraphVisualRepresentation(DiachronicGraph p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String in, String tf, int et,int mode,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY) {		
 		
 
 		edgeType = et == 0 ? new EdgeShape.Line<String, String>(): new EdgeShape.Orthogonal<String, String>();
-		
+		parent=p;
 
-		g = new DirectedSparseGraph<String, String>();
+//		g = new DirectedSparseGraph<String, String>();
 		nodes=tables;
 		edges=fks;
 		inputFolder=in;
 		targetFolder = tf+"//screenshots";
 		new File(targetFolder ).mkdir();
-		addNodes();
-		addEdges();
+//		addNodes();
+//		addEdges();
 
-		layout= new SpringLayout2<String, String>(g);
+		layout= new SpringLayout2<String, String>(parent.getGraph());
 
 
 		
@@ -100,7 +101,7 @@ public class DiachronicGraphVisualRepresentation {
 
 		layout.setSize(universalFrame);
 		vv = new VisualizationViewer<String, String>(layout);
-		vv.setPreferredSize(new Dimension(universalFrame.width+300, universalFrame.height+300));
+		vv.setSize(new Dimension(universalFrame.width+300, universalFrame.height+300));
 		
 
 		// Setup up a new vertex to paint transformer...
@@ -202,9 +203,9 @@ public class DiachronicGraphVisualRepresentation {
 			);
 		
 		
-		updateFrameInfo();
+//		updateFrameInfo();
 		
-		graphWriter.save(g, out);
+		graphWriter.save(parent.getGraph(), out);
 		
 		
 		updateIniFile(projectIni);
@@ -217,6 +218,8 @@ public class DiachronicGraphVisualRepresentation {
 
 
 	public void createEpisode() {
+
+//		System.out.println("size of Diachronic Graph: "+vv.getWidth()+","+vv.getHeight());
 
 		
 		File file =new File(targetFolder + "/"+	"Diachronic Graph"  + ".jpg");
@@ -364,12 +367,20 @@ public class DiachronicGraphVisualRepresentation {
 				writer = new PrintWriter(new FileWriter(projectIni));
 				writer.println(restOfFile);
 				writer.println("graphml@"+inputFolder+"\\uber.graphml");
-				writer.println("frameX@"+frameX);
-				writer.println("frameY@"+frameY);
-				writer.println("scaleX@"+scaleX);
-				writer.println("scaleY@"+scaleY);
-				writer.println("centerX@"+universalCenter.getX());
-				writer.println("centerY@"+universalCenter.getY());
+				writer.println("frameX@"+universalTransformerForTranslation.getTranslateX());
+				writer.println("frameY@"+universalTransformerForTranslation.getTranslateY());
+				writer.println("centerX@"+vv.getCenter().getX());
+				writer.println("centerY@"+vv.getCenter().getY());
+				
+				if(universalTransformerForScaling.getScaleX()==1 && universalTransformerForScaling.getScaleY()==1 ){
+					writer.println("scaleX@"+universalTransformerForTranslation.getScaleX());
+					writer.println("scaleY@"+universalTransformerForTranslation.getScaleY());
+				}else{
+					writer.println("scaleX@"+universalTransformerForScaling.getScaleX());
+					writer.println("scaleY@"+universalTransformerForScaling.getScaleY());
+				}	
+				
+				
 				writer.close();
 				
 			
@@ -381,23 +392,23 @@ public class DiachronicGraphVisualRepresentation {
 		
 	}
 	
-	private void updateFrameInfo() {
-		
-		frameX = universalTransformerForTranslation.getTranslateX();
-		frameY = universalTransformerForTranslation.getTranslateY();
-		
-		scaleX = universalTransformerForScaling.getScaleX();
-		scaleY = universalTransformerForScaling.getScaleY();
-		
-		if(scaleX==1 && scaleY ==1){
+//	private void updateFrameInfo() {
+//		
+//		frameX = universalTransformerForTranslation.getTranslateX();
+//		frameY = universalTransformerForTranslation.getTranslateY();
+//		
+//		scaleX = universalTransformerForScaling.getScaleX();
+//		scaleY = universalTransformerForScaling.getScaleY();
+//		
+//		if(scaleX==1 && scaleY ==1){
+//			
+//			scaleX = universalTransformerForTranslation.getScaleX();
+//			scaleY = universalTransformerForTranslation.getScaleY();
+//			
+//		}
 			
-			scaleX = universalTransformerForTranslation.getScaleX();
-			scaleY = universalTransformerForTranslation.getScaleY();
-			
-		}
-			
 		
-		universalCenter = vv.getCenter();
+//		universalCenter = vv.getCenter();
 //				.getRenderContext()
 //				.getMultiLayerTransformer()
 //				.inverseTransform(Layer.VIEW,
@@ -406,38 +417,56 @@ public class DiachronicGraphVisualRepresentation {
 //		
 //		System.out.println(((SpringLayout2)layout).g)
 		
-	}
+//	}
 	
-	private void addNodes() {
-
-		for (int i = 0; i < nodes.size(); ++i)
-			g.addVertex(nodes.get(i).getKey());
-
-	}
-
-	private void addEdges() {
-
-		for (int i = 0; i < edges.size(); ++i)
-			g.addEdge(Integer.toString(i), edges.get(i)
-					.getSourceTable(),edges.get(i)
-					.getTargetTable());
-
-	}
+//	private void addNodes() {
+//
+//		for (int i = 0; i < nodes.size(); ++i)
+//			g.addVertex(nodes.get(i).getKey());
+//
+//	}
+//
+//	private void addEdges() {
+//
+//		for (int i = 0; i < edges.size(); ++i)
+//			g.addEdge(Integer.toString(i), edges.get(i)
+//					.getSourceTable(),edges.get(i)
+//					.getTargetTable());
+//
+//	}
 
 	public  double getFrameX() {
-		return frameX;
+//		return frameX;
+		return universalTransformerForTranslation.getTranslateX();
+		
 	}
 
 	public  double getFrameY() {
-		return frameY;
+//		return frameY;
+		return universalTransformerForTranslation.getTranslateY();
 	}
 
 	public double getScaleX() {
-		return scaleX;
+//		return scaleX;
+//		return universalTransformerForScaling.getScaleX();
+		
+		if(universalTransformerForScaling.getScaleX()==1 && universalTransformerForScaling.getScaleY()==1 ){
+			return universalTransformerForTranslation.getScaleX();
+		}else{
+			return universalTransformerForScaling.getScaleX();
+		}	
+
 	}
 
 	public double getScaleY() {
-		return scaleY;
+//		return scaleY;
+//		return universalTransformerForScaling.getScaleY();
+		
+		if(universalTransformerForScaling.getScaleX()==1 && universalTransformerForScaling.getScaleY()==1 ){
+			return universalTransformerForTranslation.getScaleY();
+		}else{
+			return universalTransformerForScaling.getScaleY();
+		}	
 	}
 
 	public Dimension getUniversalFrame() {
@@ -445,9 +474,20 @@ public class DiachronicGraphVisualRepresentation {
 	}
 
 	public Point2D getUniversalCenter() {
-		return universalCenter;
+		return vv.getCenter();
 	}
 
+	public int getWidthOfVisualizationViewer(){
+		
+		return vv.getWidth();
+		
+	}
+	
+	public int getHeightOfVisualizationViewer(){
+		
+		return vv.getHeight();
+		
+	}
 
 //	public Dimension getUniversalFrame() {
 //		return universalFrame;

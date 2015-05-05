@@ -26,7 +26,7 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 
 public class DBVersionVisualRepresentation {
-	public Graph<String, String> g;
+//	public Graph<String, String> g;
 //	public DBVersion episode;
 	public Layout<String, String> layout;
 	public String targetFolder;
@@ -34,47 +34,52 @@ public class DBVersionVisualRepresentation {
 	private ArrayList<Table> nodes = new ArrayList<Table>();
 	private ArrayList<ForeignKey> edges= new ArrayList<ForeignKey>();
 	private String episodeName;
+	private int width,height;
+	private DBVersion parent;
 
 	//for episodes
-	public DBVersionVisualRepresentation (ArrayList tables,ArrayList fks,String versionName/*, String tf, int et*/) {		
+	public DBVersionVisualRepresentation (DBVersion p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String versionName/*, String tf, int et*/) {		
 		
 
 //		edgeType = et == 0 ? new EdgeShape.Line<String, String>(): new EdgeShape.Orthogonal<String, String>();
-		
+		parent=p;
 		
 		nodes=tables;
 		edges=fks;
 
-		g = new DirectedSparseGraph<String, String>();
+//		g = new DirectedSparseGraph<String, String>();
 		episodeName=versionName;
 //		episode = ep;
 //		targetFolder = tf+"//screenshots";
 //		new File(targetFolder ).mkdir();
-		addNodes();
-		addEdges();
+//		addNodes();
+//		addEdges();
 
 
 
 	}
 	
-	public void setDetails(String tf, int et){
+	public void setDetails(String tf, int et,int width,int height){
 		
 		edgeType = et == 0 ? new EdgeShape.Line<String, String>(): new EdgeShape.Orthogonal<String, String>();
 		
 		targetFolder = tf+"//screenshots";		
 		new File(targetFolder ).mkdir();
+		
+		this.width=width;
+		this.height=height;
 
 	}
 	
 	public void createEpisodes(ConcurrentHashMap<String, Table> graph,Dimension universalFrame,Point2D universalCenter,double frameX,double frameY,double scaleX,double scaleY) {
 
 		
-		layout = new StaticLayout<String, String>(g);
+		layout = new StaticLayout<String, String>(parent.getGraph());
 
 		layout.setSize(universalFrame);
 		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
 		
-		vv.setSize(new Dimension(universalFrame.width+300, universalFrame.height+300));
+		vv.setSize(new Dimension(width, height));
 		
 
 		
@@ -84,11 +89,11 @@ public class DBVersionVisualRepresentation {
 
 				for (int i = 0; i <nodes.size(); ++i)
 					if (nodes.get(i).getKey().equals(v))
-						if (nodes.get(i).getColorCode() == -1)
+						if (nodes.get(i).getTableStatus() == Status.UNDEFINED.getValue())
 							return new Color(129, 215, 244, 200);
-						else if (nodes.get(i).getColorCode() == 0)
+						else if (nodes.get(i).getTableStatus() == Status.CREATION.getValue())
 							return new Color(0, 255, 0, 200);
-						else if (nodes.get(i).getColorCode() == 1)
+						else if (nodes.get(i).getTableStatus() == Status.DELETION.getValue())
 							return new Color(255, 0, 0, 200);
 						else
 							return new Color(255, 255, 0, 200);
@@ -134,6 +139,8 @@ public class DBVersionVisualRepresentation {
 
 		
 		writeJPEGImage(new File(targetFolder + "/"+ episodeName + ".jpg"), vv);
+		
+//		System.out.println("size of individual episode: "+vv.getWidth()+","+vv.getHeight());
 
 	}
 	
@@ -155,21 +162,21 @@ public class DBVersionVisualRepresentation {
 		}
 	}
 	
-	private void addNodes() {
-
-		for (int i = 0; i <nodes.size(); ++i)
-			g.addVertex(nodes.get(i).getKey());
-
-	}
-
-	private void addEdges() {
-
-		for (int i = 0; i <edges.size(); ++i)
-			g.addEdge(Integer.toString(i), edges.get(i)
-					.getSourceTable(), edges.get(i)
-					.getTargetTable());
-
-	}
+//	private void addNodes() {
+//
+//		for (int i = 0; i <nodes.size(); ++i)
+//			g.addVertex(nodes.get(i).getKey());
+//
+//	}
+//
+//	private void addEdges() {
+//
+//		for (int i = 0; i <edges.size(); ++i)
+//			g.addEdge(Integer.toString(i), edges.get(i)
+//					.getSourceTable(), edges.get(i)
+//					.getTargetTable());
+//
+//	}
 
 
 }

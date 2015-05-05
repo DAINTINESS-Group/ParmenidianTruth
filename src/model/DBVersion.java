@@ -6,6 +6,7 @@ package model;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 
 
@@ -23,6 +24,7 @@ public class DBVersion  {
 	private ArrayList<Table> tablesWithin=new ArrayList<Table>();
 	private ArrayList<ForeignKey> versionForeignKeys= new ArrayList<ForeignKey>();
 	private DBVersionVisualRepresentation visualizationsOfDBVersion;
+	private GraphMetrics graphMetricsOfDBVersion;
 
 	public DBVersion(ArrayList<Table> tablesWithin,ArrayList<ForeignKey> versionForeignKeys,String vn){
 		
@@ -37,19 +39,20 @@ public class DBVersion  {
 		//3 set all the FK dependencies of the current version
 		 this.versionForeignKeys=versionForeignKeys;
 
-		 visualizationsOfDBVersion = new DBVersionVisualRepresentation(tablesWithin,versionForeignKeys,versionName); 
+		 graphMetricsOfDBVersion = new GraphMetrics(tablesWithin,versionForeignKeys);
+		 visualizationsOfDBVersion = new DBVersionVisualRepresentation(this,tablesWithin,versionForeignKeys,versionName); 
 		
 	}
 	
 	public void visualizeEpisode(DiachronicGraph diachronicGraph){
 		
-		visualizationsOfDBVersion.createEpisodes(diachronicGraph.getGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
+		visualizationsOfDBVersion.createEpisodes(diachronicGraph.getDictionaryOfGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
 		
 	}
 
-	public void setDetails(String tf, int et){
+	public void setDetails(String tf, int et,int width,int height){
 		
-		visualizationsOfDBVersion.setDetails(tf, et);
+		visualizationsOfDBVersion.setDetails(tf, et,width, height);
 		
 	}
 
@@ -85,6 +88,12 @@ public class DBVersion  {
 	public String getVersion() {
 		
 		return this.versionName;
+	}
+	
+	public Graph getGraph(){
+		
+		return graphMetricsOfDBVersion.getGraph();
+		
 	}
 
 

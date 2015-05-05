@@ -6,7 +6,7 @@ public class Table {
 	
 	private String tableName;
 	private Point2D coords;
-	private int colorCode=-1;
+	private int tableStatus = Status.UNDEFINED.getValue();
 	
 	public Table(String name){
 		
@@ -26,13 +26,13 @@ public class Table {
 		return tableName;
 	}
 	
-	public void setColorCode(int code){
+	public void setTableStatus(int status){
 		
-		colorCode=code;
+		tableStatus=status;
 	}
 
-	public int getColorCode() {
-		return colorCode;
+	public int getTableStatus() {
+		return tableStatus;
 	}
 
 	public Point2D getCoords() {

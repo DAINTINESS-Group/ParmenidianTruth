@@ -16,6 +16,7 @@ import javax.xml.bind.Unmarshaller;
 
 import model.DBVersion;
 import model.ForeignKey;
+import model.Status;
 
 import org.antlr.v4.runtime.RecognitionException;
 
@@ -164,11 +165,11 @@ public class HecateManager {
 					
 					
 					if(tl.getTransitionList().get(i).getType().equals("NewTable"))
-						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),0);
+						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),Status.CREATION.getValue());
 					else if(tl.getTransitionList().get(i).getType().equals("DeleteTable"))
-						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),1);
+						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),Status.DELETION.getValue());
 					else if(tl.getTransitionList().get(i).getType().equals("UpdateTable"))//sketo t else pianei k to keychange pou den me endiaferei emena
-						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),2);
+						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),Status.UPDATE.getValue());
 					
 				}
 				

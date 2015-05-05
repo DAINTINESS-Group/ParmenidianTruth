@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import loader.GraphmlLoader;
 import loader.Parser;
+import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 @SuppressWarnings({ "rawtypes", "unused" })
@@ -25,6 +26,7 @@ public class DiachronicGraph {
 	private ArrayList<ForeignKey> edges= new ArrayList<ForeignKey>();//union of edges
 
 	private DiachronicGraphVisualRepresentation visualizationOfDiachronicGraph;
+	private GraphMetrics graphMetricsOfDiachronicGraph;
 	
 	public DiachronicGraph(String sql,String xml,String graphml, String targetFolder, int et,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY) throws Exception {
 		
@@ -44,12 +46,14 @@ public class DiachronicGraph {
 			edges=savedChanges.getEdges();
 			fixGraph();	
 			mode=1;
-			visualizationOfDiachronicGraph = new DiachronicGraphVisualRepresentation(vertices,edges,sql,targetFolder,et,mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
+			graphMetricsOfDiachronicGraph = new GraphMetrics(vertices,edges);
+			visualizationOfDiachronicGraph = new DiachronicGraphVisualRepresentation(this,vertices,edges,sql,targetFolder,et,mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
 		}else{
 			
 			createDiachronicGraph();
 			mode=0;
-			visualizationOfDiachronicGraph = new DiachronicGraphVisualRepresentation(vertices,edges,sql,targetFolder,et,mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
+			graphMetricsOfDiachronicGraph = new GraphMetrics(vertices,edges);
+			visualizationOfDiachronicGraph = new DiachronicGraphVisualRepresentation(this,vertices,edges,sql,targetFolder,et,mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
 		}
 		
 		
@@ -79,8 +83,8 @@ public class DiachronicGraph {
 		
 		for(int i=0;i<fversion.getTables().size();++i)
 			if(transitions.get(0).containsKey(fversion.getTables().get(i).getKey())
-			&& transitions.get(0).get(fversion.getTables().get(i).getKey())==1)
-				fversion.getTables().get(i).setColorCode(1);		
+			&& transitions.get(0).get(fversion.getTables().get(i).getKey())==Status.DELETION.getValue())
+				fversion.getTables().get(i).setTableStatus(Status.DELETION.getValue());		
 		
 	}
 	
@@ -97,8 +101,8 @@ public class DiachronicGraph {
 		
 		for(int i=0;i<fversion.getTables().size();++i)
 			if(transitions.get(k-1).containsKey(fversion.getTables().get(i).getKey())
-			&& transitions.get(k-1).get(fversion.getTables().get(i).getKey())!=1)
-				fversion.getTables().get(i).setColorCode(transitions.get(k-1).get(fversion.getTables().get(i).getKey()));
+			&& transitions.get(k-1).get(fversion.getTables().get(i).getKey())!=Status.DELETION.getValue())
+				fversion.getTables().get(i).setTableStatus(transitions.get(k-1).get(fversion.getTables().get(i).getKey()));
 		
 	}
 	
@@ -107,13 +111,13 @@ public class DiachronicGraph {
 		for(int i=0;i<version.getTables().size();++i){
 			//koitaw to mellontiko m dictionary
 			if(transitions.get(k).containsKey(version.getTables().get(i).getKey())
-			&& transitions.get(k).get(version.getTables().get(i).getKey())==1)
-				version.getTables().get(i).setColorCode(1);
+			&& transitions.get(k).get(version.getTables().get(i).getKey())==Status.DELETION.getValue())
+				version.getTables().get(i).setTableStatus(Status.DELETION.getValue());
 			
 			//koitaw to palho m dictionary
 			if(transitions.get(k-1).containsKey(version.getTables().get(i).getKey())
-			&& transitions.get(k-1).get(version.getTables().get(i).getKey())!=1)
-				version.getTables().get(i).setColorCode(transitions.get(k-1).get(version.getTables().get(i).getKey()));
+			&& transitions.get(k-1).get(version.getTables().get(i).getKey())!=Status.DELETION.getValue())
+				version.getTables().get(i).setTableStatus(transitions.get(k-1).get(version.getTables().get(i).getKey()));
 		
 				
 		}
@@ -216,7 +220,7 @@ public class DiachronicGraph {
 
 	}
 
-	public ConcurrentHashMap<String, Table> getGraph() {
+	public ConcurrentHashMap<String, Table> getDictionaryOfGraph() {
 		return graph;
 	}
 
@@ -273,11 +277,14 @@ public class DiachronicGraph {
 	
 	public void visualizeIndividualDBVersions(String targetFolder,int edgeType){
 		
+		int width = visualizationOfDiachronicGraph.getWidthOfVisualizationViewer();
+		int height = visualizationOfDiachronicGraph.getHeightOfVisualizationViewer();
+		
 		for(int i=0;i<versions.size();++i){
 //			DBVersionVisualRepresentation episode = new DBVersionVisualRepresentation(versions.get(i),targetFolder,edgeType);
 //			episode.createEpisodes(this);
 //			episode=null;
-			versions.get(i).setDetails(targetFolder, edgeType);
+			versions.get(i).setDetails(targetFolder, edgeType,width,height);
 			versions.get(i).visualizeEpisode(this);
 		}
 		
@@ -319,6 +326,12 @@ public class DiachronicGraph {
 	public  double getFrameY(){
 		
 		return visualizationOfDiachronicGraph.getFrameY();
+	}
+	
+	public Graph getGraph(){
+		
+		return graphMetricsOfDiachronicGraph.getGraph();
+		
 	}
 	
 	
