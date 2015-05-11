@@ -2,6 +2,7 @@ package managers;
 
 
 import java.awt.Component;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import model.DiachronicGraph;
@@ -93,6 +94,31 @@ public class ModelManager {
 		return diachronicGraph.show();
 		
 	}
+	
+	public void generateVertexDegreeReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateVertexDegreeReport(targetFolder);
+		
+	}
+	
+	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateVertexBetweennessReport(targetFolder);
+		
+	}
+	
+	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateEdgeBetweennessReport(targetFolder);
+		
+	}
+	
+	public void generateGraphDiameterReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateGraphDiameterReport(targetFolder);
+		
+	}
+
 	
 //	private void createDiachronicGraph(int mode, String sql,double frameX,double frameY, double scaleX,double scaleY,double centerX,double centerY,String targetFolder,int edgeType,GraphmlLoader savedChanges) {
 //		

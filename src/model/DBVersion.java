@@ -6,6 +6,8 @@ package model;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
+import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 
@@ -95,6 +97,76 @@ public class DBVersion  {
 		return graphMetricsOfDBVersion.getGraph();
 		
 	}
+	
+	public String generateVertexDegreeReport(String vertex){
+		
+		vertex=vertex.replace(",","");
+		
+		
+		
+		for(int i=0;i<tablesWithin.size();++i){
+			if(vertex.equals(tablesWithin.get(i).getKey())){
+				vertex=vertex+",";
+				return graphMetricsOfDBVersion.generateVertexDegreeReport(vertex);
+			}
+		}
+		
+		return "*,";
+//		return -1+",";
+		
+		
+		
+	}
+	
+	public String generateVertexBetweennessReport(String vertex){
+		
+		vertex=vertex.replace(",","");
+		
+		
+		
+		for(int i=0;i<tablesWithin.size();++i){
+			if(vertex.equals(tablesWithin.get(i).getKey())){
+				vertex=vertex+",";
+				return graphMetricsOfDBVersion.generateVertexDegreeReport(vertex);
+			}
+		}
+		
+		return "*,";
+//		return -1+",";
+		
+		
+		
+	}
+
+	public String generateEdgeBetweennessReport(String edge) {
+		
+		edge=edge.replace(",","");
+		
+		
+		
+		for(int i=0;i<versionForeignKeys.size();++i){
+			if(edge.equals(versionForeignKeys.get(i).getSourceTable()+"|"+versionForeignKeys.get(i).getTargetTable())){
+				edge=edge+",";
+				return graphMetricsOfDBVersion.generateEdgeBetweennessReport(edge);
+			}
+		}
+		
+		return "*,";
+//		return -1+",";
+		
+		
+		
+	}
+	
+	public String getGraphDiameter(){
+		
+		
+		return graphMetricsOfDBVersion.getGraphDiameter();
+		
+		
+	}
+	
+	
 
 
 	

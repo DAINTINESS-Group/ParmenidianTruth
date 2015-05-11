@@ -89,6 +89,30 @@ public class ParmenidianTruthManager {
 		exportManager.createVideo(file);
 	}
 	
+	public void generateVertexDegreeReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateVertexDegreeReport(targetFolder);
+		
+	}
+	
+	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateVertexBetweennessReport( targetFolder);
+		
+	}
+	
+	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateEdgeBetweennessReport(targetFolder);
+		
+	}
+	
+	public void generateGraphDiameterReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateGraphDiameterReport(targetFolder);
+		
+	}
+	
 	
 	
 

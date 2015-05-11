@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -45,6 +46,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import managers.ParmenidianTruthManager;
 
 
@@ -540,6 +542,95 @@ public class Gui extends JFrame {
 		
 		JSeparator separator_7 = new JSeparator();
 		mnFile.add(separator_7);
+		
+		JMenu mnGenerateMetrics = new JMenu("Generate Metrics");
+		mnFile.add(mnGenerateMetrics);
+		
+		JMenu mnVertexProperties = new JMenu("Vertex Properties");
+		mnGenerateMetrics.add(mnVertexProperties);
+		
+		JMenuItem mntmVertexDegree = new JMenuItem("Vertex Degree");
+		mntmVertexDegree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				try {
+					manager.generateVertexDegreeReport(targetFolder);
+					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+				} catch (FileNotFoundException e) {
+					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		mnVertexProperties.add(mntmVertexDegree);
+		mntmVertexDegree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
+		
+		JMenuItem mntmVertexBetweenness = new JMenuItem("Vertex Betweenness");
+		mntmVertexBetweenness.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+					
+					try {
+						manager.generateVertexBetweennessReport( targetFolder);
+						JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+					} catch (FileNotFoundException e) {
+						JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+						e.printStackTrace();
+					}
+					
+			}
+		});
+		mntmVertexBetweenness.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
+		mnVertexProperties.add(mntmVertexBetweenness);
+		
+		JMenu mnEdgeProperties = new JMenu("Edge Properties");
+		mnGenerateMetrics.add(mnEdgeProperties);
+		
+		JMenuItem mntmEdgeBetweenness = new JMenuItem("Edge Betweenness");
+		mntmEdgeBetweenness.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					manager.generateEdgeBetweennessReport(targetFolder);
+					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+
+					e.printStackTrace();
+				}
+
+			}
+		});
+		mnEdgeProperties.add(mntmEdgeBetweenness);
+		
+		JMenu mnGraphProperties = new JMenu("Graph Properties");
+		mnGenerateMetrics.add(mnGraphProperties);
+		
+		JMenuItem mntmGraphDiameter = new JMenuItem("Graph Diameter");
+		mntmGraphDiameter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					manager.generateGraphDiameterReport(targetFolder);
+					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+
+					e.printStackTrace();
+				}
+
+			}
+		});
+		mnGraphProperties.add(mntmGraphDiameter);
 		
 		JMenu mnIndividualActions = new JMenu("Individual Actions");
 		mnFile.add(mnIndividualActions);
