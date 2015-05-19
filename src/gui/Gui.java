@@ -372,27 +372,31 @@ public class Gui extends JFrame {
 //	    };
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		getContentPane().add(toolBar, BorderLayout.NORTH);
-		
 		toolBar_1.setVisible(false);
 		toolBar.add(toolBar_1);
 		
-		JLabel lblAttraction = new JLabel("Attraction:  ");
+		JLabel lblAttraction = new JLabel("Force Multiplier: ");
 		lblAttraction.setFont(new Font("Tahoma", Font.BOLD, 11));
 		toolBar_1.add(lblAttraction);
 		
-		final JSpinner repulsionSpinner = new JSpinner();
-		repulsionSpinner.setModel(new SpinnerNumberModel(0.75, 0.0, 2.0, 0.05));
-		repulsionSpinner.setMinimumSize(new Dimension(50, 20));
-		repulsionSpinner.setMaximumSize(new Dimension(50, 20));
+		final JSpinner repulsionRangeSpinner = new JSpinner();
+		repulsionRangeSpinner.setModel(new SpinnerNumberModel(100, 0, 200, 1));
+		repulsionRangeSpinner.setMinimumSize(new Dimension(50, 20));
+		repulsionRangeSpinner.setMaximumSize(new Dimension(50, 20));
 		
-		final JSpinner attractionSpinner = new JSpinner();
-		attractionSpinner.setMinimumSize(new Dimension(100, 15));
-		attractionSpinner.setModel(new SpinnerNumberModel(0.75, 0.0, 2.0,0.05));
-		attractionSpinner.setMaximumSize(new Dimension(50, 20));
-		attractionSpinner.addChangeListener(new ChangeListener() {
+		final JSpinner forceMultiplierSpinner = new JSpinner();
+		forceMultiplierSpinner.setMinimumSize(new Dimension(100, 15));
+		forceMultiplierSpinner.setModel(new SpinnerNumberModel(0.3, 0.0, 3.0, 0.10));
+		forceMultiplierSpinner.setMaximumSize(new Dimension(50, 20));
+		forceMultiplierSpinner.addChangeListener(new ChangeListener() {
 
 		        @Override
 		        public void stateChanged(ChangeEvent e) {
+		        	
+		        	getContentPane().remove(1);
+		        	getContentPane().add(manager.refresh((double)forceMultiplierSpinner.getValue(),(int)repulsionRangeSpinner.getValue()));
+					getContentPane().invalidate();
+					getContentPane().repaint();
 		        	
 //					eg.updateVisualizationViewer((double)attractionSpinner.getValue(),(double)repulsionSpinner.getValue(),nowShowing);
 //					getContentPane().invalidate();
@@ -401,14 +405,14 @@ public class Gui extends JFrame {
 		        }
 		    });
 		
-		toolBar_1.add(attractionSpinner);
+		toolBar_1.add(forceMultiplierSpinner);
 		
-		JLabel lblRepulsion = new JLabel("  Repulsion: ");
+		JLabel lblRepulsion = new JLabel("  Repulsion Range: ");
 		toolBar_1.add(lblRepulsion);
 		lblRepulsion.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 
-		repulsionSpinner.addChangeListener(new ChangeListener() {
+		repulsionRangeSpinner.addChangeListener(new ChangeListener() {
 
 	        @Override
 	        public void stateChanged(ChangeEvent e) {
@@ -420,7 +424,7 @@ public class Gui extends JFrame {
 	        }
 	    });
 		
-		toolBar_1.add(repulsionSpinner);
+		toolBar_1.add(repulsionRangeSpinner);
 		
 		
 		JMenuItem menuItem = new JMenuItem("Spread..");		
@@ -585,6 +589,45 @@ public class Gui extends JFrame {
 					
 			}
 		});
+		
+		JMenuItem mntmVertexIndegree = new JMenuItem("Vertex InDegree");
+		mntmVertexIndegree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					manager.generateVertexInDegreeReport(targetFolder);
+					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+
+				}
+				
+			}
+		});
+		mntmVertexIndegree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));
+		mnVertexProperties.add(mntmVertexIndegree);
+		
+		JMenuItem mntmVertexOutdegree = new JMenuItem("Vertex OutDegree");
+		mntmVertexOutdegree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					manager.generateVertexOutDegreeReport(targetFolder);
+					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+
+				}
+			}
+		});
+		mntmVertexOutdegree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		mnVertexProperties.add(mntmVertexOutdegree);
 		mntmVertexBetweenness.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 		mnVertexProperties.add(mntmVertexBetweenness);
 		
@@ -631,6 +674,43 @@ public class Gui extends JFrame {
 			}
 		});
 		mnGraphProperties.add(mntmGraphDiameter);
+		
+		JMenuItem mntmNumberOfVertices = new JMenuItem("Number of Vertices");
+		mntmNumberOfVertices.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					manager.generateVertexCountReport(targetFolder);
+					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+
+					e.printStackTrace();
+				}
+			}
+		});
+		mnGraphProperties.add(mntmNumberOfVertices);
+		
+		JMenuItem mntmNumberOfEdges = new JMenuItem("Number of Edges");
+		mntmNumberOfEdges.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					manager.generateEdgeCountReport(targetFolder);
+					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
+
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		mnGraphProperties.add(mntmNumberOfEdges);
 		
 		JMenu mnIndividualActions = new JMenu("Individual Actions");
 		mnFile.add(mnIndividualActions);
@@ -958,6 +1038,7 @@ public class Gui extends JFrame {
 		
 		BufferedReader reader = new BufferedReader(new FileReader(projectIni));
 		String line;
+		
 		while((line = reader.readLine()) != null)
 		{
 			if(line.contains("Project Name:"))

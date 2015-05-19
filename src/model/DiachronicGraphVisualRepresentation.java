@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -42,7 +43,7 @@ public class DiachronicGraphVisualRepresentation {
 	private ArrayList<Table> nodes = new ArrayList<Table>();
 	private ArrayList<ForeignKey> edges= new ArrayList<ForeignKey>();
 	private String inputFolder;
-	private Layout<String, String> layout;
+	private SpringLayout2<String, String> layout;
 	private static DefaultModalGraphMouse<String, Number> graphMouse = new DefaultModalGraphMouse<String, Number>();
 	private VisualizationViewer<String, String> vv;
 //	private double frameX = 0;
@@ -120,6 +121,12 @@ public class DiachronicGraphVisualRepresentation {
 		// ---------------default graph moving
 		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
 		vv.setGraphMouse(graphMouse);
+		
+		
+		System.out.println("Force multiplier: "+((SpringLayout2)layout).getForceMultiplier());
+		System.out.println("Replusion Range: "+((SpringLayout2)layout).getRepulsionRange());
+		System.out.println("Stretch: "+((SpringLayout2)layout).getStretch());
+		
 		
 		//ekteleitai mono an exei anoiksei apo arxeio graphml
 		if(mode==1){
@@ -487,6 +494,21 @@ public class DiachronicGraphVisualRepresentation {
 		
 		return vv.getHeight();
 		
+	}
+
+	public Component refresh(double forceMult, int repulsionRange) {
+		
+		layout.setForceMultiplier(forceMult);
+		layout.setRepulsionRange(repulsionRange);
+		
+		
+		vv.removeAll();
+		
+		System.out.println(forceMult+"||"+repulsionRange);
+		
+		vv.setGraphLayout(layout);
+		
+		return vv;
 	}
 
 //	public Dimension getUniversalFrame() {

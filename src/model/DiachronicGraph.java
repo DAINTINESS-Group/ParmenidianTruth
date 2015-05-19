@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.io.File;
@@ -63,6 +64,176 @@ public class DiachronicGraph {
 		
 		
 		
+		
+	}
+	
+	public void generateEdgeCountReport(String targetFolder) throws FileNotFoundException{
+		
+		File vertexReport = new File(targetFolder+"\\Report of graph edgeCount.csv");
+		
+		
+		PrintWriter writer = new PrintWriter(vertexReport);
+		
+		int lines = 2;
+		int columns =versions.size()+2;
+		
+		String[][] report= new String[lines][columns];
+		
+//		create 1st line
+		report[0][0]=" ,";
+		report[0][1]="Diachronic Graph,";		
+		for(int i=0;i<versions.size();i++)			
+			report[0][i+2]=versions.get(i).getVersion()+",";
+		
+//		create 1st column		
+		report[1][0]="Graph Diameter,";
+		
+//		fill in the rest
+		for(int i=1;i<columns;i++)
+				if(i==1)
+					report[1][i] = graphMetricsOfDiachronicGraph.getEdgeCount();
+				else
+					report[1][i]=versions.get(i-2).getEdgeCount();
+		
+		
+//		print array into file
+		for(int i=0;i<lines;i++){
+			for(int j=0;j<columns;j++)
+				writer.print(report[i][j]);
+			writer.print("\n");
+		}
+				
+		writer.close();
+		
+		
+	}
+	
+	public void generateVertexCountReport(String targetFolder) throws FileNotFoundException{
+		
+		File vertexReport = new File(targetFolder+"\\Report of graph vertexCount.csv");
+		
+		
+		PrintWriter writer = new PrintWriter(vertexReport);
+		
+		int lines = 2;
+		int columns =versions.size()+2;
+		
+		String[][] report= new String[lines][columns];
+		
+//		create 1st line
+		report[0][0]=" ,";
+		report[0][1]="Diachronic Graph,";		
+		for(int i=0;i<versions.size();i++)			
+			report[0][i+2]=versions.get(i).getVersion()+",";
+		
+//		create 1st column		
+		report[1][0]="Graph Diameter,";
+		
+//		fill in the rest
+		for(int i=1;i<columns;i++)
+				if(i==1)
+					report[1][i] = graphMetricsOfDiachronicGraph.getVertexCount();
+				else
+					report[1][i]=versions.get(i-2).getVertexCount();
+		
+		
+//		print array into file
+		for(int i=0;i<lines;i++){
+			for(int j=0;j<columns;j++)
+				writer.print(report[i][j]);
+			writer.print("\n");
+		}
+				
+		writer.close();
+		
+		
+	}
+	
+	public void generateVertexOutDegreeReport(String targetFolder) throws FileNotFoundException {
+		
+		File vertexReport = new File(targetFolder+"\\Report of vertex outDegree.csv");
+		
+		//assert vertexReport.exists(); 
+		
+		PrintWriter writer = new PrintWriter(vertexReport);
+		
+		int lines = vertices.size()+1;
+		int columns =versions.size()+2;
+		
+		String[][] report= new String[lines][columns];
+		
+//		create 1st line
+		report[0][0]=" ,";
+		report[0][1]="Diachronic Graph,";		
+		for(int i=0;i<versions.size();i++)			
+			report[0][i+2]=versions.get(i).getVersion()+",";
+		
+//		create 1st column		
+		for(int i=0;i<vertices.size();i++)
+			report[i+1][0]=vertices.get(i).getKey()+",";		
+		
+//		fill in the rest
+		for(int i=1;i<columns;i++)
+			for(int j=1;j<lines;j++)
+				if(i==1)
+					report[j][i] = graphMetricsOfDiachronicGraph.generateVertexOutDegree(report[j][0]);
+				else
+					report[j][i]=versions.get(i-2).generateVertexOutDegree(report[j][0]);
+		
+		
+//		print array into file
+		for(int i=0;i<lines;i++){
+			for(int j=0;j<columns;j++)
+				writer.print(report[i][j]);
+			writer.print("\n");
+		}
+				
+		writer.close();
+
+		
+	}
+	
+	public void generateVertexInDegreeReport(String targetFolder) throws FileNotFoundException {
+		
+		File vertexReport = new File(targetFolder+"\\Report of vertex inDegree.csv");
+		
+		//assert vertexReport.exists(); 
+		
+		PrintWriter writer = new PrintWriter(vertexReport);
+		
+		int lines = vertices.size()+1;
+		int columns =versions.size()+2;
+		
+		String[][] report= new String[lines][columns];
+		
+//		create 1st line
+		report[0][0]=" ,";
+		report[0][1]="Diachronic Graph,";		
+		for(int i=0;i<versions.size();i++)			
+			report[0][i+2]=versions.get(i).getVersion()+",";
+		
+//		create 1st column		
+		for(int i=0;i<vertices.size();i++)
+			report[i+1][0]=vertices.get(i).getKey()+",";		
+		
+//		fill in the rest
+		for(int i=1;i<columns;i++)
+			for(int j=1;j<lines;j++)
+				if(i==1)
+					report[j][i] = graphMetricsOfDiachronicGraph.generateVertexInDegree(report[j][0]);
+				else
+					report[j][i]=versions.get(i-2).generateVertexInDegree(report[j][0]);
+		
+		
+//		print array into file
+		for(int i=0;i<lines;i++){
+			for(int j=0;j<columns;j++)
+				writer.print(report[i][j]);
+			writer.print("\n");
+		}
+				
+		writer.close();
+
 		
 	}
 	
@@ -135,9 +306,9 @@ public class DiachronicGraph {
 		for(int i=1;i<columns;i++)
 			for(int j=1;j<lines;j++)
 				if(i==1)
-					report[j][i] = graphMetricsOfDiachronicGraph.generateEdgeBetweennessReport(report[j][0]);
+					report[j][i] = graphMetricsOfDiachronicGraph.generateEdgeBetweenness(report[j][0]);
 				else
-					report[j][i]=versions.get(i-2).generateEdgeBetweennessReport(report[j][0]);
+					report[j][i]=versions.get(i-2).generateEdgeBetweenness(report[j][0]);
 		
 		
 //		print array into file
@@ -178,9 +349,9 @@ public class DiachronicGraph {
 		for(int i=1;i<columns;i++)
 			for(int j=1;j<lines;j++)
 				if(i==1)
-					report[j][i] = graphMetricsOfDiachronicGraph.generateVertexBetweennessReport(report[j][0]);
+					report[j][i] = graphMetricsOfDiachronicGraph.generateVertexBetweenness(report[j][0]);
 				else
-					report[j][i]=versions.get(i-2).generateVertexBetweennessReport(report[j][0]);
+					report[j][i]=versions.get(i-2).generateVertexBetweenness(report[j][0]);
 		
 		
 //		print array into file
@@ -224,9 +395,9 @@ public class DiachronicGraph {
 		for(int i=1;i<columns;i++)
 			for(int j=1;j<lines;j++)
 				if(i==1)
-					report[j][i] = graphMetricsOfDiachronicGraph.generateVertexDegreeReport(report[j][0]);
+					report[j][i] = graphMetricsOfDiachronicGraph.generateVertexDegree(report[j][0]);
 				else
-					report[j][i]=versions.get(i-2).generateVertexDegreeReport(report[j][0]);
+					report[j][i]=versions.get(i-2).generateVertexDegree(report[j][0]);
 		
 		
 //		print array into file
@@ -512,6 +683,11 @@ public class DiachronicGraph {
 		
 		return graphMetricsOfDiachronicGraph.getGraph();
 		
+	}
+
+	public Component refresh(double forceMult, int repulsionRange) {
+		
+		return this.visualizationOfDiachronicGraph.refresh(forceMult,repulsionRange);
 	}
 	
 	

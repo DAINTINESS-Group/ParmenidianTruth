@@ -101,6 +101,18 @@ public class ModelManager {
 		
 	}
 	
+	public void generateVertexInDegreeReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateVertexInDegreeReport(targetFolder);
+		
+	}
+	
+	public void generateVertexOutDegreeReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateVertexOutDegreeReport(targetFolder);
+		
+	}
+	
 	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
 		
 		diachronicGraph.generateVertexBetweennessReport(targetFolder);
@@ -116,6 +128,24 @@ public class ModelManager {
 	public void generateGraphDiameterReport(String targetFolder) throws FileNotFoundException{
 		
 		diachronicGraph.generateGraphDiameterReport(targetFolder);
+		
+	}
+	
+	public void generateVertexCountReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateVertexCountReport(targetFolder);
+		
+	}
+	
+	public void generateEdgeCountReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateEdgeCountReport(targetFolder);
+		
+	}
+
+	public Component refresh(double forceMult, int repulsionRange) {
+		
+		return diachronicGraph.refresh(forceMult,repulsionRange);
 		
 	}
 

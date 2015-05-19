@@ -98,7 +98,7 @@ public class DBVersion  {
 		
 	}
 	
-	public String generateVertexDegreeReport(String vertex){
+	public String generateVertexDegree(String vertex){
 		
 		vertex=vertex.replace(",","");
 		
@@ -107,7 +107,7 @@ public class DBVersion  {
 		for(int i=0;i<tablesWithin.size();++i){
 			if(vertex.equals(tablesWithin.get(i).getKey())){
 				vertex=vertex+",";
-				return graphMetricsOfDBVersion.generateVertexDegreeReport(vertex);
+				return graphMetricsOfDBVersion.generateVertexDegree(vertex);
 			}
 		}
 		
@@ -118,7 +118,7 @@ public class DBVersion  {
 		
 	}
 	
-	public String generateVertexBetweennessReport(String vertex){
+	public String generateVertexInDegree(String vertex){
 		
 		vertex=vertex.replace(",","");
 		
@@ -127,7 +127,47 @@ public class DBVersion  {
 		for(int i=0;i<tablesWithin.size();++i){
 			if(vertex.equals(tablesWithin.get(i).getKey())){
 				vertex=vertex+",";
-				return graphMetricsOfDBVersion.generateVertexDegreeReport(vertex);
+				return graphMetricsOfDBVersion.generateVertexInDegree(vertex);
+			}
+		}
+		
+		return "*,";
+//		return -1+",";
+		
+		
+		
+	}
+	
+	public String generateVertexOutDegree(String vertex){
+		
+		vertex=vertex.replace(",","");
+		
+		
+		
+		for(int i=0;i<tablesWithin.size();++i){
+			if(vertex.equals(tablesWithin.get(i).getKey())){
+				vertex=vertex+",";
+				return graphMetricsOfDBVersion.generateVertexOutDegree(vertex);
+			}
+		}
+		
+		return "*,";
+//		return -1+",";
+		
+		
+		
+	}
+	
+	public String generateVertexBetweenness(String vertex){
+		
+		vertex=vertex.replace(",","");
+		
+		
+		
+		for(int i=0;i<tablesWithin.size();++i){
+			if(vertex.equals(tablesWithin.get(i).getKey())){
+				vertex=vertex+",";
+				return graphMetricsOfDBVersion.generateVertexDegree(vertex);
 			}
 		}
 		
@@ -138,7 +178,7 @@ public class DBVersion  {
 		
 	}
 
-	public String generateEdgeBetweennessReport(String edge) {
+	public String generateEdgeBetweenness(String edge) {
 		
 		edge=edge.replace(",","");
 		
@@ -147,7 +187,7 @@ public class DBVersion  {
 		for(int i=0;i<versionForeignKeys.size();++i){
 			if(edge.equals(versionForeignKeys.get(i).getSourceTable()+"|"+versionForeignKeys.get(i).getTargetTable())){
 				edge=edge+",";
-				return graphMetricsOfDBVersion.generateEdgeBetweennessReport(edge);
+				return graphMetricsOfDBVersion.generateEdgeBetweenness(edge);
 			}
 		}
 		
@@ -163,6 +203,21 @@ public class DBVersion  {
 		
 		return graphMetricsOfDBVersion.getGraphDiameter();
 		
+		
+	}
+	
+	public String getVertexCount(){
+		
+		
+		return graphMetricsOfDBVersion.getVertexCount();
+		
+		
+	}
+	
+	public String getEdgeCount(){
+		
+		
+		return graphMetricsOfDBVersion.getEdgeCount();		
 		
 	}
 	

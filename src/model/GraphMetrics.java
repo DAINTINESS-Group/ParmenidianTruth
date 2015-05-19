@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
+import edu.uci.ics.jung.algorithms.importance.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
 import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
@@ -49,7 +49,7 @@ public class GraphMetrics {
 
 	}
 	
-	public String generateVertexDegreeReport(String vertex){
+	public String generateVertexDegree(String vertex){
 		
 		
 		vertex=vertex.replace(",","").trim();
@@ -67,13 +67,16 @@ public class GraphMetrics {
 	}
 	
 	
-	public String generateVertexBetweennessReport(String vertex){
+	public String generateVertexBetweenness(String vertex){
 		
 		vertex=vertex.replace(",","").trim();
 		
-		BetweennessCentrality bc = new BetweennessCentrality<>(graph);
 		
-		return bc.getVertexScore(vertex)+",";
+		 BetweennessCentrality ranker = new BetweennessCentrality(graph);
+		 ranker.setRemoveRankScoresOnFinalize(false);
+		 ranker.evaluate();
+		
+		return ranker.getVertexRankScore(vertex)+",";
 		
 //		used for debuggging
 //		return vertex+":"+bc.getVertexScore(vertex)+",";
@@ -81,14 +84,16 @@ public class GraphMetrics {
 		
 	}
 	
-	public String generateEdgeBetweennessReport(String edge){
+	public String generateEdgeBetweenness(String edge){
 		
-		BetweennessCentrality bc = new BetweennessCentrality(graph); 
 		
 		edge=edge.replace(",","").trim();
 
+		 BetweennessCentrality ranker = new BetweennessCentrality(graph);
+		 ranker.setRemoveRankScoresOnFinalize(false);
+		 ranker.evaluate();
 		
-		return bc.getEdgeScore(edge)+",";
+		return ranker.getEdgeRankScore(edge)+",";
 		
 //		used for debuggging
 //		return edge+":"+bc.getEdgeScore(edge)+",";
@@ -96,11 +101,41 @@ public class GraphMetrics {
 		
 	}
 	
+	public String generateVertexInDegree(String vertex){
+		
+		vertex=vertex.replace(",","").trim();
+		
+		return graph.inDegree(vertex)+",";
+	}
+	
+	public String generateVertexOutDegree(String vertex){
+		
+		vertex=vertex.replace(",","").trim();
+		
+		return graph.outDegree(vertex)+",";
+	}
+	
 	public String getGraphDiameter(){
 		
 		DistanceStatistics ds = new DistanceStatistics();
 		
 		return ds.diameter(graph)+",";
+		
+		
+	}
+	
+	public String getVertexCount(){
+		
+		
+		return graph.getVertexCount()+",";
+		
+		
+	}
+	
+	public String getEdgeCount(){
+		
+		
+		return graph.getEdgeCount()+",";
 		
 		
 	}

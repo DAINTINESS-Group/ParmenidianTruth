@@ -95,6 +95,18 @@ public class ParmenidianTruthManager {
 		
 	}
 	
+	public void generateVertexInDegreeReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateVertexInDegreeReport(targetFolder);
+		
+	}
+	
+	public void generateVertexOutDegreeReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateVertexOutDegreeReport(targetFolder);
+		
+	}
+	
 	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
 		
 		modelManager.generateVertexBetweennessReport( targetFolder);
@@ -111,6 +123,23 @@ public class ParmenidianTruthManager {
 		
 		modelManager.generateGraphDiameterReport(targetFolder);
 		
+	}
+	
+	public void generateVertexCountReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateVertexCountReport(targetFolder);
+		
+	}
+	
+	public void generateEdgeCountReport(String targetFolder) throws FileNotFoundException{
+		
+		modelManager.generateEdgeCountReport(targetFolder);
+		
+	}
+
+	public Component refresh(double forceMult, int repulsionRange) {
+		
+		return modelManager.refresh(forceMult,repulsionRange);
 	}
 	
 	
