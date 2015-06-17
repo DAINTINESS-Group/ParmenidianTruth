@@ -1,5 +1,7 @@
 package gui;
 
+import gui.MetricsChooser.setMethods;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -50,7 +52,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import managers.ParmenidianTruthManager;
 
 
-public class Gui extends JFrame {
+public class Gui extends JFrame implements setMethods{
 	
 
 	private static final long serialVersionUID = 1L;
@@ -81,7 +83,15 @@ public class Gui extends JFrame {
 	private JPopupMenu pop = new JPopupMenu();
 //	private Component nowShowing;
 //	private ModelManager manager;
-	private ParmenidianTruthManager manager= new ParmenidianTruthManager();;
+	private ParmenidianTruthManager manager= new ParmenidianTruthManager();
+	private boolean degree = false;
+	private boolean inDegree = false;
+	private boolean outDegree = false;
+	private boolean vertexBetweeness = false;
+	private boolean edgeBetweeness= false;
+	private boolean graphVertices= false;
+	private boolean graphEdges= false;
+	private boolean graphDiameter= false;
 	
 	
 	
@@ -547,170 +557,18 @@ public class Gui extends JFrame {
 		JSeparator separator_7 = new JSeparator();
 		mnFile.add(separator_7);
 		
-		JMenu mnGenerateMetrics = new JMenu("Generate Metrics");
-		mnFile.add(mnGenerateMetrics);
-		
-		JMenu mnVertexProperties = new JMenu("Vertex Properties");
-		mnGenerateMetrics.add(mnVertexProperties);
-		
-		JMenuItem mntmVertexDegree = new JMenuItem("Vertex Degree");
-		mntmVertexDegree.addActionListener(new ActionListener() {
+		JMenuItem mntmGenerateMetrics = new JMenuItem("Generate Metrics ");
+		mntmGenerateMetrics.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				
-				try {
-					manager.generateVertexDegreeReport(targetFolder);
-					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-				} catch (FileNotFoundException e) {
-					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-
-					e.printStackTrace();
-				}
+				openMetricsPanel();
 				
 			}
+
+
 		});
-		mnVertexProperties.add(mntmVertexDegree);
-		mntmVertexDegree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
-		
-		JMenuItem mntmVertexBetweenness = new JMenuItem("Vertex Betweenness");
-		mntmVertexBetweenness.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-					
-					try {
-						manager.generateVertexBetweennessReport( targetFolder);
-						JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-					} catch (FileNotFoundException e) {
-						JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-						e.printStackTrace();
-					}
-					
-			}
-		});
-		
-		JMenuItem mntmVertexIndegree = new JMenuItem("Vertex InDegree");
-		mntmVertexIndegree.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					manager.generateVertexInDegreeReport(targetFolder);
-					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-
-				}
-				
-			}
-		});
-		mntmVertexIndegree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));
-		mnVertexProperties.add(mntmVertexIndegree);
-		
-		JMenuItem mntmVertexOutdegree = new JMenuItem("Vertex OutDegree");
-		mntmVertexOutdegree.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					manager.generateVertexOutDegreeReport(targetFolder);
-					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-
-				}
-			}
-		});
-		mntmVertexOutdegree.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
-		mnVertexProperties.add(mntmVertexOutdegree);
-		mntmVertexBetweenness.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
-		mnVertexProperties.add(mntmVertexBetweenness);
-		
-		JMenu mnEdgeProperties = new JMenu("Edge Properties");
-		mnGenerateMetrics.add(mnEdgeProperties);
-		
-		JMenuItem mntmEdgeBetweenness = new JMenuItem("Edge Betweenness");
-		mntmEdgeBetweenness.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					manager.generateEdgeBetweennessReport(targetFolder);
-					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-
-					e.printStackTrace();
-				}
-
-			}
-		});
-		mnEdgeProperties.add(mntmEdgeBetweenness);
-		
-		JMenu mnGraphProperties = new JMenu("Graph Properties");
-		mnGenerateMetrics.add(mnGraphProperties);
-		
-		JMenuItem mntmGraphDiameter = new JMenuItem("Graph Diameter");
-		mntmGraphDiameter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					manager.generateGraphDiameterReport(targetFolder);
-					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-
-					e.printStackTrace();
-				}
-
-			}
-		});
-		mnGraphProperties.add(mntmGraphDiameter);
-		
-		JMenuItem mntmNumberOfVertices = new JMenuItem("Number of Vertices");
-		mntmNumberOfVertices.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					manager.generateVertexCountReport(targetFolder);
-					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-
-					e.printStackTrace();
-				}
-			}
-		});
-		mnGraphProperties.add(mntmNumberOfVertices);
-		
-		JMenuItem mntmNumberOfEdges = new JMenuItem("Number of Edges");
-		mntmNumberOfEdges.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					manager.generateEdgeCountReport(targetFolder);
-					JOptionPane.showMessageDialog(Gui.this,"File successfully created");
-
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(Gui.this,"File wasn't created");
-
-					e.printStackTrace();
-				}
-				
-			}
-		});
-		mnGraphProperties.add(mntmNumberOfEdges);
+		mntmGenerateMetrics.setIcon(new ImageIcon(Gui.class.getResource("/icons/metrics.png")));
+		mnFile.add(mntmGenerateMetrics);
 		
 		JMenu mnIndividualActions = new JMenu("Individual Actions");
 		mnFile.add(mnIndividualActions);
@@ -1098,7 +956,7 @@ public class Gui extends JFrame {
 	private void batchOutput() throws IOException {
 		
 		if(projectName==null){
-			JOptionPane.showMessageDialog(Gui.this, "No project to edit");
+			JOptionPane.showMessageDialog(Gui.this, "There is no project loaded");
 			return;
 		}
 			
@@ -1120,8 +978,17 @@ public class Gui extends JFrame {
 				
 			}		
 			
+	}
+	
+	private void openMetricsPanel() {
 		
+		if(projectName==null){
+			JOptionPane.showMessageDialog(Gui.this, "There is no project loaded");
+			return;
+		}
 		
+		MetricsChooser m = new MetricsChooser(this);	
+
 		
 		
 	}
@@ -1372,7 +1239,58 @@ public class Gui extends JFrame {
 		return manager;
 	}
 
-//	public void setNowShowing(Component nowShowing) {
-//		this.nowShowing = nowShowing;
-//	}
+	@Override
+	public void setDegree(boolean b) {
+		this.degree=b;
+	}
+
+	@Override
+	public void setInDegree(boolean b) {
+		this.inDegree=b;
+	}
+
+	@Override
+	public void setOutDegree(boolean b) {
+		this.outDegree=b;
+	}
+
+	@Override
+	public void setVertexBetweeness(boolean b) {
+		this.vertexBetweeness=b;
+	}
+
+	@Override
+	public void setEdgeBetweeness(boolean b) {
+		this.edgeBetweeness=b;
+	}
+
+	@Override
+	public void setGraphVertices(boolean b) {
+		this.graphVertices=b;
+	}
+
+	@Override
+	public void setGraphEdges(boolean b) {
+		this.graphEdges=b;
+	}
+
+	@Override
+	public void setGraphDiameter(boolean b) {
+		this.graphDiameter=b;
+	}
+
+	@Override
+	public void calculateMetrics() {
+		
+		try {
+			manager.calculateMetrics(targetFolder,degree,inDegree,outDegree,vertexBetweeness,edgeBetweeness,graphVertices,graphEdges,graphDiameter);
+			JOptionPane.showMessageDialog(Gui.this,"Metrics were created successfully");
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 }

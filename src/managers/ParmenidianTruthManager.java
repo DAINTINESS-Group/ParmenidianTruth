@@ -89,57 +89,80 @@ public class ParmenidianTruthManager {
 		exportManager.createVideo(file);
 	}
 	
-	public void generateVertexDegreeReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateVertexDegreeReport(targetFolder);
-		
-	}
-	
-	public void generateVertexInDegreeReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateVertexInDegreeReport(targetFolder);
-		
-	}
-	
-	public void generateVertexOutDegreeReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateVertexOutDegreeReport(targetFolder);
-		
-	}
-	
-	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateVertexBetweennessReport( targetFolder);
-		
-	}
-	
-	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateEdgeBetweennessReport(targetFolder);
-		
-	}
-	
-	public void generateGraphDiameterReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateGraphDiameterReport(targetFolder);
-		
-	}
-	
-	public void generateVertexCountReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateVertexCountReport(targetFolder);
-		
-	}
-	
-	public void generateEdgeCountReport(String targetFolder) throws FileNotFoundException{
-		
-		modelManager.generateEdgeCountReport(targetFolder);
-		
-	}
+//	public void generateVertexDegreeReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateVertexDegreeReport(targetFolder);
+//		
+//	}
+//	
+//	public void generateVertexInDegreeReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateVertexInDegreeReport(targetFolder);
+//		
+//	}
+//	
+//	public void generateVertexOutDegreeReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateVertexOutDegreeReport(targetFolder);
+//		
+//	}
+//	
+//	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateVertexBetweennessReport( targetFolder);
+//		
+//	}
+//	
+//	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateEdgeBetweennessReport(targetFolder);
+//		
+//	}
+//	
+//	public void generateGraphDiameterReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateGraphDiameterReport(targetFolder);
+//		
+//	}
+//	
+//	public void generateVertexCountReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateVertexCountReport(targetFolder);
+//		
+//	}
+//	
+//	public void generateEdgeCountReport(String targetFolder) throws FileNotFoundException{
+//		
+//		modelManager.generateEdgeCountReport(targetFolder);
+//		
+//	}
 
 	public Component refresh(double forceMult, int repulsionRange) {
 		
 		return modelManager.refresh(forceMult,repulsionRange);
+	}
+
+	public void calculateMetrics(String targetFolder,boolean degree, boolean inDegree,boolean outDegree, boolean vertexBetweeness,boolean edgeBetweeness, boolean graphVertices, boolean graphEdges,boolean graphDiameter) throws FileNotFoundException {
+		
+		if(degree)
+			modelManager.generateVertexDegreeReport(targetFolder);
+		if(inDegree)
+			modelManager.generateVertexInDegreeReport(targetFolder);
+		if(outDegree)
+			modelManager.generateVertexOutDegreeReport(targetFolder);
+		if(vertexBetweeness)
+			modelManager.generateVertexBetweennessReport( targetFolder);
+		if(edgeBetweeness)
+			modelManager.generateEdgeBetweennessReport(targetFolder);
+		if(graphVertices)
+			modelManager.generateVertexCountReport(targetFolder);
+		if(graphEdges)
+			modelManager.generateEdgeCountReport(targetFolder);
+		if(graphDiameter)
+			modelManager.generateGraphDiameterReport(targetFolder);
+
+
+		
 	}
 	
 	
