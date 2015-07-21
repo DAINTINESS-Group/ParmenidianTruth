@@ -31,7 +31,7 @@ public class MetricsChooser extends JDialog {
 	}
 	
 	
-	public MetricsChooser(Gui parent) {
+	public MetricsChooser(final Gui parent) {
 		setResizable(false);
 		setMinimumSize(new Dimension(450, 480));
 		setMaximumSize(new Dimension(450, 485));
@@ -53,19 +53,19 @@ public class MetricsChooser extends JDialog {
 		lblNewLabel_1.setBounds(20, 35, 404, 14);
 		getContentPane().add(lblNewLabel_1);
 		
-		JCheckBox inDegree = new JCheckBox("Vertex InDegree");
+		final JCheckBox inDegree = new JCheckBox("Vertex InDegree");
 		inDegree.setBounds(20, 67, 125, 23);
 		getContentPane().add(inDegree);
 		
-		JCheckBox outDegree = new JCheckBox("Vertex OutDegree");
+		final JCheckBox outDegree = new JCheckBox("Vertex OutDegree");
 		outDegree.setBounds(168, 67, 157, 23);
 		getContentPane().add(outDegree);
 		
-		JCheckBox vertexDegree = new JCheckBox("Vertex Degree");
+		final JCheckBox vertexDegree = new JCheckBox("Vertex Degree");
 		vertexDegree.setBounds(327, 67, 111, 23);
 		getContentPane().add(vertexDegree);
 		
-		JCheckBox vertexBetweenness = new JCheckBox("Vertex Betweenness");
+		final JCheckBox vertexBetweenness = new JCheckBox("Vertex Betweenness");
 		vertexBetweenness.setBounds(20, 93, 146, 23);
 		getContentPane().add(vertexBetweenness);
 		
@@ -83,7 +83,7 @@ public class MetricsChooser extends JDialog {
 		separator_1.setBounds(20, 155, 404, 2);
 		getContentPane().add(separator_1);
 		
-		JCheckBox edgeBetweenness = new JCheckBox("Edge Betweenness");
+		final JCheckBox edgeBetweenness = new JCheckBox("Edge Betweenness");
 		edgeBetweenness.setBounds(20, 164, 146, 23);
 		getContentPane().add(edgeBetweenness);
 		
@@ -116,15 +116,15 @@ public class MetricsChooser extends JDialog {
 		separator_2.setBounds(20, 252, 404, 2);
 		getContentPane().add(separator_2);
 		
-		JCheckBox graphDiameter = new JCheckBox("Graph Diameter");
+		final JCheckBox graphDiameter = new JCheckBox("Graph Diameter");
 		graphDiameter.setBounds(20, 267, 125, 23);
 		getContentPane().add(graphDiameter);
 		
-		JCheckBox graphVertices = new JCheckBox("Graph Vertices");
+		final JCheckBox graphVertices = new JCheckBox("Graph Vertices");
 		graphVertices.setBounds(168, 267, 125, 23);
 		getContentPane().add(graphVertices);
 		
-		JCheckBox graphEdges = new JCheckBox("Graph Edges");
+		final JCheckBox graphEdges = new JCheckBox("Graph Edges");
 		graphEdges.setBounds(327, 267, 97, 23);
 		getContentPane().add(graphEdges);
 		

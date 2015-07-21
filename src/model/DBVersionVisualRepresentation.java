@@ -126,7 +126,14 @@ public class DBVersionVisualRepresentation {
 			layoutTranformer.setTranslate(frameX, frameY);
 		}
 		
-
+		
+//		System.out.println("frameX: "+ frameX);
+//		System.out.println("frameY: "+ frameY);
+//		System.out.println("centerX: "+ universalCenter.getX());
+//		System.out.println("centerY: "+ universalCenter.getY());
+//		System.out.println("scaleX: "+ scaleX);
+//		System.out.println("scaleY: "+ scaleY);
+		System.out.println(this.episodeName+"'s bounds:"+vv.getBounds());
 
 
 		

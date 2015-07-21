@@ -104,6 +104,8 @@ public class DiachronicGraphVisualRepresentation {
 		vv = new VisualizationViewer<String, String>(layout);
 		vv.setSize(new Dimension(universalFrame.width+300, universalFrame.height+300));
 		
+		
+		
 
 		// Setup up a new vertex to paint transformer...
 		Transformer<String, Paint> vertexPaint = new Transformer<String, Paint>() {
@@ -123,9 +125,7 @@ public class DiachronicGraphVisualRepresentation {
 		vv.setGraphMouse(graphMouse);
 		
 		
-		System.out.println("Force multiplier: "+((SpringLayout2)layout).getForceMultiplier());
-		System.out.println("Replusion Range: "+((SpringLayout2)layout).getRepulsionRange());
-		System.out.println("Stretch: "+((SpringLayout2)layout).getStretch());
+		System.out.println("Diachronic Graph's Bounds: "+vv.getBounds());
 		
 		
 		//ekteleitai mono an exei anoiksei apo arxeio graphml

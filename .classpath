@@ -50,6 +50,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/Xuggle/xuggle-xuggler-arch-x86_64-w64-mingw32.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/Xuggle/xuggle-xuggler-arch-x86_64-xuggle-darwin11.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/Xuggle/xuggle-xuggler-noarch-5.4.jar"/>
-	<classpathentry kind="lib" path="D:/Users/pvassil/RESEARCH/Github/ParmenidianTruth/libs/ANTLR/antlr-runtime-4.4.jar"/>
+	<classpathentry kind="lib" path="libs/ANTLR/antlr-runtime-4.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
