@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -39,44 +40,21 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 
 public class DiachronicGraphVisualRepresentation {
-//	private Graph<String, String> g;
 	private ArrayList<Table> nodes = new ArrayList<Table>();
 	private ArrayList<ForeignKey> edges= new ArrayList<ForeignKey>();
 	private String inputFolder;
 	private SpringLayout2<String, String> layout;
 	private static DefaultModalGraphMouse<String, Number> graphMouse = new DefaultModalGraphMouse<String, Number>();
-	private VisualizationViewer<String, String> vv;
-//	private double frameX = 0;
-//	private double frameY = 0;
-//	private double scaleX =1;
-//	private double scaleY =1;
+	private  VisualizationViewer<String, String> vv;
 	private Dimension universalFrame;
-//	private Point2D universalCenter;
 	private String targetFolder;
 	private Transformer edgeType;
-	private MutableTransformer universalTransformerForTranslation;
-	private MutableTransformer universalTransformerForScaling;
+	private  MutableTransformer universalTransformerForTranslation;
+	private  MutableTransformer universalTransformerForScaling;
 	private DiachronicGraph parent;
 
 	
-//	//for episodes
-//	public EpisodeGenerator(DatabaseVersion ep, String tf, int et) {		
-//		
-//
-//		edgeType = et == 0 ? new EdgeShape.Line<String, String>(): new EdgeShape.Orthogonal<String, String>();
-//		
-//		
-//
-//		g = new DirectedSparseGraph<String, String>();
-//		episode = ep;
-//		targetFolder = tf+"//screenshots";
-//		new File(targetFolder ).mkdir();
-//		addNodes(episode);
-//		addEdges(episode);
-//
-//
-//
-//	}
+
 	
 	//for universalGraph mode==0 kainourgio layout,mode==1 savedLayout 
 	public DiachronicGraphVisualRepresentation(DiachronicGraph p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String in, String tf, int et,int mode,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY) {		
@@ -85,14 +63,11 @@ public class DiachronicGraphVisualRepresentation {
 		edgeType = et == 0 ? new EdgeShape.Line<String, String>(): new EdgeShape.Orthogonal<String, String>();
 		parent=p;
 
-//		g = new DirectedSparseGraph<String, String>();
 		nodes=tables;
 		edges=fks;
 		inputFolder=in;
 		targetFolder = tf+"//screenshots";
 		new File(targetFolder ).mkdir();
-//		addNodes();
-//		addEdges();
 
 		layout= new SpringLayout2<String, String>(parent.getGraph());
 
@@ -103,7 +78,7 @@ public class DiachronicGraphVisualRepresentation {
 		layout.setSize(universalFrame);
 		vv = new VisualizationViewer<String, String>(layout);
 		vv.setSize(new Dimension(universalFrame.width+300, universalFrame.height+300));
-		
+
 		
 		
 
@@ -125,7 +100,7 @@ public class DiachronicGraphVisualRepresentation {
 		vv.setGraphMouse(graphMouse);
 		
 		
-		System.out.println("Diachronic Graph's Bounds: "+vv.getBounds());
+
 		
 		
 		//ekteleitai mono an exei anoiksei apo arxeio graphml
@@ -226,13 +201,16 @@ public class DiachronicGraphVisualRepresentation {
 
 	public void createEpisode() {
 
-//		System.out.println("size of Diachronic Graph: "+vv.getWidth()+","+vv.getHeight());
-
+		System.out.println("Diachronic Graph's Bounds: "+vv.getBounds());
+		System.out.println("Diachronic Graph's layout's size: "+layout.getSize());
 		
 		File file =new File(targetFolder + "/"+	"Diachronic Graph"  + ".jpg");
 		
 		int width = vv.getWidth();
 		int height = vv.getHeight();
+		
+		System.out.println("Diachronic Graph's vv's width: "+width);
+		System.out.println("Diachronic Graph's vv's height: "+height);
 
 		BufferedImage bi = new BufferedImage(width, height,	BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = bi.createGraphics();
@@ -509,6 +487,14 @@ public class DiachronicGraphVisualRepresentation {
 		vv.setGraphLayout(layout);
 		
 		return vv;
+	}
+	
+	public Rectangle getUniversalBounds(){
+		
+		System.out.println("universalBounds: "+vv.getBounds());
+		
+		return vv.getBounds();
+		
 	}
 
 //	public Dimension getUniversalFrame() {

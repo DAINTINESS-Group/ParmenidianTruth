@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -688,6 +689,14 @@ public class DiachronicGraph {
 	public Component refresh(double forceMult, int repulsionRange) {
 		
 		return this.visualizationOfDiachronicGraph.refresh(forceMult,repulsionRange);
+	}
+	
+	public Rectangle getUniversalBounds(){
+		
+		
+		return visualizationOfDiachronicGraph.getUniversalBounds();
+		
+
 	}
 	
 	

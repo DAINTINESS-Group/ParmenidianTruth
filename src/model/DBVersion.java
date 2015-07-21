@@ -48,7 +48,7 @@ public class DBVersion  {
 	
 	public void visualizeEpisode(DiachronicGraph diachronicGraph){
 		
-		visualizationsOfDBVersion.createEpisodes(diachronicGraph.getDictionaryOfGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
+		visualizationsOfDBVersion.createEpisodes(diachronicGraph.getDictionaryOfGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalBounds(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
 		
 	}
 

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,13 +12,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
-import edu.uci.ics.jung.graph.DirectedSparseGraph;
-import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
@@ -36,6 +36,7 @@ public class DBVersionVisualRepresentation {
 	private String episodeName;
 	private int width,height;
 	private DBVersion parent;
+	private VisualizationViewer<String, String> vv ;
 
 	//for episodes
 	public DBVersionVisualRepresentation (DBVersion p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String versionName/*, String tf, int et*/) {		
@@ -71,16 +72,16 @@ public class DBVersionVisualRepresentation {
 
 	}
 	
-	public void createEpisodes(ConcurrentHashMap<String, Table> graph,Dimension universalFrame,Point2D universalCenter,double frameX,double frameY,double scaleX,double scaleY) {
+	public void createEpisodes(ConcurrentHashMap<String, Table> graph,Dimension universalFrame,Rectangle universalBounds,Point2D universalCenter,double frameX,double frameY,double scaleX,double scaleY) {
 
 		
 		layout = new StaticLayout<String, String>(parent.getGraph());
 
 		layout.setSize(universalFrame);
-		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
+		vv = new VisualizationViewer<String, String>(layout);
 		
 		vv.setSize(new Dimension(width, height));
-		
+		vv.setBounds(universalBounds);
 
 		
 		// Setup up a new vertex to paint transformer...
@@ -127,37 +128,42 @@ public class DBVersionVisualRepresentation {
 		}
 		
 		
-//		System.out.println("frameX: "+ frameX);
-//		System.out.println("frameY: "+ frameY);
-//		System.out.println("centerX: "+ universalCenter.getX());
-//		System.out.println("centerY: "+ universalCenter.getY());
-//		System.out.println("scaleX: "+ scaleX);
-//		System.out.println("scaleY: "+ scaleY);
 		System.out.println(this.episodeName+"'s bounds:"+vv.getBounds());
+		System.out.println(this.episodeName+"'s layout's size: "+layout.getSize());
+
 
 
 		
 
 		vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
 		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.NE);
+		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.N);
 		vv.getRenderContext().setEdgeShapeTransformer(edgeType);
 		vv.setBackground(Color.WHITE);
 
 		
-		writeJPEGImage(new File(targetFolder + "/"+ episodeName + ".jpg"), vv);
+		writeJPEGImage(new File(targetFolder + "/"+ episodeName + ".jpg"));
 		
 //		System.out.println("size of individual episode: "+vv.getWidth()+","+vv.getHeight());
 
 	}
 	
-	protected void writeJPEGImage(File file, VisualizationViewer vv) {
+	protected void writeJPEGImage(File file) {
+		
 		int width = vv.getWidth();
 		int height = vv.getHeight();
+		
+//		System.out.println(this.episodeName+"'s  vv's width: "+width);
+//		System.out.println(this.episodeName+"'s  vv's height: "+height);
 
 		BufferedImage bi = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = bi.createGraphics();
+		
+		JFrame  gamw = new JFrame();
+		gamw.getContentPane().add(vv);
+		gamw.setVisible(true);
+		
 		vv.paint(graphics);
 		graphics.dispose();
 
