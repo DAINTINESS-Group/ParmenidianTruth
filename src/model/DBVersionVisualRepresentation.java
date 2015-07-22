@@ -26,8 +26,6 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 
 public class DBVersionVisualRepresentation {
-//	public Graph<String, String> g;
-//	public DBVersion episode;
 	public Layout<String, String> layout;
 	public String targetFolder;
 	public Transformer edgeType;
@@ -38,23 +36,14 @@ public class DBVersionVisualRepresentation {
 	private DBVersion parent;
 	private VisualizationViewer<String, String> vv ;
 
-	//for episodes
 	public DBVersionVisualRepresentation (DBVersion p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String versionName/*, String tf, int et*/) {		
-		
 
-//		edgeType = et == 0 ? new EdgeShape.Line<String, String>(): new EdgeShape.Orthogonal<String, String>();
 		parent=p;
 		
 		nodes=tables;
 		edges=fks;
 
-//		g = new DirectedSparseGraph<String, String>();
 		episodeName=versionName;
-//		episode = ep;
-//		targetFolder = tf+"//screenshots";
-//		new File(targetFolder ).mkdir();
-//		addNodes();
-//		addEdges();
 
 
 
@@ -72,16 +61,14 @@ public class DBVersionVisualRepresentation {
 
 	}
 	
-	public void createEpisodes(ConcurrentHashMap<String, Table> graph,Dimension universalFrame,Rectangle universalBounds,Point2D universalCenter,double frameX,double frameY,double scaleX,double scaleY) {
+	public void createEpisodes(VisualizationViewer< String, String> avv,ConcurrentHashMap<String, Table> graph,Dimension universalFrame,Rectangle universalBounds,Point2D universalCenter,double frameX,double frameY,double scaleX,double scaleY) {
 
 		
 		layout = new StaticLayout<String, String>(parent.getGraph());
 
 		layout.setSize(universalFrame);
-		vv = new VisualizationViewer<String, String>(layout);
-		
-		vv.setSize(new Dimension(width, height));
-		vv.setBounds(universalBounds);
+		this.vv =  avv;
+		this.vv.setGraphLayout(layout);
 
 		
 		// Setup up a new vertex to paint transformer...
@@ -114,23 +101,6 @@ public class DBVersionVisualRepresentation {
 		
 		
 
-		MutableTransformer layoutTranformer = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
-		
-		if(scaleX<=1 && scaleY<=1){	
-			layoutTranformer.setTranslate(frameX, frameY);
-
-			MutableTransformer scaleTranformer = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
-			scaleTranformer.scale(scaleX, scaleY, universalCenter);
-			
-		}else{
-			layoutTranformer.setScale(scaleX, scaleY, universalCenter);
-			layoutTranformer.setTranslate(frameX, frameY);
-		}
-		
-		
-		System.out.println(this.episodeName+"'s bounds:"+vv.getBounds());
-		System.out.println(this.episodeName+"'s layout's size: "+layout.getSize());
-
 
 
 		
@@ -142,27 +112,19 @@ public class DBVersionVisualRepresentation {
 		vv.setBackground(Color.WHITE);
 
 		
-		writeJPEGImage(new File(targetFolder + "/"+ episodeName + ".jpg"));
+		writeJPEGImage(vv,new File(targetFolder + "/"+ episodeName + ".jpg"));
 		
-//		System.out.println("size of individual episode: "+vv.getWidth()+","+vv.getHeight());
 
 	}
 	
-	protected void writeJPEGImage(File file) {
+	protected void writeJPEGImage(VisualizationViewer< String, String> vv,File file) {
 		
 		int width = vv.getWidth();
 		int height = vv.getHeight();
-		
-//		System.out.println(this.episodeName+"'s  vv's width: "+width);
-//		System.out.println(this.episodeName+"'s  vv's height: "+height);
 
 		BufferedImage bi = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = bi.createGraphics();
-		
-		JFrame  gamw = new JFrame();
-		gamw.getContentPane().add(vv);
-		gamw.setVisible(true);
 		
 		vv.paint(graphics);
 		graphics.dispose();
@@ -175,21 +137,6 @@ public class DBVersionVisualRepresentation {
 		}
 	}
 	
-//	private void addNodes() {
-//
-//		for (int i = 0; i <nodes.size(); ++i)
-//			g.addVertex(nodes.get(i).getKey());
-//
-//	}
-//
-//	private void addEdges() {
-//
-//		for (int i = 0; i <edges.size(); ++i)
-//			g.addEdge(Integer.toString(i), edges.get(i)
-//					.getSourceTable(), edges.get(i)
-//					.getTargetTable());
-//
-//	}
 
 
 }

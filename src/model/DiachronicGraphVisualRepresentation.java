@@ -56,7 +56,6 @@ public class DiachronicGraphVisualRepresentation {
 	
 
 	
-	//for universalGraph mode==0 kainourgio layout,mode==1 savedLayout 
 	public DiachronicGraphVisualRepresentation(DiachronicGraph p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String in, String tf, int et,int mode,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY) {		
 		
 
@@ -100,7 +99,8 @@ public class DiachronicGraphVisualRepresentation {
 		vv.setGraphMouse(graphMouse);
 		
 		
-
+		universalTransformerForTranslation = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
+		universalTransformerForScaling  = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
 		
 		
 		//ekteleitai mono an exei anoiksei apo arxeio graphml
@@ -110,26 +110,21 @@ public class DiachronicGraphVisualRepresentation {
 				layout.lock(nodes.get(i).getKey(), true);
 			}
 			
-			MutableTransformer layoutTranformer = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
 			
 			if(scaleX<=1 && scaleY<=1){	
-				layoutTranformer.setTranslate(frameX, frameY);
+				universalTransformerForTranslation.setTranslate(frameX, frameY);
 
-				MutableTransformer scaleTranformer = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
-				scaleTranformer.scale(scaleX, scaleY, new Point2D.Double(centerX,centerY));
+				universalTransformerForScaling.scale(scaleX, scaleY, new Point2D.Double(centerX,centerY));
 				
 			}else{
-				layoutTranformer.setScale(scaleX, scaleY, new Point2D.Double(centerX,centerY) );
-				layoutTranformer.setTranslate(frameX, frameY);
+				universalTransformerForTranslation.setScale(scaleX, scaleY, new Point2D.Double(centerX,centerY) );
+				universalTransformerForTranslation.setTranslate(frameX, frameY);
 			}
 		}
 
 	}
 
 	public VisualizationViewer show() {
-		
-		universalTransformerForTranslation = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
-		universalTransformerForScaling  = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
 		
 		vv.repaint();
 
@@ -185,10 +180,8 @@ public class DiachronicGraphVisualRepresentation {
 			);
 		
 		
-//		updateFrameInfo();
 		
 		graphWriter.save(parent.getGraph(), out);
-		
 		
 		updateIniFile(projectIni);
 		
@@ -199,18 +192,30 @@ public class DiachronicGraphVisualRepresentation {
 
 
 
-	public void createEpisode() {
+	public void createEpisode(VisualizationViewer< String, String> vv) {
 
-		System.out.println("Diachronic Graph's Bounds: "+vv.getBounds());
-		System.out.println("Diachronic Graph's layout's size: "+layout.getSize());
+		vv.setGraphLayout(layout);
+
+		
+		Transformer<String, Paint> vertexPaint = new Transformer<String, Paint>() {
+			public Paint transform(String i) {
+				return new Color(207, 247, 137, 200);
+			}
+		};
+
+		vv.getRenderContext().setVertexFillPaintTransformer((new PickableVertexPaintTransformer<String>(vv.getPickedVertexState(),new Color(207, 247, 137, 200), Color.yellow)));
+		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.N);
+		vv.setBackground(Color.WHITE);
+		vv.getRenderContext().setEdgeShapeTransformer(edgeType);
+		
+		
 		
 		File file =new File(targetFolder + "/"+	"Diachronic Graph"  + ".jpg");
 		
 		int width = vv.getWidth();
 		int height = vv.getHeight();
 		
-		System.out.println("Diachronic Graph's vv's width: "+width);
-		System.out.println("Diachronic Graph's vv's height: "+height);
 
 		BufferedImage bi = new BufferedImage(width, height,	BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = bi.createGraphics();
@@ -226,60 +231,6 @@ public class DiachronicGraphVisualRepresentation {
 
 	}	
 
-
-
-
-//    public void spreadOut(Component nowShowing) {
-//    	
-//    	PickedState<String> ps =  ps = vv.getPickedVertexState();
-//    	
-//    		Collection<String> picked = ps.getPicked();
-//    		if(picked.size() > 1) {
-//    			Point2D center = new Point2D.Double();
-//    			double x = 0;
-//    			double y = 0;
-//    			for(String vertex : picked) {
-//    				Point2D p = layout.transform(vertex);
-//    				x += p.getX();
-//    				y += p.getY();
-//    			}
-//    			x /= picked.size();
-//    			y /= picked.size();
-//				center.setLocation(x,y);
-//
-//				
-//    			Graph<String, String> subGraph;
-//    			try {
-//    				subGraph = g.getClass().newInstance();
-//    				for(String vertex : picked) {
-//    					subGraph.addVertex(vertex);
-//    					Collection<String> incidentEdges = g.getIncidentEdges(vertex);
-//    					for(String edge : incidentEdges) {
-//    						Pair<String> endpoints = g.getEndpoints(edge);
-//    						if(picked.containsAll(endpoints)) {
-//    							// put this edge into the subgraph
-//    							subGraph.addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
-//    						}
-//    					}
-//    				}
-//
-//    				Layout<String,String> subLayout = getLayoutFor(FRLayout.class, subGraph);
-//    				subLayout.setInitializer(vv.getGraphLayout());
-//    				subLayout.setSize(new Dimension(picked.size()*23,picked.size()*23));
-//    				layout.put(subLayout,center);
-//    				vv.setGraphLayout(layout);
-//    				
-//
-//    			} catch (Exception e) {
-//    				e.printStackTrace();
-//    			}
-//    		}
-//    		
-//    		parent.getContentPane().remove(nowShowing);
-//			parent.setNowShowing(parent.getContentPane().add(vv));				
-//
-//    }
-
 	public VisualizationViewer<String, String> getVv() {
 		return vv;
 	}
@@ -291,40 +242,6 @@ public class DiachronicGraphVisualRepresentation {
 	public void stop(){
 		((SpringLayout2)layout).lock(true);
 	}
-	
-//	public void updateVisualizationViewer(double attraction,double repulsion,Component nowShowing){
-//		
-//		
-//		((FRLayout) layout.getDelegate()).setAttractionMultiplier(attraction);
-//		((FRLayout) layout.getDelegate()).setRepulsionMultiplier(repulsion);
-//
-//		
-//		vv.removeAll();
-//		
-//		
-//		vv.setGraphLayout(layout);
-//		
-//		
-//
-//		
-//		Point2D ivtfrom = vv
-//				.getRenderContext()
-//				.getMultiLayerTransformer()
-//				.inverseTransform(Layer.VIEW,
-//						new Point2D.Double(vv.getWidth(), vv.getHeight()));
-//		MutableTransformer modelTransformer = vv.getRenderContext()
-//				.getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
-//		modelTransformer.scale(1,1, ivtfrom);
-//		
-//
-//		parent.getContentPane().remove(nowShowing);
-//		parent.getContentPane().add(vv);
-//		parent.setNowShowing(parent.getContentPane().add(vv));				
-//
-//
-//		
-//		
-//	}
 	
 	
 	private void updateIniFile(String projectIni) {
@@ -376,64 +293,17 @@ public class DiachronicGraphVisualRepresentation {
 		}
 		
 	}
-	
-//	private void updateFrameInfo() {
-//		
-//		frameX = universalTransformerForTranslation.getTranslateX();
-//		frameY = universalTransformerForTranslation.getTranslateY();
-//		
-//		scaleX = universalTransformerForScaling.getScaleX();
-//		scaleY = universalTransformerForScaling.getScaleY();
-//		
-//		if(scaleX==1 && scaleY ==1){
-//			
-//			scaleX = universalTransformerForTranslation.getScaleX();
-//			scaleY = universalTransformerForTranslation.getScaleY();
-//			
-//		}
-			
-		
-//		universalCenter = vv.getCenter();
-//				.getRenderContext()
-//				.getMultiLayerTransformer()
-//				.inverseTransform(Layer.VIEW,
-//						new Point2D.Double(vv.getWidth(), vv.getHeight()));
-		
-//		
-//		System.out.println(((SpringLayout2)layout).g)
-		
-//	}
-	
-//	private void addNodes() {
-//
-//		for (int i = 0; i < nodes.size(); ++i)
-//			g.addVertex(nodes.get(i).getKey());
-//
-//	}
-//
-//	private void addEdges() {
-//
-//		for (int i = 0; i < edges.size(); ++i)
-//			g.addEdge(Integer.toString(i), edges.get(i)
-//					.getSourceTable(),edges.get(i)
-//					.getTargetTable());
-//
-//	}
 
 	public  double getFrameX() {
-//		return frameX;
 		return universalTransformerForTranslation.getTranslateX();
 		
 	}
 
 	public  double getFrameY() {
-//		return frameY;
 		return universalTransformerForTranslation.getTranslateY();
 	}
 
 	public double getScaleX() {
-//		return scaleX;
-//		return universalTransformerForScaling.getScaleX();
 		
 		if(universalTransformerForScaling.getScaleX()==1 && universalTransformerForScaling.getScaleY()==1 ){
 			return universalTransformerForTranslation.getScaleX();
@@ -444,8 +314,6 @@ public class DiachronicGraphVisualRepresentation {
 	}
 
 	public double getScaleY() {
-//		return scaleY;
-//		return universalTransformerForScaling.getScaleY();
 		
 		if(universalTransformerForScaling.getScaleX()==1 && universalTransformerForScaling.getScaleY()==1 ){
 			return universalTransformerForTranslation.getScaleY();
@@ -482,7 +350,6 @@ public class DiachronicGraphVisualRepresentation {
 		
 		vv.removeAll();
 		
-		System.out.println(forceMult+"||"+repulsionRange);
 		
 		vv.setGraphLayout(layout);
 		
@@ -491,25 +358,10 @@ public class DiachronicGraphVisualRepresentation {
 	
 	public Rectangle getUniversalBounds(){
 		
-		System.out.println("universalBounds: "+vv.getBounds());
 		
 		return vv.getBounds();
 		
 	}
-
-//	public Dimension getUniversalFrame() {
-//		return universalFrame;
-//	}
-//
-//	public Point2D getUniversalCenter() {
-//		return universalCenter;
-//	}
-	
-//    private Layout getLayoutFor(Class layoutClass, Graph graph) throws Exception {
-//    	Object[] args = new Object[]{graph};
-//    	Constructor constructor = layoutClass.getConstructor(new Class[] {Graph.class});
-//    	return  (Layout)constructor.newInstance(args);
-//    }
 
 
 }

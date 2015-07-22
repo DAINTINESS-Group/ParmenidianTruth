@@ -1,5 +1,6 @@
 package gui;
 
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 import gui.MetricsChooser.setMethods;
 
 import java.awt.BorderLayout;
@@ -57,12 +58,7 @@ public class Gui extends JFrame implements setMethods{
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<String> FileNames= new ArrayList<String>();
-//	private ArrayList<DBVersion> lifetime= new ArrayList<DBVersion>();
-//	private ArrayList<Map<String,Integer>> transitions = new ArrayList<Map<String,Integer>>();
-//	private GraphmlLoader savedChanges;
 	private String workspace;
-//	private EpisodeGenerator eg;
-//	private DiachronicGraph wholeGraph; 
 	private final JToolBar toolBar = new JToolBar();
 	private JToggleButton mvNode = new JToggleButton("");
 	private JToggleButton mvGraph = new JToggleButton("");
@@ -73,7 +69,6 @@ public class Gui extends JFrame implements setMethods{
 	private String targetFolder;
 	private EdgeChooser edgeChooser;
 	public static  Preferences prefs;
-//	private int width,height;
 	private String projectName;
 	private JFileChooser fileChooser = new JFileChooser();
 	private String projectIni;
@@ -81,8 +76,6 @@ public class Gui extends JFrame implements setMethods{
 	private JRadioButton radio2 = new JRadioButton("Move Graph");
 	private JToolBar toolBar_1 = new JToolBar();
 	private JPopupMenu pop = new JPopupMenu();
-//	private Component nowShowing;
-//	private ModelManager manager;
 	private ParmenidianTruthManager manager= new ParmenidianTruthManager();
 	private boolean degree = false;
 	private boolean inDegree = false;
@@ -969,8 +962,6 @@ public class Gui extends JFrame implements setMethods{
 				visualize(false);
 
 				loadImagesForPptx(manager.getTargetFolder());
-//				loadImagesForPptx(eg.getTargetFolder());
-//				loadImagesForPptx(wholeGraph.getTargetFolder());
 				File pptx = createPowerPointPresentation();
 				
 				if(array[1])
@@ -997,18 +988,9 @@ public class Gui extends JFrame implements setMethods{
 		
 		try {
 			
-//			wholeGraph.saveVertexCoordinates(projectIni);
-//			wholeGraph.createEpisode();
-//			
-//			
-//			for(int i=0;i<lifetime.size();++i){
-//				DBVersionVisualRepresentation episode = new DBVersionVisualRepresentation(lifetime.get(i),targetFolder,edgeChooser.getEdgeType());
-//				episode.createEpisodes(wholeGraph);
-//				episode=null;
-//			}
 			
-			manager.visualize(projectIni, targetFolder, edgeChooser.getEdgeType());
 			
+			manager.visualize((VisualizationViewer< String, String>)getContentPane().getComponent(1),projectIni, targetFolder, edgeChooser.getEdgeType());
 			
 			if(atomically)
 				JOptionPane.showMessageDialog(Gui.this,"Images of each version were created successfully");
@@ -1176,7 +1158,7 @@ public class Gui extends JFrame implements setMethods{
 					try {
 					    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 					        if ("Nimbus".equals(info.getName())) {
-//						  UIManager.setLookAndFeel(info.getClassName());
+						  UIManager.setLookAndFeel(info.getClassName());
 						  break;
 					        }
 					    }

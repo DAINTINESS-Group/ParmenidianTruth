@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
 import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 
 
@@ -46,9 +47,9 @@ public class DBVersion  {
 		
 	}
 	
-	public void visualizeEpisode(DiachronicGraph diachronicGraph){
+	public void visualizeEpisode(VisualizationViewer< String, String> vv,DiachronicGraph diachronicGraph){
 		
-		visualizationsOfDBVersion.createEpisodes(diachronicGraph.getDictionaryOfGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalBounds(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
+		visualizationsOfDBVersion.createEpisodes(vv,diachronicGraph.getDictionaryOfGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalBounds(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
 		
 	}
 

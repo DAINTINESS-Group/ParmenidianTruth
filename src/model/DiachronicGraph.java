@@ -621,23 +621,20 @@ public class DiachronicGraph {
 		return visualizationOfDiachronicGraph.getTargetFolder();
 	}
 	
-	public void visualizeDiachronicGraph(){
+	public void visualizeDiachronicGraph(VisualizationViewer< String, String> vv){
 		
-		visualizationOfDiachronicGraph.createEpisode();
+		visualizationOfDiachronicGraph.createEpisode(vv);
 		
 	}
 	
-	public void visualizeIndividualDBVersions(String targetFolder,int edgeType){
+	public void visualizeIndividualDBVersions(VisualizationViewer< String, String> vv,String targetFolder,int edgeType){
 		
 		int width = visualizationOfDiachronicGraph.getWidthOfVisualizationViewer();
 		int height = visualizationOfDiachronicGraph.getHeightOfVisualizationViewer();
 		
 		for(int i=0;i<versions.size();++i){
-//			DBVersionVisualRepresentation episode = new DBVersionVisualRepresentation(versions.get(i),targetFolder,edgeType);
-//			episode.createEpisodes(this);
-//			episode=null;
 			versions.get(i).setDetails(targetFolder, edgeType,width,height);
-			versions.get(i).visualizeEpisode(this);
+			versions.get(i).visualizeEpisode(vv,this);
 		}
 		
 	}

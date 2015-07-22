@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+
 public class ParmenidianTruthManager {
 	
 	private ModelManager modelManager;
@@ -54,9 +56,9 @@ public class ParmenidianTruthManager {
 		
 	}
 	
-	public void visualize(String projectIni,String targetFolder,int edgeType) throws IOException {
+	public void visualize(VisualizationViewer< String, String> vv,String projectIni,String targetFolder,int edgeType) throws IOException {
 		
-		modelManager.visualize(projectIni, targetFolder, edgeType);
+		modelManager.visualize(vv,projectIni, targetFolder, edgeType);
 	}
 	
 	public Component loadProject(String sql,String xml,String graphml, double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY,String targetFolder,int edgeType) throws Exception{

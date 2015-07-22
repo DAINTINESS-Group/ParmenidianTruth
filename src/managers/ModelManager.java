@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 import model.DiachronicGraph;
 
 public class ModelManager {
@@ -52,43 +53,21 @@ public class ModelManager {
 	}
 	
 	
-	public void visualize(String projectIni,String targetFolder,int edgeType) throws IOException {
+	public void visualize(VisualizationViewer< String, String> vv,String projectIni,String targetFolder,int edgeType) throws IOException {
 		
 
 			
 		diachronicGraph.saveVertexCoordinates(projectIni);
-		diachronicGraph.visualizeDiachronicGraph();
-		diachronicGraph.visualizeIndividualDBVersions(targetFolder,edgeType);
+		diachronicGraph.visualizeIndividualDBVersions(vv,targetFolder,edgeType);
+		diachronicGraph.visualizeDiachronicGraph(vv);
 		
-		
-//		for(int i=0;i<lifetime.size();++i){
-//			DBVersionVisualRepresentation episode = new DBVersionVisualRepresentation(lifetime.get(i),targetFolder,edgeType);
-//			episode.createEpisodes(diachronicGraph);
-//			episode=null;
-//		}
+
 
 	}
 	
 	
 	public Component loadProject(String sql,String xml,String graphml, double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY,String targetFolder,int edgeType) throws Exception{
 		
-//		Parser myParser;
-//		GraphmlLoader savedChanges;
-//
-//		myParser = new Parser(sql,xml,graphml);
-//		lifetime=myParser.getLifetime();
-//		transitions=myParser.getTransitions();
-//		updateLifetimeWithTransitions();
-//		
-////		an uparxei graphml ftiakse ton universal sumfwna me ton 
-////		graph alliws ftiakston me ton default tropo
-//		if(myParser.hasGraphml()){
-//			savedChanges=myParser.getGraphmlLoader();
-//			createDiachronicGraph(1,sql,frameX,frameY,scaleX,scaleY,centerX,centerY,targetFolder,edgeType,savedChanges);
-//		}else{
-//			createDiachronicGraph(0,sql,frameX,frameY,scaleX,scaleY,centerX,centerY,targetFolder,edgeType);
-//		}
-//		
 		diachronicGraph = new DiachronicGraph(sql,xml,graphml,targetFolder,edgeType,frameX,frameY,scaleX,scaleY,centerX,centerY);
 		
 		return diachronicGraph.show();
