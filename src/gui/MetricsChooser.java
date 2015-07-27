@@ -117,6 +117,7 @@ public class MetricsChooser extends JDialog {
 		getContentPane().add(separator_2);
 		
 		final JCheckBox graphDiameter = new JCheckBox("Graph Diameter");
+		graphDiameter.setEnabled(false);
 		graphDiameter.setBounds(20, 267, 125, 23);
 		getContentPane().add(graphDiameter);
 		
@@ -133,9 +134,9 @@ public class MetricsChooser extends JDialog {
 		chckbxNewCheckBox_13.setBounds(20, 293, 97, 23);
 		getContentPane().add(chckbxNewCheckBox_13);
 		
-		JCheckBox chckbxNewCheckBox_14 = new JCheckBox("New check box");
+		JCheckBox chckbxNewCheckBox_14 = new JCheckBox("# of Connected Components");
 		chckbxNewCheckBox_14.setEnabled(false);
-		chckbxNewCheckBox_14.setBounds(168, 293, 97, 23);
+		chckbxNewCheckBox_14.setBounds(168, 293, 256, 23);
 		getContentPane().add(chckbxNewCheckBox_14);
 		
 		JButton btnNewButton = new JButton("Calculate");

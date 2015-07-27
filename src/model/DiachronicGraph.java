@@ -87,7 +87,7 @@ public class DiachronicGraph {
 			report[0][i+2]=versions.get(i).getVersion()+",";
 		
 //		create 1st column		
-		report[1][0]="Graph Diameter,";
+		report[1][0]="# of Edges ,";
 		
 //		fill in the rest
 		for(int i=1;i<columns;i++)
@@ -128,7 +128,7 @@ public class DiachronicGraph {
 			report[0][i+2]=versions.get(i).getVersion()+",";
 		
 //		create 1st column		
-		report[1][0]="Graph Diameter,";
+		report[1][0]="# of Vertices,";
 		
 //		fill in the rest
 		for(int i=1;i<columns;i++)

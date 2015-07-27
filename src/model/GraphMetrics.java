@@ -31,15 +31,6 @@ public class GraphMetrics {
 
 	}
 
-//	private void addEdges(ArrayList<ForeignKey> edges) {
-//
-//		for (int i = 0; i <edges.size(); ++i)
-//			graph.addEdge(Integer.toString(i), edges.get(i)
-//					.getSourceTable(), edges.get(i)
-//					.getTargetTable());
-//
-//	}
-	
 	private void addEdges(ArrayList<ForeignKey> edges) {
 
 		for (int i = 0; i <edges.size(); ++i)
@@ -59,11 +50,6 @@ public class GraphMetrics {
 	
 		return ds.getVertexScore(vertex)+",";
 		
-//		used for debuggging
-//		return vertex+":"+ds.getVertexScore(vertex)+",";
-
-
-		
 	}
 	
 	
@@ -78,10 +64,6 @@ public class GraphMetrics {
 		
 		return ranker.getVertexRankScore(vertex)+",";
 		
-//		used for debuggging
-//		return vertex+":"+bc.getVertexScore(vertex)+",";
-
-		
 	}
 	
 	public String generateEdgeBetweenness(String edge){
@@ -94,9 +76,6 @@ public class GraphMetrics {
 		 ranker.evaluate();
 		
 		return ranker.getEdgeRankScore(edge)+",";
-		
-//		used for debuggging
-//		return edge+":"+bc.getEdgeScore(edge)+",";
 		
 		
 	}
