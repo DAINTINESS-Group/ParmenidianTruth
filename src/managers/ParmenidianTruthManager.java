@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import gui.Metrics;
 
 public class ParmenidianTruthManager {
 	
@@ -69,102 +70,50 @@ public class ParmenidianTruthManager {
 	
 	public void createTransitions(File selectedFile) throws Exception{
 		
-//		HecateScript hecate= new HecateScript(selectedFile);
-//		hecate.createTransitions();		
 		exportManager.createTransitions(selectedFile);
 		
 	}
 			
 	public void createPowerPointPresentation(ArrayList<String> FileNames,String targetFolder,String projectName) throws FileNotFoundException, IOException{
 		
-		
-//		PowerPointGenerator pptx=new PowerPointGenerator(targetFolder,projectName);			
-//		pptx.createPresentation(FileNames);
 		exportManager.createPowerPointPresentation(FileNames, targetFolder, projectName);
 		
 	}
 	
 	public void createVideo(File file) throws IOException{
 		
-//		VideoGenerator vg = new VideoGenerator(file);
-//		vg.exportToVideo();
 		exportManager.createVideo(file);
 	}
 	
-//	public void generateVertexDegreeReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateVertexDegreeReport(targetFolder);
-//		
-//	}
-//	
-//	public void generateVertexInDegreeReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateVertexInDegreeReport(targetFolder);
-//		
-//	}
-//	
-//	public void generateVertexOutDegreeReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateVertexOutDegreeReport(targetFolder);
-//		
-//	}
-//	
-//	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateVertexBetweennessReport( targetFolder);
-//		
-//	}
-//	
-//	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateEdgeBetweennessReport(targetFolder);
-//		
-//	}
-//	
-//	public void generateGraphDiameterReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateGraphDiameterReport(targetFolder);
-//		
-//	}
-//	
-//	public void generateVertexCountReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateVertexCountReport(targetFolder);
-//		
-//	}
-//	
-//	public void generateEdgeCountReport(String targetFolder) throws FileNotFoundException{
-//		
-//		modelManager.generateEdgeCountReport(targetFolder);
-//		
-//	}
+
 
 	public Component refresh(double forceMult, int repulsionRange) {
 		
 		return modelManager.refresh(forceMult,repulsionRange);
 	}
 
-	public void calculateMetrics(String targetFolder,boolean degree, boolean inDegree,boolean outDegree, boolean vertexBetweeness,boolean edgeBetweeness, boolean graphVertices, boolean graphEdges,boolean graphDiameter) throws FileNotFoundException {
+	public void calculateMetrics(String targetFolder,ArrayList<Metrics> metrics) throws FileNotFoundException {
 		
-		if(degree)
-			modelManager.generateVertexDegreeReport(targetFolder);
-		if(inDegree)
-			modelManager.generateVertexInDegreeReport(targetFolder);
-		if(outDegree)
-			modelManager.generateVertexOutDegreeReport(targetFolder);
-		if(vertexBetweeness)
-			modelManager.generateVertexBetweennessReport( targetFolder);
-		if(edgeBetweeness)
-			modelManager.generateEdgeBetweennessReport(targetFolder);
-		if(graphVertices)
-			modelManager.generateVertexCountReport(targetFolder);
-		if(graphEdges)
-			modelManager.generateEdgeCountReport(targetFolder);
-		if(graphDiameter)
-			modelManager.generateGraphDiameterReport(targetFolder);
-
-
-		
+		for(int i=0;i<metrics.size();i++)
+			if(metrics.get(i)==Metrics.VERTEXINDEGREE)
+				modelManager.generateVertexInDegreeReport(targetFolder);
+			else if (metrics.get(i)==Metrics.VERTEXOUTDEGREE)
+				modelManager.generateVertexOutDegreeReport(targetFolder);
+			else if (metrics.get(i)==Metrics.VERTEXDEGREE)
+				modelManager.generateVertexDegreeReport(targetFolder);
+			else if (metrics.get(i)==Metrics.VERTEXBETWEENNESS)
+				modelManager.generateVertexBetweennessReport( targetFolder);
+			else if (metrics.get(i)==Metrics.EDGEBETWEENNESS)
+				modelManager.generateEdgeBetweennessReport(targetFolder);
+			else if (metrics.get(i)==Metrics.GRAPHDIAMETER)
+				modelManager.generateGraphDiameterReport(targetFolder);
+			else if (metrics.get(i)==Metrics.NUMBEROFVERTICES)
+				modelManager.generateVertexCountReport(targetFolder);
+			else if (metrics.get(i)==Metrics.NUMBEROFEDGES)
+				modelManager.generateEdgeCountReport(targetFolder);
+			else if (metrics.get(i)==Metrics.NUMBEROFCONNECTEDCOMPONENTS)
+				modelManager.generateConnectedComponentsCountReport(targetFolder);
+			
 	}
 	
 	

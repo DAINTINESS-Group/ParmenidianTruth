@@ -1,7 +1,6 @@
 package gui;
 
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import gui.MetricsChooser.setMethods;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -53,7 +52,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import managers.ParmenidianTruthManager;
 
 
-public class Gui extends JFrame implements setMethods{
+public class Gui extends JFrame {
 	
 
 	private static final long serialVersionUID = 1L;
@@ -76,16 +75,7 @@ public class Gui extends JFrame implements setMethods{
 	private JRadioButton radio2 = new JRadioButton("Move Graph");
 	private JToolBar toolBar_1 = new JToolBar();
 	private JPopupMenu pop = new JPopupMenu();
-	private ParmenidianTruthManager manager= new ParmenidianTruthManager();
-	private boolean degree = false;
-	private boolean inDegree = false;
-	private boolean outDegree = false;
-	private boolean vertexBetweeness = false;
-	private boolean edgeBetweeness= false;
-	private boolean graphVertices= false;
-	private boolean graphEdges= false;
-	private boolean graphDiameter= false;
-	
+	private ParmenidianTruthManager manager= new ParmenidianTruthManager();	
 	
 	
 	public Gui() {
@@ -1221,51 +1211,12 @@ public class Gui extends JFrame implements setMethods{
 		return manager;
 	}
 
-	@Override
-	public void setDegree(boolean b) {
-		this.degree=b;
-	}
 
-	@Override
-	public void setInDegree(boolean b) {
-		this.inDegree=b;
-	}
 
-	@Override
-	public void setOutDegree(boolean b) {
-		this.outDegree=b;
-	}
-
-	@Override
-	public void setVertexBetweeness(boolean b) {
-		this.vertexBetweeness=b;
-	}
-
-	@Override
-	public void setEdgeBetweeness(boolean b) {
-		this.edgeBetweeness=b;
-	}
-
-	@Override
-	public void setGraphVertices(boolean b) {
-		this.graphVertices=b;
-	}
-
-	@Override
-	public void setGraphEdges(boolean b) {
-		this.graphEdges=b;
-	}
-
-	@Override
-	public void setGraphDiameter(boolean b) {
-		this.graphDiameter=b;
-	}
-
-	@Override
-	public void calculateMetrics() {
+	public void calculateMetrics(ArrayList<Metrics> metrics) {
 		
 		try {
-			manager.calculateMetrics(targetFolder,degree,inDegree,outDegree,vertexBetweeness,edgeBetweeness,graphVertices,graphEdges,graphDiameter);
+			manager.calculateMetrics(targetFolder,metrics);
 			JOptionPane.showMessageDialog(Gui.this,"Metrics were created successfully");
 
 		} catch (FileNotFoundException e) {

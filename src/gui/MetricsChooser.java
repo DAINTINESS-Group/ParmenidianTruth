@@ -1,34 +1,28 @@
 package gui;
 
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-
-import java.awt.Font;
-
 import javax.swing.JSeparator;
-import javax.swing.JCheckBox;
-import javax.swing.JButton;
-
-import java.awt.Dimension;
-import java.awt.Dialog.ModalityType;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MetricsChooser extends JDialog {
+	private JCheckBox numberOfConnectedComponents;
+	private JCheckBox numberOfEdges;
+	private JCheckBox graphDiameter;
+	private JCheckBox numberOfVertices;
+	private JCheckBox edgeBetweenness;
+	private JCheckBox vertexBetweenness;
+	private JCheckBox outDegree;
+	private JCheckBox inDegree;
+	private JCheckBox vertexDegree;
 	
-	public interface setMethods{
-		
-		public void setDegree(boolean b);
-		public void setInDegree(boolean b);
-		public void setOutDegree(boolean b);
-		public void setVertexBetweeness(boolean b);
-		public void setEdgeBetweeness(boolean b);
-		public void setGraphVertices(boolean b);
-		public void setGraphEdges(boolean b);
-		public void setGraphDiameter(boolean b);
-		public void calculateMetrics();
-		
-	}
 	
 	
 	public MetricsChooser(final Gui parent) {
@@ -53,19 +47,19 @@ public class MetricsChooser extends JDialog {
 		lblNewLabel_1.setBounds(20, 35, 404, 14);
 		getContentPane().add(lblNewLabel_1);
 		
-		final JCheckBox inDegree = new JCheckBox("Vertex InDegree");
+		inDegree = new JCheckBox("Vertex InDegree");
 		inDegree.setBounds(20, 67, 125, 23);
 		getContentPane().add(inDegree);
 		
-		final JCheckBox outDegree = new JCheckBox("Vertex OutDegree");
+		outDegree = new JCheckBox("Vertex OutDegree");
 		outDegree.setBounds(168, 67, 157, 23);
 		getContentPane().add(outDegree);
 		
-		final JCheckBox vertexDegree = new JCheckBox("Vertex Degree");
+		vertexDegree = new JCheckBox("Vertex Degree");
 		vertexDegree.setBounds(327, 67, 111, 23);
 		getContentPane().add(vertexDegree);
 		
-		final JCheckBox vertexBetweenness = new JCheckBox("Vertex Betweenness");
+		vertexBetweenness = new JCheckBox("Vertex Betweenness");
 		vertexBetweenness.setBounds(20, 93, 146, 23);
 		getContentPane().add(vertexBetweenness);
 		
@@ -83,7 +77,7 @@ public class MetricsChooser extends JDialog {
 		separator_1.setBounds(20, 155, 404, 2);
 		getContentPane().add(separator_1);
 		
-		final JCheckBox edgeBetweenness = new JCheckBox("Edge Betweenness");
+		edgeBetweenness = new JCheckBox("Edge Betweenness");
 		edgeBetweenness.setBounds(20, 164, 146, 23);
 		getContentPane().add(edgeBetweenness);
 		
@@ -116,45 +110,58 @@ public class MetricsChooser extends JDialog {
 		separator_2.setBounds(20, 252, 404, 2);
 		getContentPane().add(separator_2);
 		
-		final JCheckBox graphDiameter = new JCheckBox("Graph Diameter");
-		graphDiameter.setEnabled(false);
+		graphDiameter = new JCheckBox("Graph Diameter");
+		graphDiameter.setEnabled(true);
 		graphDiameter.setBounds(20, 267, 125, 23);
 		getContentPane().add(graphDiameter);
 		
-		final JCheckBox graphVertices = new JCheckBox("Graph Vertices");
-		graphVertices.setBounds(168, 267, 125, 23);
-		getContentPane().add(graphVertices);
+		numberOfVertices = new JCheckBox("# of Vertices");
+		numberOfVertices.setBounds(168, 267, 125, 23);
+		getContentPane().add(numberOfVertices);
 		
-		final JCheckBox graphEdges = new JCheckBox("Graph Edges");
-		graphEdges.setBounds(327, 267, 97, 23);
-		getContentPane().add(graphEdges);
+		numberOfEdges = new JCheckBox("# of Edges");
+		numberOfEdges.setBounds(327, 267, 97, 23);
+		getContentPane().add(numberOfEdges);
 		
 		JCheckBox chckbxNewCheckBox_13 = new JCheckBox("New check box");
 		chckbxNewCheckBox_13.setEnabled(false);
-		chckbxNewCheckBox_13.setBounds(20, 293, 97, 23);
+		chckbxNewCheckBox_13.setBounds(327, 297, 97, 23);
 		getContentPane().add(chckbxNewCheckBox_13);
 		
-		JCheckBox chckbxNewCheckBox_14 = new JCheckBox("# of Connected Components");
-		chckbxNewCheckBox_14.setEnabled(false);
-		chckbxNewCheckBox_14.setBounds(168, 293, 256, 23);
-		getContentPane().add(chckbxNewCheckBox_14);
+		numberOfConnectedComponents = new JCheckBox("# of Connected Components");
+		numberOfConnectedComponents.setEnabled(true);
+		numberOfConnectedComponents.setBounds(20, 297, 245, 23);
+		getContentPane().add(numberOfConnectedComponents);
 		
 		JButton btnNewButton = new JButton("Calculate");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				dispose();
-				parent.setDegree(vertexDegree.isSelected());
-				parent.setInDegree(inDegree.isSelected());
-				parent.setOutDegree(outDegree.isSelected());
-				parent.setVertexBetweeness(vertexBetweenness.isSelected());
-				parent.setEdgeBetweeness(edgeBetweenness.isSelected());
-				parent.setGraphVertices(graphVertices.isSelected());
-				parent.setGraphEdges(graphEdges.isSelected());
-				parent.setGraphDiameter(graphDiameter.isSelected());
-				parent.calculateMetrics();
+				ArrayList<Metrics> metrics = new ArrayList<Metrics>();
 				
+				if(inDegree.isSelected())
+					metrics.add(Metrics.VERTEXINDEGREE);
+				if(outDegree.isSelected())
+					metrics.add(Metrics.VERTEXOUTDEGREE);
+				if(vertexDegree.isSelected())
+					metrics.add(Metrics.VERTEXDEGREE);
+				if(vertexBetweenness.isSelected())
+					metrics.add(Metrics.VERTEXBETWEENNESS);
+				if(edgeBetweenness.isSelected())
+					metrics.add(Metrics.EDGEBETWEENNESS);
+				if(graphDiameter.isSelected())
+					metrics.add(Metrics.GRAPHDIAMETER);
+				if(numberOfVertices.isSelected())
+					metrics.add(Metrics.NUMBEROFVERTICES);
+				if(numberOfEdges.isSelected())
+					metrics.add(Metrics.NUMBEROFEDGES);
+				if(numberOfConnectedComponents.isSelected())
+					metrics.add(Metrics.NUMBEROFCONNECTEDCOMPONENTS);
+				
+				dispose();
+
+				parent.calculateMetrics(metrics);
 				
 			}
 		});

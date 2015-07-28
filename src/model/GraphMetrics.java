@@ -1,15 +1,23 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
+import org.apache.commons.collections15.Factory;
+
+import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
+import edu.uci.ics.jung.algorithms.filters.FilterUtils;
 import edu.uci.ics.jung.algorithms.importance.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
 import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
+import edu.uci.ics.jung.algorithms.transformation.DirectionTransformer;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
 public class GraphMetrics {
 	private Graph<String, String> graph;
+
 	
 	public GraphMetrics(ArrayList<Table> nodes, ArrayList<ForeignKey> edges){
 		
@@ -94,15 +102,6 @@ public class GraphMetrics {
 		return graph.outDegree(vertex)+",";
 	}
 	
-	public String getGraphDiameter(){
-		
-		DistanceStatistics ds = new DistanceStatistics();
-		
-		return ds.diameter(graph)+",";
-		
-		
-	}
-	
 	public String getVertexCount(){
 		
 		
@@ -116,6 +115,59 @@ public class GraphMetrics {
 		
 		return graph.getEdgeCount()+",";
 		
+		
+	}
+	
+	public String getGraphDiameter(){
+		
+		
+		WeakComponentClusterer<String, String> wcc = new WeakComponentClusterer<String, String>();
+		Collection<Graph<String,String>> ccs = FilterUtils.createAllInducedSubgraphs(wcc.transform(graph),graph);
+		
+		DistanceStatistics ds = new DistanceStatistics();
+
+		
+		Graph<String,String> giantConnectedComponent = null;
+		int max=0;
+		
+		for(Graph<String,String> g: ccs){
+			if(g.getVertexCount()>max){
+				max=g.getVertexCount();
+				giantConnectedComponent=g;
+				
+			}
+			
+		}
+		
+		DirectionTransformer directionTransformer = new DirectionTransformer();
+		Factory graphFactoryUndirected = UndirectedSparseGraph.getFactory();
+        Factory edgeFactoryUndirected = new Factory<Integer>() {
+    		Integer edgeCountUndirected=0;
+
+        	public Integer create() { 
+				return edgeCountUndirected++; 
+        	} 
+        }; 
+		
+		return ds.diameter(directionTransformer.toUndirected(giantConnectedComponent,graphFactoryUndirected,edgeFactoryUndirected,true))+",";
+		
+		
+	}
+	
+	
+	public String getNumberOfConnectedComponents(){
+
+		WeakComponentClusterer<String, String> wcc = new WeakComponentClusterer<String, String>();
+		Collection<Graph<String,String>> ccs = FilterUtils.createAllInducedSubgraphs(wcc.transform(graph),graph);
+		
+		int numberOfConnectedComponents=0;
+
+		for(Graph<String,String> g: ccs){
+			if(g.getVertexCount()>1)
+				numberOfConnectedComponents++;			
+		}
+		
+		return numberOfConnectedComponents + ",";
 		
 	}
 

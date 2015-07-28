@@ -222,6 +222,12 @@ public class DBVersion  {
 		
 	}
 	
+	public String generateConnectedComponentsCountReport(){
+		
+		return graphMetricsOfDBVersion.getNumberOfConnectedComponents();
+		
+	}
+	
 	
 
 
