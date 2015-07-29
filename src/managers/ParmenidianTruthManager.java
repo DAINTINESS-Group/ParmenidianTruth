@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import gui.Metrics;
+import gui.Metric_Enums;
 
 public class ParmenidianTruthManager {
 	
@@ -92,27 +92,32 @@ public class ParmenidianTruthManager {
 		return modelManager.refresh(forceMult,repulsionRange);
 	}
 
-	public void calculateMetrics(String targetFolder,ArrayList<Metrics> metrics) throws FileNotFoundException {
+	public void calculateMetrics(String targetFolder,ArrayList<Metric_Enums> metrics) throws FileNotFoundException {
+		
 		
 		for(int i=0;i<metrics.size();i++)
-			if(metrics.get(i)==Metrics.VERTEXINDEGREE)
+			if(metrics.get(i)==Metric_Enums.VERTEX_IN_DEGREE)
 				modelManager.generateVertexInDegreeReport(targetFolder);
-			else if (metrics.get(i)==Metrics.VERTEXOUTDEGREE)
+			else if (metrics.get(i)==Metric_Enums.VERTEX_OUT_DEGREE)
 				modelManager.generateVertexOutDegreeReport(targetFolder);
-			else if (metrics.get(i)==Metrics.VERTEXDEGREE)
+			else if (metrics.get(i)==Metric_Enums.VERTEX_DEGREE)
 				modelManager.generateVertexDegreeReport(targetFolder);
-			else if (metrics.get(i)==Metrics.VERTEXBETWEENNESS)
+			else if (metrics.get(i)==Metric_Enums.VERTEX_BETWEENNESS)
 				modelManager.generateVertexBetweennessReport( targetFolder);
-			else if (metrics.get(i)==Metrics.EDGEBETWEENNESS)
+			else if (metrics.get(i)==Metric_Enums.CLUSTERING_COEFFICIENT)
+				modelManager.generateClusteringCoefficientReport( targetFolder);
+			else if (metrics.get(i)==Metric_Enums.EDGE_BETWEENNESS)
 				modelManager.generateEdgeBetweennessReport(targetFolder);
-			else if (metrics.get(i)==Metrics.GRAPHDIAMETER)
+			else if (metrics.get(i)==Metric_Enums.GRAPH_DIAMETER)
 				modelManager.generateGraphDiameterReport(targetFolder);
-			else if (metrics.get(i)==Metrics.NUMBEROFVERTICES)
+			else if (metrics.get(i)==Metric_Enums.NUMBER_OF_VERTICES)
 				modelManager.generateVertexCountReport(targetFolder);
-			else if (metrics.get(i)==Metrics.NUMBEROFEDGES)
+			else if (metrics.get(i)==Metric_Enums.NUMBER_OF_EDGES)
 				modelManager.generateEdgeCountReport(targetFolder);
-			else if (metrics.get(i)==Metrics.NUMBEROFCONNECTEDCOMPONENTS)
+			else if (metrics.get(i)==Metric_Enums.NUMBER_OF_CONNECTED_COMPONENTS)
 				modelManager.generateConnectedComponentsCountReport(targetFolder);
+		
+		
 			
 	}
 	

@@ -1213,7 +1213,7 @@ public class Gui extends JFrame {
 
 
 
-	public void calculateMetrics(ArrayList<Metrics> metrics) {
+	public void calculateMetrics(ArrayList<Metric_Enums> metrics) {
 		
 		try {
 			manager.calculateMetrics(targetFolder,metrics);

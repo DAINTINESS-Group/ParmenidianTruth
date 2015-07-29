@@ -68,6 +68,78 @@ public class DiachronicGraph {
 		
 	}
 	
+	public void generateClusteringCoefficientReport(String targetFolder) throws FileNotFoundException{
+		
+//		System.out.print("Diachronic Graph: ");
+//		graphMetricsOfDiachronicGraph.getClusteringCoefficient();
+//		
+//		for(int i=0;i<versions.size();i++){
+//			System.out.print(versions.get(i).getVersion()+" ");
+//			versions.get(i).getClusteringCoefficient();
+//		}
+		
+		File reportFile = new File(targetFolder+"\\Report of clustering coefficient.csv");
+		
+		Map<String,Double> collection=null;
+		
+		
+		PrintWriter writer = new PrintWriter(reportFile);
+		
+		int lines = vertices.size()+1;
+		int columns =versions.size()+2;
+		
+		String[][] report= new String[lines][columns];
+		
+//		create 1st line
+		report[0][0]=" ,";
+		report[0][1]="Diachronic Graph,";		
+		for(int i=0;i<versions.size();i++)			
+			report[0][i+2]=versions.get(i).getVersion()+",";
+		
+//		create 1st column		
+		for(int i=0;i<vertices.size();i++)
+			report[i+1][0]=vertices.get(i).getKey()+",";		
+		
+//		fill in the rest
+		for(int i=1;i<columns;i++){
+			for(int j=1;j<lines;j++)
+				if(i==1){
+					if(collection==null)
+						collection = graphMetricsOfDiachronicGraph.getClusteringCoefficient();
+					
+					String candidate =report[j][0].replace(",", "");
+					String clusteringCoefficientScore=String.valueOf(collection.get(candidate));
+					if(clusteringCoefficientScore.equals("null"))
+						clusteringCoefficientScore="*";
+					report[j][i] =  clusteringCoefficientScore +",";
+					
+				}else{
+					if(collection==null)
+						collection = versions.get(i-2).getClusteringCoefficient();
+					
+					String candidate =report[j][0].replace(",", "");
+					String clusteringCoefficientScore=String.valueOf(collection.get(candidate));
+					if(clusteringCoefficientScore.equals("null"))
+						clusteringCoefficientScore="*";
+					report[j][i] =  clusteringCoefficientScore +",";
+				}
+			collection.clear();
+			collection=null;
+		}
+		
+		
+//		print array into file
+		for(int i=0;i<lines;i++){
+			for(int j=0;j<columns;j++)
+				writer.print(report[i][j]);
+			writer.print("\n");
+		}
+				
+		writer.close();
+
+		
+	}
+	
 	public void generateConnectedComponentsCountReport(String targetFolder) throws FileNotFoundException{
 		
 		File reportFile = new File(targetFolder+"\\Report of graph's connected-components.csv");
@@ -414,8 +486,6 @@ public class DiachronicGraph {
 		
 		File vertexReport = new File(targetFolder+"\\Report of vertex degree.csv");
 		
-		//assert vertexReport.exists(); 
-		
 		PrintWriter writer = new PrintWriter(vertexReport);
 		
 		int lines = vertices.size()+1;
@@ -515,25 +585,6 @@ public class DiachronicGraph {
 				
 		}
 	}
-	
-//	public DiachronicGraph(ArrayList<DBVersion> vrs,String sql, String targetFolder, int et,int mode,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY) {
-//		
-//		versions = vrs;
-//		createDiachronicGraph();
-//		
-//		visualizationOfDiachronicGraph = new DiachronicGraphVisualRepresentation(vertices,edges,sql,targetFolder,et,mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
-//		
-//	}
-//	
-//	public DiachronicGraph(GraphmlLoader gml,String sql, String targetFolder, int et,int mode,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY){
-//		
-//		vertices=gml.getNodes();
-//		edges=gml.getEdges();
-//		fixGraph();
-//		
-//		visualizationOfDiachronicGraph = new DiachronicGraphVisualRepresentation(vertices,edges,sql,targetFolder,et,mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
-//		
-//	}
 
 	//se periptwsh pou o UniversalGraph kataskeuazetai apto graphml
 	//ektos apo tis listes exw enhmerwmeno kai to graph gia thn grhgorh

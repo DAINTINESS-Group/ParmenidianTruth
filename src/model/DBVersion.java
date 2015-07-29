@@ -4,13 +4,10 @@ package model;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
-import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
-import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 
 
 /**
@@ -64,9 +61,6 @@ public class DBVersion  {
 		return tablesWithin;
 	}
 
-//	public String getVersionName() {
-//		return versionName;
-//	}
 
 
 	public ArrayList<ForeignKey> getVersionForeignKeys() {
@@ -228,7 +222,12 @@ public class DBVersion  {
 		
 	}
 	
-	
+	public Map<String,Double> getClusteringCoefficient(){
+		
+		return graphMetricsOfDBVersion.getClusteringCoefficient();
+		
+	}
+
 
 
 	

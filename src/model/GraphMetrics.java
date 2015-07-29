@@ -2,12 +2,14 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.collections15.Factory;
 
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.algorithms.filters.FilterUtils;
 import edu.uci.ics.jung.algorithms.importance.BetweennessCentrality;
+import edu.uci.ics.jung.algorithms.metrics.Metrics;
 import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
 import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
 import edu.uci.ics.jung.algorithms.transformation.DirectionTransformer;
@@ -168,6 +170,22 @@ public class GraphMetrics {
 		}
 		
 		return numberOfConnectedComponents + ",";
+		
+	}
+	
+	public Map<String,Double> getClusteringCoefficient(){
+		
+		Metrics metrics = new Metrics();
+		
+		Map<String, Double> collection =Metrics.clusteringCoefficients(graph);
+		
+		return collection;
+		
+//		for (Map.Entry<String, Double> entry : collection.entrySet()){
+//			if(entry.getValue()>0.0)
+//				System.out.println(entry.getKey() + "/" + entry.getValue());
+//		}
+		
 		
 	}
 

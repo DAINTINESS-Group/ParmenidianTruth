@@ -22,7 +22,7 @@ public class MetricsChooser extends JDialog {
 	private JCheckBox outDegree;
 	private JCheckBox inDegree;
 	private JCheckBox vertexDegree;
-	
+	private JCheckBox clusteringCoefficient;
 	
 	
 	public MetricsChooser(final Gui parent) {
@@ -63,10 +63,9 @@ public class MetricsChooser extends JDialog {
 		vertexBetweenness.setBounds(20, 93, 146, 23);
 		getContentPane().add(vertexBetweenness);
 		
-		JCheckBox chckbxNewCheckBox_4 = new JCheckBox("New check box");
-		chckbxNewCheckBox_4.setEnabled(false);
-		chckbxNewCheckBox_4.setBounds(168, 93, 97, 23);
-		getContentPane().add(chckbxNewCheckBox_4);
+		clusteringCoefficient = new JCheckBox("Clustering Coefficient");
+		clusteringCoefficient.setBounds(168, 93, 170, 23);
+		getContentPane().add(clusteringCoefficient);
 		
 		JLabel lblNewLabel_2 = new JLabel("Edge Properties");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -125,12 +124,12 @@ public class MetricsChooser extends JDialog {
 		
 		JCheckBox chckbxNewCheckBox_13 = new JCheckBox("New check box");
 		chckbxNewCheckBox_13.setEnabled(false);
-		chckbxNewCheckBox_13.setBounds(327, 297, 97, 23);
+		chckbxNewCheckBox_13.setBounds(20, 293, 97, 23);
 		getContentPane().add(chckbxNewCheckBox_13);
 		
 		numberOfConnectedComponents = new JCheckBox("# of Connected Components");
 		numberOfConnectedComponents.setEnabled(true);
-		numberOfConnectedComponents.setBounds(20, 297, 245, 23);
+		numberOfConnectedComponents.setBounds(168, 293, 245, 23);
 		getContentPane().add(numberOfConnectedComponents);
 		
 		JButton btnNewButton = new JButton("Calculate");
@@ -138,26 +137,28 @@ public class MetricsChooser extends JDialog {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				ArrayList<Metrics> metrics = new ArrayList<Metrics>();
+				ArrayList<Metric_Enums> metrics = new ArrayList<Metric_Enums>();
 				
 				if(inDegree.isSelected())
-					metrics.add(Metrics.VERTEXINDEGREE);
+					metrics.add(Metric_Enums.VERTEX_IN_DEGREE);
 				if(outDegree.isSelected())
-					metrics.add(Metrics.VERTEXOUTDEGREE);
+					metrics.add(Metric_Enums.VERTEX_OUT_DEGREE);
 				if(vertexDegree.isSelected())
-					metrics.add(Metrics.VERTEXDEGREE);
+					metrics.add(Metric_Enums.VERTEX_DEGREE);
 				if(vertexBetweenness.isSelected())
-					metrics.add(Metrics.VERTEXBETWEENNESS);
+					metrics.add(Metric_Enums.VERTEX_BETWEENNESS);
+				if(clusteringCoefficient.isSelected())
+					metrics.add(Metric_Enums.CLUSTERING_COEFFICIENT);
 				if(edgeBetweenness.isSelected())
-					metrics.add(Metrics.EDGEBETWEENNESS);
+					metrics.add(Metric_Enums.EDGE_BETWEENNESS);
 				if(graphDiameter.isSelected())
-					metrics.add(Metrics.GRAPHDIAMETER);
+					metrics.add(Metric_Enums.GRAPH_DIAMETER);
 				if(numberOfVertices.isSelected())
-					metrics.add(Metrics.NUMBEROFVERTICES);
+					metrics.add(Metric_Enums.NUMBER_OF_VERTICES);
 				if(numberOfEdges.isSelected())
-					metrics.add(Metrics.NUMBEROFEDGES);
+					metrics.add(Metric_Enums.NUMBER_OF_EDGES);
 				if(numberOfConnectedComponents.isSelected())
-					metrics.add(Metrics.NUMBEROFCONNECTEDCOMPONENTS);
+					metrics.add(Metric_Enums.NUMBER_OF_CONNECTED_COMPONENTS);
 				
 				dispose();
 

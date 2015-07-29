@@ -129,4 +129,10 @@ public class ModelManager {
 
 	}
 	
+	public void generateClusteringCoefficientReport(String targetFolder) throws FileNotFoundException{
+		
+		diachronicGraph.generateClusteringCoefficientReport(targetFolder);
+		
+	}
+
 }
