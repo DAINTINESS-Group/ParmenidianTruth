@@ -117,6 +117,8 @@ public class ParmenidianTruthManager {
 			else if (metrics.get(i)==Metric_Enums.NUMBER_OF_CONNECTED_COMPONENTS)
 				modelManager.generateConnectedComponentsCountReport(targetFolder);
 		
+		modelManager.getArticulationVertices();
+		
 		
 			
 	}

@@ -2,10 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections15.Factory;
 
+import edu.uci.ics.jung.algorithms.cluster.BicomponentClusterer;
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.algorithms.filters.FilterUtils;
 import edu.uci.ics.jung.algorithms.importance.BetweennessCentrality;
@@ -15,13 +18,16 @@ import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
 import edu.uci.ics.jung.algorithms.transformation.DirectionTransformer;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
-public class GraphMetrics {
+public class GraphMetrics extends BicomponentClusterer{
 	private Graph<String, String> graph;
 
 	
 	public GraphMetrics(ArrayList<Table> nodes, ArrayList<ForeignKey> edges){
+		
+		super();
 		
 		graph = new DirectedSparseGraph<String, String>();
 		addNodes(nodes);
@@ -181,12 +187,32 @@ public class GraphMetrics {
 		
 		return collection;
 		
-//		for (Map.Entry<String, Double> entry : collection.entrySet()){
-//			if(entry.getValue()>0.0)
-//				System.out.println(entry.getKey() + "/" + entry.getValue());
-//		}
+	}
+	
+	public void getArticulationVertices(){
+		
+
+//		BicomponentClusterer<String,String> bc = new BicomponentClusterer();
+		Set<Set<String>> bicomponents = new HashSet();
 		
 		
+		DirectionTransformer directionTransformer = new DirectionTransformer();
+		Factory graphFactoryUndirected = UndirectedSparseGraph.getFactory();
+        Factory edgeFactoryUndirected = new Factory<Integer>() {
+    		Integer edgeCountUndirected=0;
+
+        	public Integer create() { 
+				return edgeCountUndirected++; 
+        	} 
+        }; 
+        
+        UndirectedGraph<String,String> undirectedGraph =directionTransformer.toUndirected(graph,graphFactoryUndirected,edgeFactoryUndirected,true);
+		
+        super.findBiconnectedComponents(undirectedGraph, "t_logical", bicomponents);
+        
+        System.out.println(bicomponents.size());
+        
+        
 	}
 
 }

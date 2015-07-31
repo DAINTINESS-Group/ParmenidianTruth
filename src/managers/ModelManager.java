@@ -134,5 +134,11 @@ public class ModelManager {
 		diachronicGraph.generateClusteringCoefficientReport(targetFolder);
 		
 	}
+	
+	public void getArticulationVertices(){
+		
+		diachronicGraph.getArticulationVertices();
+		
+	}
 
 }
