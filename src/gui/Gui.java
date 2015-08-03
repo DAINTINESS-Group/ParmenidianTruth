@@ -1,9 +1,8 @@
 package gui;
 
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -50,6 +49,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import managers.ParmenidianTruthManager;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 
 public class Gui extends JFrame {
@@ -75,7 +75,8 @@ public class Gui extends JFrame {
 	private JRadioButton radio2 = new JRadioButton("Move Graph");
 	private JToolBar toolBar_1 = new JToolBar();
 	private JPopupMenu pop = new JPopupMenu();
-	private ParmenidianTruthManager manager= new ParmenidianTruthManager();	
+	private ParmenidianTruthManager manager= new ParmenidianTruthManager();
+	private Component visualizationViewer;
 	
 	
 	public Gui() {
@@ -909,9 +910,9 @@ public class Gui extends JFrame {
 		reader.close();
 
 		
-
+		visualizationViewer = manager.loadProject(sql,xml,graphml,frameX,frameY,scaleX,scaleY,centerX,centerY,targetFolder,edgeChooser.getEdgeType());
 		
-		getContentPane().add(manager.loadProject(sql,xml,graphml,frameX,frameY,scaleX,scaleY,centerX,centerY,targetFolder,edgeChooser.getEdgeType()));
+		getContentPane().add(visualizationViewer);
 
 
 		setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH);
@@ -980,7 +981,7 @@ public class Gui extends JFrame {
 			
 			
 			
-			manager.visualize((VisualizationViewer< String, String>)getContentPane().getComponent(1),projectIni, targetFolder, edgeChooser.getEdgeType());
+			manager.visualize((VisualizationViewer< String, String>)visualizationViewer,projectIni, targetFolder, edgeChooser.getEdgeType());
 			
 			if(atomically)
 				JOptionPane.showMessageDialog(Gui.this,"Images of each version were created successfully");
