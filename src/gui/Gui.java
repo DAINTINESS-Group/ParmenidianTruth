@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -52,6 +53,7 @@ import managers.ParmenidianTruthManager;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 
+
 public class Gui extends JFrame {
 	
 
@@ -80,7 +82,7 @@ public class Gui extends JFrame {
 	
 	
 	public Gui() {
-		setResizable(false);
+		
 		getContentPane().setBackground(new Color(214,217,223));
 		this.workspace= prefs.get("workspace",null);
 
@@ -912,6 +914,34 @@ public class Gui extends JFrame {
 		
 		visualizationViewer = manager.loadProject(sql,xml,graphml,frameX,frameY,scaleX,scaleY,centerX,centerY,targetFolder,edgeChooser.getEdgeType());
 		
+		visualizationViewer.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if(e.getKeyChar()=='m' || e.getKeyChar()=='M' )
+					mvGraph.doClick();
+				else if (e.getKeyChar()=='p' || e.getKeyChar()=='p')
+					mvNode.doClick();
+				
+			
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+
+				
+			}
+			
+		});
+		
 		getContentPane().add(visualizationViewer);
 
 
@@ -927,13 +957,13 @@ public class Gui extends JFrame {
 		radio2.setEnabled(true);
 		mvGraph.doClick();
 		radio2.setSelected(true);
-		this.setResizable(true);
 		this.setLocation(0, 0);
 
 		manager.stopConvergence();
-//		wholeGraph.stopConvergence();
+		
+		visualizationViewer.requestFocus();
 			
-
+		
 			
 	}
 	
@@ -1221,10 +1251,10 @@ public class Gui extends JFrame {
 			JOptionPane.showMessageDialog(Gui.this,"Metrics were created successfully");
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
+
 
 }
