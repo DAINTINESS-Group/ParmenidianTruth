@@ -68,16 +68,16 @@ public class DiachronicGraph {
 		
 	}
 	
-	public void getArticulationVertices(){
-		
-		System.out.print("Diachronic graph: ");
-		graphMetricsOfDiachronicGraph.getArticulationVertices();
-		
-//		for(int i=0;i<versions.size();++i){
-//			System.out.print(versions.get(i).getVersion()+":");
-//		}
-		
-	}
+//	public void getArticulationVertices(){
+//		
+//		System.out.print("Diachronic graph: ");
+//		graphMetricsOfDiachronicGraph.getArticulationVertices();
+//		
+////		for(int i=0;i<versions.size();++i){
+////			System.out.print(versions.get(i).getVersion()+":");
+////		}
+//		
+//	}
 	
 	
 	public void generateClusteringCoefficientReport(String targetFolder) throws FileNotFoundException{

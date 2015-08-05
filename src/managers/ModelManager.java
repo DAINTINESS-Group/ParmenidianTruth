@@ -135,10 +135,10 @@ public class ModelManager {
 		
 	}
 	
-	public void getArticulationVertices(){
-		
-		diachronicGraph.getArticulationVertices();
-		
-	}
+//	public void getArticulationVertices(){
+//		
+//		diachronicGraph.getArticulationVertices();
+//		
+//	}
 
 }

@@ -189,30 +189,30 @@ public class GraphMetrics extends BicomponentClusterer{
 		
 	}
 	
-	public void getArticulationVertices(){
-		
-
-//		BicomponentClusterer<String,String> bc = new BicomponentClusterer();
-		Set<Set<String>> bicomponents = new HashSet();
-		
-		
-		DirectionTransformer directionTransformer = new DirectionTransformer();
-		Factory graphFactoryUndirected = UndirectedSparseGraph.getFactory();
-        Factory edgeFactoryUndirected = new Factory<Integer>() {
-    		Integer edgeCountUndirected=0;
-
-        	public Integer create() { 
-				return edgeCountUndirected++; 
-        	} 
-        }; 
-        
-        UndirectedGraph<String,String> undirectedGraph =directionTransformer.toUndirected(graph,graphFactoryUndirected,edgeFactoryUndirected,true);
-		
-        super.findBiconnectedComponents(undirectedGraph, "t_logical", bicomponents);
-        
-        System.out.println(bicomponents.size());
-        
-        
-	}
+//	public void getArticulationVertices(){
+//		
+//
+////		BicomponentClusterer<String,String> bc = new BicomponentClusterer();
+//		Set<Set<String>> bicomponents = new HashSet();
+//		
+//		
+//		DirectionTransformer directionTransformer = new DirectionTransformer();
+//		Factory graphFactoryUndirected = UndirectedSparseGraph.getFactory();
+//        Factory edgeFactoryUndirected = new Factory<Integer>() {
+//    		Integer edgeCountUndirected=0;
+//
+//        	public Integer create() { 
+//				return edgeCountUndirected++; 
+//        	} 
+//        }; 
+//        
+//        UndirectedGraph<String,String> undirectedGraph =directionTransformer.toUndirected(graph,graphFactoryUndirected,edgeFactoryUndirected,true);
+//		
+//        super.findBiconnectedComponents(undirectedGraph, "t_logical", bicomponents);
+//        
+//        System.out.println(bicomponents.size());
+//        
+//        
+//	}
 
 }
