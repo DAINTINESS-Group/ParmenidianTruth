@@ -112,9 +112,31 @@ public class GraphMetrics extends BicomponentClusterer{
 	
 	public String getVertexCount(){
 		
-		
 		return graph.getVertexCount()+",";
 		
+	}
+	
+	public String getVertexCountForGcc() {
+		
+		WeakComponentClusterer<String, String> wcc = new WeakComponentClusterer<String, String>();
+		Collection<Graph<String,String>> ccs = FilterUtils.createAllInducedSubgraphs(wcc.transform(graph),graph);
+		
+		DistanceStatistics ds = new DistanceStatistics();
+
+		
+		Graph<String,String> giantConnectedComponent = null;
+		int max=0;
+		
+		for(Graph<String,String> g: ccs){
+			if(g.getVertexCount()>max){
+				max=g.getVertexCount();
+				giantConnectedComponent=g;
+				
+			}
+			
+		}
+		
+		return giantConnectedComponent.getVertexCount()+",";
 		
 	}
 	
@@ -124,6 +146,29 @@ public class GraphMetrics extends BicomponentClusterer{
 		return graph.getEdgeCount()+",";
 		
 		
+	}
+	
+	public String getEdgeCountForGcc() {
+		
+		WeakComponentClusterer<String, String> wcc = new WeakComponentClusterer<String, String>();
+		Collection<Graph<String,String>> ccs = FilterUtils.createAllInducedSubgraphs(wcc.transform(graph),graph);
+		
+		DistanceStatistics ds = new DistanceStatistics();
+
+		
+		Graph<String,String> giantConnectedComponent = null;
+		int max=0;
+		
+		for(Graph<String,String> g: ccs){
+			if(g.getVertexCount()>max){
+				max=g.getVertexCount();
+				giantConnectedComponent=g;
+				
+			}
+			
+		}
+		
+		return giantConnectedComponent.getEdgeCount()+",";
 	}
 	
 	public String getGraphDiameter(){
@@ -188,31 +233,5 @@ public class GraphMetrics extends BicomponentClusterer{
 		return collection;
 		
 	}
-	
-//	public void getArticulationVertices(){
-//		
-//
-////		BicomponentClusterer<String,String> bc = new BicomponentClusterer();
-//		Set<Set<String>> bicomponents = new HashSet();
-//		
-//		
-//		DirectionTransformer directionTransformer = new DirectionTransformer();
-//		Factory graphFactoryUndirected = UndirectedSparseGraph.getFactory();
-//        Factory edgeFactoryUndirected = new Factory<Integer>() {
-//    		Integer edgeCountUndirected=0;
-//
-//        	public Integer create() { 
-//				return edgeCountUndirected++; 
-//        	} 
-//        }; 
-//        
-//        UndirectedGraph<String,String> undirectedGraph =directionTransformer.toUndirected(graph,graphFactoryUndirected,edgeFactoryUndirected,true);
-//		
-//        super.findBiconnectedComponents(undirectedGraph, "t_logical", bicomponents);
-//        
-//        System.out.println(bicomponents.size());
-//        
-//        
-//	}
 
 }

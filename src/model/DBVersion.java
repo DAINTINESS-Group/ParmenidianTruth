@@ -203,9 +203,13 @@ public class DBVersion  {
 	
 	public String getVertexCount(){
 		
-		
 		return graphMetricsOfDBVersion.getVertexCount();
 		
+	}
+	
+	public String getVertexCountForGcc() {
+		
+		return graphMetricsOfDBVersion.getVertexCountForGcc();
 		
 	}
 	
@@ -227,8 +231,5 @@ public class DBVersion  {
 		return graphMetricsOfDBVersion.getClusteringCoefficient();
 		
 	}
-
-
-
 	
 }

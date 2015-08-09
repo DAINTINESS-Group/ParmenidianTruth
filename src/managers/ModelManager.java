@@ -134,11 +134,18 @@ public class ModelManager {
 		diachronicGraph.generateClusteringCoefficientReport(targetFolder);
 		
 	}
+
+	public void generateVertexCountReportForGCC(String targetFolder) throws FileNotFoundException {
+		
+		diachronicGraph.generateVertexCountReportForGcc(targetFolder);
+		
+	}
+
+	public void generateEdgeCountReportForGCC(String targetFolder) throws FileNotFoundException {
+		
+		diachronicGraph.generateEdgeCountReportForGcc(targetFolder);
+		
+	}
 	
-//	public void getArticulationVertices(){
-//		
-//		diachronicGraph.getArticulationVertices();
-//		
-//	}
 
 }

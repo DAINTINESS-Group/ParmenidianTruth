@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 public class MetricsChooser extends JDialog {
 	private JCheckBox numberOfConnectedComponents;
@@ -23,23 +24,25 @@ public class MetricsChooser extends JDialog {
 	private JCheckBox inDegree;
 	private JCheckBox vertexDegree;
 	private JCheckBox clusteringCoefficient;
+	private JCheckBox numberOfVerticesInGcc;
+	private JCheckBox numberOfEdgesInGcc;
 	
 	
 	public MetricsChooser(final Gui parent) {
 		setResizable(false);
-		setMinimumSize(new Dimension(450, 480));
-		setMaximumSize(new Dimension(450, 485));
+		setMinimumSize(new Dimension(510, 480));
+		setMaximumSize(new Dimension(510, 480));
 		getContentPane().setLayout(null);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setAlwaysOnTop(true);
 		
 		JLabel lblNewLabel = new JLabel("Metrics");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel.setBounds(196, 11, 49, 17);
+		lblNewLabel.setBounds(205, 7, 49, 17);
 		getContentPane().add(lblNewLabel);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(20, 55, 404, 2);
+		separator.setBounds(20, 55, 464, 2);
 		getContentPane().add(separator);
 		
 		JLabel lblNewLabel_1 = new JLabel("Vertex Properties");
@@ -52,11 +55,11 @@ public class MetricsChooser extends JDialog {
 		getContentPane().add(inDegree);
 		
 		outDegree = new JCheckBox("Vertex OutDegree");
-		outDegree.setBounds(168, 67, 157, 23);
+		outDegree.setBounds(168, 67, 125, 23);
 		getContentPane().add(outDegree);
 		
 		vertexDegree = new JCheckBox("Vertex Degree");
-		vertexDegree.setBounds(327, 67, 111, 23);
+		vertexDegree.setBounds(312, 67, 111, 23);
 		getContentPane().add(vertexDegree);
 		
 		vertexBetweenness = new JCheckBox("Vertex Betweenness");
@@ -73,64 +76,56 @@ public class MetricsChooser extends JDialog {
 		getContentPane().add(lblNewLabel_2);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(20, 155, 404, 2);
+		separator_1.setBounds(20, 155, 464, 2);
 		getContentPane().add(separator_1);
 		
 		edgeBetweenness = new JCheckBox("Edge Betweenness");
 		edgeBetweenness.setBounds(20, 164, 146, 23);
 		getContentPane().add(edgeBetweenness);
 		
-		JCheckBox chckbxNewCheckBox_6 = new JCheckBox("New check box");
-		chckbxNewCheckBox_6.setEnabled(false);
-		chckbxNewCheckBox_6.setBounds(168, 164, 97, 23);
-		getContentPane().add(chckbxNewCheckBox_6);
-		
-		JCheckBox chckbxNewCheckBox_7 = new JCheckBox("New check box");
-		chckbxNewCheckBox_7.setEnabled(false);
-		chckbxNewCheckBox_7.setBounds(327, 164, 97, 23);
-		getContentPane().add(chckbxNewCheckBox_7);
-		
-		JCheckBox chckbxNewCheckBox_8 = new JCheckBox("New check box");
-		chckbxNewCheckBox_8.setEnabled(false);
-		chckbxNewCheckBox_8.setBounds(20, 190, 97, 23);
-		getContentPane().add(chckbxNewCheckBox_8);
-		
-		JCheckBox chckbxNewCheckBox_9 = new JCheckBox("New check box");
-		chckbxNewCheckBox_9.setEnabled(false);
-		chckbxNewCheckBox_9.setBounds(168, 190, 97, 23);
-		getContentPane().add(chckbxNewCheckBox_9);
-		
-		JLabel lblNewLabel_3 = new JLabel("Graph Properties");
+		JLabel lblNewLabel_3 = new JLabel("Graph Properties (whole graph)");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel_3.setBounds(20, 227, 97, 14);
+		lblNewLabel_3.setBounds(20, 209, 273, 14);
 		getContentPane().add(lblNewLabel_3);
 		
 		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(20, 252, 404, 2);
+		separator_2.setBounds(20, 234, 464, 2);
 		getContentPane().add(separator_2);
 		
 		graphDiameter = new JCheckBox("Graph Diameter");
 		graphDiameter.setEnabled(true);
-		graphDiameter.setBounds(20, 267, 125, 23);
+		graphDiameter.setBounds(312, 347, 111, 23);
 		getContentPane().add(graphDiameter);
 		
 		numberOfVertices = new JCheckBox("# of Vertices");
-		numberOfVertices.setBounds(168, 267, 125, 23);
+		numberOfVertices.setBounds(20, 243, 125, 23);
 		getContentPane().add(numberOfVertices);
 		
 		numberOfEdges = new JCheckBox("# of Edges");
-		numberOfEdges.setBounds(327, 267, 97, 23);
+		numberOfEdges.setBounds(168, 243, 97, 23);
 		getContentPane().add(numberOfEdges);
-		
-		JCheckBox chckbxNewCheckBox_13 = new JCheckBox("New check box");
-		chckbxNewCheckBox_13.setEnabled(false);
-		chckbxNewCheckBox_13.setBounds(20, 293, 97, 23);
-		getContentPane().add(chckbxNewCheckBox_13);
 		
 		numberOfConnectedComponents = new JCheckBox("# of Connected Components");
 		numberOfConnectedComponents.setEnabled(true);
-		numberOfConnectedComponents.setBounds(168, 293, 245, 23);
+		numberOfConnectedComponents.setBounds(312, 243, 212, 23);
 		getContentPane().add(numberOfConnectedComponents);
+		
+		JLabel lblNewLabel_4 = new JLabel("Graph Properties (giant connected component)");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_4.setBounds(20, 313, 273, 14);
+		getContentPane().add(lblNewLabel_4);
+		
+		numberOfVerticesInGcc = new JCheckBox("# of Vertices");
+		numberOfVerticesInGcc.setBounds(20, 347, 97, 23);
+		getContentPane().add(numberOfVerticesInGcc);
+		
+		numberOfEdgesInGcc = new JCheckBox("# of Edges");
+		numberOfEdgesInGcc.setBounds(168, 347, 97, 23);
+		getContentPane().add(numberOfEdgesInGcc);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setBounds(20, 338, 464, 2);
+		getContentPane().add(separator_3);
 		
 		JButton btnNewButton = new JButton("Calculate");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -159,6 +154,10 @@ public class MetricsChooser extends JDialog {
 					metrics.add(Metric_Enums.NUMBER_OF_EDGES);
 				if(numberOfConnectedComponents.isSelected())
 					metrics.add(Metric_Enums.NUMBER_OF_CONNECTED_COMPONENTS);
+				if(numberOfVerticesInGcc.isSelected())
+					metrics.add(Metric_Enums.NUMBER_OF_VERTICES_IN_GCC);
+				if(numberOfEdgesInGcc.isSelected())
+					metrics.add(Metric_Enums.NUMBER_OF_EDGES_IN_GCC);
 				
 				dispose();
 
@@ -166,8 +165,10 @@ public class MetricsChooser extends JDialog {
 				
 			}
 		});
-		btnNewButton.setBounds(168, 354, 97, 23);
+		btnNewButton.setBounds(183, 417, 97, 23);
 		getContentPane().add(btnNewButton);
+		
+
 		
 		setLocationRelativeTo(parent);
 		setVisible(true);

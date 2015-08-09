@@ -116,6 +116,10 @@ public class ParmenidianTruthManager {
 				modelManager.generateEdgeCountReport(targetFolder);
 			else if (metrics.get(i)==Metric_Enums.NUMBER_OF_CONNECTED_COMPONENTS)
 				modelManager.generateConnectedComponentsCountReport(targetFolder);
+			else if(metrics.get(i)==Metric_Enums.NUMBER_OF_VERTICES_IN_GCC)
+				modelManager.generateVertexCountReportForGCC(targetFolder);
+			else if(metrics.get(i)==Metric_Enums.NUMBER_OF_EDGES_IN_GCC)
+				modelManager.generateEdgeCountReportForGCC(targetFolder);
 		
 //		modelManager.getArticulationVertices();
 		
