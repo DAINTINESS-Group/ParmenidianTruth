@@ -220,6 +220,12 @@ public class DBVersion  {
 		
 	}
 	
+	public String getEdgeCountForGCC(){
+		
+		return graphMetricsOfDBVersion.getEdgeCountForGcc();		
+		
+	}
+	
 	public String generateConnectedComponentsCountReport(){
 		
 		return graphMetricsOfDBVersion.getNumberOfConnectedComponents();

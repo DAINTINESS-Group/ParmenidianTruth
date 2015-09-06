@@ -252,7 +252,7 @@ public class DiachronicGraph {
 				if(i==1)
 					report[1][i] = graphMetricsOfDiachronicGraph.getEdgeCountForGcc();
 				else
-					report[1][i]=versions.get(i-2).getEdgeCount();
+					report[1][i]=versions.get(i-2).getEdgeCountForGCC();
 		
 		
 //		print array into file
