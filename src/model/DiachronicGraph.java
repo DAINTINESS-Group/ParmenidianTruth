@@ -478,35 +478,89 @@ public class DiachronicGraph {
 	}
 	
 	
+//	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
+//		
+//		File vertexReport = new File(targetFolder+"\\Report of edge betweenness.csv");
+//		
+//		
+//		PrintWriter writer = new PrintWriter(vertexReport);
+//		
+//		int lines = edges.size()+1;
+//		int columns =versions.size()+2;
+//		
+//		String[][] report= new String[lines][columns];
+//		
+////		create 1st line
+//		report[0][0]=" ,";
+//		report[0][1]="Diachronic Graph,";		
+//		for(int i=0;i<versions.size();i++)			
+//			report[0][i+2]=versions.get(i).getVersion()+",";
+//		
+////		create 1st column		
+//		for(int i=0;i<edges.size();i++)
+//			report[i+1][0]=edges.get(i).getSourceTable()+"|"+edges.get(i).getTargetTable()+",";		
+//		
+////		fill in the rest
+//		for(int i=1;i<columns;i++)
+//			for(int j=1;j<lines;j++)
+//				if(i==1)
+//					report[j][i] = graphMetricsOfDiachronicGraph.generateEdgeBetweenness(report[j][0]);
+//				else
+//					report[j][i]=versions.get(i-2).generateEdgeBetweenness(report[j][0]);
+//		
+//		
+////		print array into file
+//		for(int i=0;i<lines;i++){
+//			for(int j=0;j<columns;j++)
+//				writer.print(report[i][j]);
+//			writer.print("\n");
+//		}
+//				
+//		writer.close();
+//		
+//		
+//	}
+	
 	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
 		
-		File vertexReport = new File(targetFolder+"\\Report of edge betweenness.csv");
+		File vertexReport = new File(targetFolder+"\\Report of edge betweenness for Diachronic Graph.csv");
 		
 		
 		PrintWriter writer = new PrintWriter(vertexReport);
 		
-		int lines = edges.size()+1;
-		int columns =versions.size()+2;
+		int lines = (2*edges.size())+1;
+		int columns =3;
 		
 		String[][] report= new String[lines][columns];
 		
 //		create 1st line
-		report[0][0]=" ,";
-		report[0][1]="Diachronic Graph,";		
-		for(int i=0;i<versions.size();i++)			
-			report[0][i+2]=versions.get(i).getVersion()+",";
+		report[0][0]="Edge,";
+		report[0][1]="Nodes,Edge Betweenness Score,";		
+
 		
-//		create 1st column		
-		for(int i=0;i<edges.size();i++)
-			report[i+1][0]=edges.get(i).getSourceTable()+"|"+edges.get(i).getTargetTable()+",";		
-		
-//		fill in the rest
-		for(int i=1;i<columns;i++)
-			for(int j=1;j<lines;j++)
-				if(i==1)
-					report[j][i] = graphMetricsOfDiachronicGraph.generateEdgeBetweenness(report[j][0]);
-				else
-					report[j][i]=versions.get(i-2).generateEdgeBetweenness(report[j][0]);
+		//used for keeping track of auxiliary lines;
+		boolean auxLine=false;
+
+		int edgeIndex=0;
+//		fill in the rest line by line		
+		for(int i=1;i<lines;i++){
+			
+			
+			
+			if(!auxLine){
+				report[i][0] = edges.get(edgeIndex).getSourceTable()+"|"+edges.get(edgeIndex).getTargetTable()+",";
+				report[i][1] =edges.get(edgeIndex).getSourceTable()+",";
+				report[i][2] = graphMetricsOfDiachronicGraph.generateEdgeBetweenness(report[i][0]);
+			}else{
+				report[i][0] = edges.get(edgeIndex).getSourceTable()+"|"+edges.get(edgeIndex).getTargetTable()+",";
+				report[i][1] =edges.get(edgeIndex).getTargetTable()+",";
+				report[i][2] = graphMetricsOfDiachronicGraph.generateEdgeBetweenness(report[i][0]);
+				edgeIndex++;
+			}
+			
+			auxLine=!auxLine;
+			
+		}
 		
 		
 //		print array into file
