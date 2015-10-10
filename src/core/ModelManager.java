@@ -1,4 +1,4 @@
-package managers;
+package core;
 
 
 import java.awt.Component;

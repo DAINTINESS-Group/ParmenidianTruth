@@ -49,7 +49,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import managers.ParmenidianTruthManager;
+import parmenidianEnumerations.Metric_Enums;
+import core.ParmenidianTruthManager;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 

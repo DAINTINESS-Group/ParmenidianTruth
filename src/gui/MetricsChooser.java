@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import parmenidianEnumerations.Metric_Enums;
+
 public class MetricsChooser extends JDialog {
 	private JCheckBox numberOfConnectedComponents;
 	private JCheckBox numberOfEdges;

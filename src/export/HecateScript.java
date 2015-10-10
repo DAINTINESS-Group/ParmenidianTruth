@@ -3,7 +3,7 @@ package export;
 import java.io.File;
 import java.io.FileFilter;
 
-import managers.HecateManager;
+import model.Loader.HecateManager;
 
 public class HecateScript {	
 	private File selectedDirectory;

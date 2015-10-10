@@ -1,4 +1,4 @@
-package model;
+package parmenidianEnumerations;
 
 public enum Status {
 	

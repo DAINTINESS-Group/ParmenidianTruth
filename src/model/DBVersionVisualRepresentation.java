@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 
 import org.apache.commons.collections15.Transformer;
 
+import parmenidianEnumerations.Status;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 import edu.uci.ics.jung.visualization.Layer;

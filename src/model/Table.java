@@ -2,6 +2,8 @@ package model;
 
 import java.awt.geom.Point2D;
 
+import parmenidianEnumerations.Status;
+
 public class Table {
 	
 	private String tableName;

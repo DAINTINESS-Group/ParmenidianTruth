@@ -1,4 +1,4 @@
-package managers;
+package core;
 
 import java.awt.Component;
 import java.io.File;
@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import parmenidianEnumerations.Metric_Enums;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import gui.Metric_Enums;
 
 public class ParmenidianTruthManager {
 	

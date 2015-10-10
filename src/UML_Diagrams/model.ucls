@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <class id="1" language="java" name="model.DiachronicGraph" project="ParmenidianTruth" 
+    file="/ParmenidianTruth/src/model/DiachronicGraph.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="817" width="411" x="59" y="608"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="model.DiachronicGraphVisualRepresentation" project="ParmenidianTruth" 
+    file="/ParmenidianTruth/src/model/DiachronicGraphVisualRepresentation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="53" y="204"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="model.DBVersion" project="ParmenidianTruth" 
+    file="/ParmenidianTruth/src/model/DBVersion.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="995" y="891"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="model.DBVersionVisualRepresentation" project="ParmenidianTruth" 
+    file="/ParmenidianTruth/src/model/DBVersionVisualRepresentation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1066" y="248"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="model.GraphMetrics" project="ParmenidianTruth" 
+    file="/ParmenidianTruth/src/model/GraphMetrics.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="255" width="221" x="602" y="1225"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="model.Table" project="ParmenidianTruth" 
+    file="/ParmenidianTruth/src/model/Table.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="365" y="2312"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="model.ForeignKey" project="ParmenidianTruth" 
+    file="/ParmenidianTruth/src/model/ForeignKey.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="958" y="2349"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="8">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="9" name="visualizationOfDiachronicGraph">        
+        <position height="0" width="0" x="-272" y="28"/>      
+      </attribute>      
+      <multiplicity id="10" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-272" y="28"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="11">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="12" name="parent">        
+        <position height="0" width="0" x="-34" y="-3"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-34" y="-3"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="14">    
+    <bendpoint x="577" y="2204"/>    
+    <bendpoint x="601" y="2371"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="15" name="graphEdges"/>      
+      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="17">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <association id="18">    
+    <bendpoint x="470" y="-6"/>    
+    <bendpoint x="483" y="-2"/>    
+    <bendpoint x="524" y="-5"/>    
+    <bendpoint x="588" y="-3"/>    
+    <bendpoint x="727" y="-2"/>    
+    <bendpoint x="1010" y="-4"/>    
+    <bendpoint x="1571" y="-22"/>    
+    <bendpoint x="1552" y="2359"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="19" name="edges"/>      
+      <multiplicity id="20" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="21">    
+    <bendpoint x="1181" y="1671"/>    
+    <bendpoint x="610" y="2051"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="22" name="tablesWithin"/>      
+      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="24">    
+    <bendpoint x="1193" y="2211"/>    
+    <bendpoint x="1022" y="2199"/>    
+    <bendpoint x="902" y="2198"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="25" name="versionForeignKeys"/>      
+      <multiplicity id="26" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="27">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="28" name="parent">        
+        <position height="0" width="0" x="18" y="-87"/>      
+      </attribute>      
+      <multiplicity id="29" minimum="0" maximum="1">        
+        <position height="0" width="0" x="18" y="-87"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="30">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="31" name="graphMetricsOfDiachronicGraph">        
+        <position height="18" width="164" x="439" y="1233"/>      
+      </attribute>      
+      <multiplicity id="32" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-265" y="-324"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="33">    
+    <bendpoint x="32" y="2264"/>    
+    <bendpoint x="176" y="2252"/>    
+    <bendpoint x="261" y="2248"/>    
+    <bendpoint x="282" y="2251"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="34" name="graph"/>      
+      <multiplicity id="35" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <bendpoint x="1357" y="729"/>    
+    <bendpoint x="1353" y="1031"/>    
+    <bendpoint x="1194" y="1707"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="37" name="nodes"/>      
+      <multiplicity id="38" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="39">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="40">    
+    <bendpoint x="-260" y="2381"/>    
+    <bendpoint x="134" y="2389"/>    
+    <bendpoint x="224" y="2382"/>    
+    <bendpoint x="273" y="2385"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="41" name="nodes"/>      
+      <multiplicity id="42" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <bendpoint x="-18" y="2298"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="44" name="vertices"/>      
+      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <bendpoint x="1381" y="707"/>    
+    <bendpoint x="1343" y="2319"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="47" name="edges"/>      
+      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="49">    
+    <bendpoint x="538" y="1989"/>    
+    <bendpoint x="617" y="2339"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="50" name="edges"/>      
+      <multiplicity id="51" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="52">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="53" name="graphMetricsOfDBVersion">        
+        <position height="0" width="0" x="-265" y="-324"/>      
+      </attribute>      
+      <multiplicity id="54" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-265" y="-324"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="55">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <association id="56">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="57" name="visualizationsOfDBVersion">        
+        <position height="0" width="0" x="-47" y="226"/>      
+      </attribute>      
+      <multiplicity id="58" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-47" y="226"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="59">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="60" name="versions">        
+        <position height="0" width="0" x="-34" y="-3"/>      
+      </attribute>      
+      <multiplicity id="61" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-34" y="-3"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

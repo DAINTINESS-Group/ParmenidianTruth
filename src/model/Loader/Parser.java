@@ -1,10 +1,10 @@
-package loader;
+package model.Loader;
 
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Map;
-import managers.HecateManager;
+
 import model.DBVersion;
 
 

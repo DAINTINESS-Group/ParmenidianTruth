@@ -1,4 +1,4 @@
-package managers;
+package model.Loader;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -16,10 +16,10 @@ import javax.xml.bind.Unmarshaller;
 
 import model.DBVersion;
 import model.ForeignKey;
-import model.Status;
 
 import org.antlr.v4.runtime.RecognitionException;
 
+import parmenidianEnumerations.Status;
 import externalTools.Deletion;
 import externalTools.Delta;
 import externalTools.HecateParser;

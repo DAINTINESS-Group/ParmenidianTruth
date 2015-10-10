@@ -162,7 +162,7 @@ public class DBVersion  {
 		for(int i=0;i<tablesWithin.size();++i){
 			if(vertex.equals(tablesWithin.get(i).getKey())){
 				vertex=vertex+",";
-				return graphMetricsOfDBVersion.generateVertexDegree(vertex);
+				return graphMetricsOfDBVersion.generateVertexBetweenness(vertex);
 			}
 		}
 		

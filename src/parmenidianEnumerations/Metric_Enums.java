@@ -1,4 +1,4 @@
-package gui;
+package parmenidianEnumerations;
 
 public enum Metric_Enums {
 	
