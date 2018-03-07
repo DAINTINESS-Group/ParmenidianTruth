@@ -11,10 +11,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 
 import parmenidianEnumerations.Metric_Enums;
 
+@SuppressWarnings("serial")
 public class MetricsChooser extends JDialog {
 	private JCheckBox numberOfConnectedComponents;
 	private JCheckBox numberOfEdges;
@@ -162,8 +162,9 @@ public class MetricsChooser extends JDialog {
 					metrics.add(Metric_Enums.NUMBER_OF_EDGES_IN_GCC);
 				
 				dispose();
-
+				
 				parent.calculateMetrics(metrics);
+				
 				
 			}
 		});

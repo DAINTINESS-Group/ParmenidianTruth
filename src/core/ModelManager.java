@@ -2,18 +2,53 @@ package core;
 
 
 import java.awt.Component;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
+
+import dataImport.ParserFactory;
+
+import dataImport.IParser;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import model.DiachronicGraph;
+
+import model.DiachronicGraphFactory;
+import model.IDiachronicGraph;
+import model.IMetricsReport;
+import model.ReportFactory;
+
+import parmenidianEnumerations.Metric_Enums;
+
+/**
+ * Operating as a manager that communicates with {@link model}
+ * @author MK
+ * @version {2.0 - modified by KD-MZ-IK}
+ */
 
 public class ModelManager {
 	
-	private DiachronicGraph diachronicGraph=null; 
+	private static ModelManager instance = null;
+	private IDiachronicGraph diachronicGraph=null; 
+	private DiachronicGraphFactory factory = new DiachronicGraphFactory();
+	
+	private ParserFactory parserFactory;
+	private IParser parser;
 
 	
-	public ModelManager(){}
+	protected ModelManager(){
+		
+		parserFactory = new ParserFactory();
+		parser = parserFactory.createHecateParser();
+		
+	}
+	
+	
+	public static ModelManager getInstance() {
+		
+		if (instance == null)
+			instance = new ModelManager();
+		
+		return instance;
+	}
 	
 	public void clear(){
 		
@@ -53,67 +88,32 @@ public class ModelManager {
 	}
 	
 	
-	public void visualize(VisualizationViewer< String, String> vv,String projectIni,String targetFolder,int edgeType) throws IOException {
+	public void visualize(VisualizationViewer< String, String> visualizationViewer,String projectIni,String targetFolder,int edgeType) throws IOException {
 			
 		diachronicGraph.saveVertexCoordinates(projectIni);
-		diachronicGraph.visualizeIndividualDBVersions(vv,targetFolder,edgeType);
-		diachronicGraph.visualizeDiachronicGraph(vv);
+		diachronicGraph.visualizeIndividualDBVersions(visualizationViewer,targetFolder,edgeType);
+		diachronicGraph.visualizeDiachronicGraph(visualizationViewer);
 
 	}
 	
 	public Component loadProject(String sql,String xml,String graphml, double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY,String targetFolder,int edgeType) throws Exception{
 		
-		diachronicGraph = new DiachronicGraph(sql,xml,graphml,targetFolder,edgeType,frameX,frameY,scaleX,scaleY,centerX,centerY);
+
+		diachronicGraph=factory.createDiachronicGraph();
+		
+		this.setVersions(sql);
+		this.setTransitions(xml);
+		diachronicGraph.updateLifetimeWithTransitions();
+		
+		if (graphml != null) {
+			parser.createGraphmlLoader(graphml);
+			diachronicGraph.loadDiachronicGraph(parser.getNodes(),parser.getEdges(), sql, targetFolder, edgeType, frameX, frameY, scaleX, scaleY, centerX, centerY);
+		}else
+			diachronicGraph.createDiachronicGraph(sql, targetFolder, edgeType, frameX, frameY, scaleX, scaleY, centerX, centerY);
+		
+	
 		
 		return diachronicGraph.show();
-		
-	}
-	
-	public void generateVertexDegreeReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateVertexDegreeReport(targetFolder);
-		
-	}
-	
-	public void generateVertexInDegreeReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateVertexInDegreeReport(targetFolder);
-		
-	}
-	
-	public void generateVertexOutDegreeReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateVertexOutDegreeReport(targetFolder);
-		
-	}
-	
-	public void generateVertexBetweennessReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateVertexBetweennessReport(targetFolder);
-		
-	}
-	
-	public void generateEdgeBetweennessReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateEdgeBetweennessReport(targetFolder);
-		
-	}
-	
-	public void generateGraphDiameterReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateGraphDiameterReport(targetFolder);
-		
-	}
-	
-	public void generateVertexCountReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateVertexCountReport(targetFolder);
-		
-	}
-	
-	public void generateEdgeCountReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateEdgeCountReport(targetFolder);
 		
 	}
 
@@ -122,30 +122,56 @@ public class ModelManager {
 		return diachronicGraph.refresh(forceMult,repulsionRange);
 		
 	}
+
+//created by KD on 13/04/17
+	public void generateMetricsReport(String targetFolder, ArrayList<Metric_Enums> metrics){
+		
+		ReportFactory reportFactory = new ReportFactory();
+		ArrayList<IMetricsReport> reportEngine = new ArrayList<IMetricsReport>();
+		
+		for(int i=0;i<metrics.size();i++){
+
+			reportEngine.add(reportFactory.getMetricsReportEngine(targetFolder, metrics.get(i),diachronicGraph));
+			reportEngine.get(i).generateMetricsReport();
+		
+				
+		}
+		
+		reportEngine.clear();
+		
+	}
+
 	
-	public void generateConnectedComponentsCountReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateConnectedComponentsCountReport(targetFolder);
-
-	}
 	
-	public void generateClusteringCoefficientReport(String targetFolder) throws FileNotFoundException{
-		
-		diachronicGraph.generateClusteringCoefficientReport(targetFolder);
-		
+	/**
+	 * @author KD
+	 * @param sqlFiles pathname of sql files.
+	 * @since 2018-02-14
+	 */
+
+	private void setVersions(String sqlFiles) {
+
+
+		diachronicGraph.setVersions(parser.getLifetime(sqlFiles));
+
+
 	}
 
-	public void generateVertexCountReportForGCC(String targetFolder) throws FileNotFoundException {
 		
-		diachronicGraph.generateVertexCountReportForGcc(targetFolder);
 		
+	/**
+	 * @author KD
+	 * @param pathname of file containing transitions.
+	 * @since 2018-02-14
+	 */
+			
+	private void setTransitions(String xmlFile) {
+
+
+		diachronicGraph.setTransitions(parser.getTransitions(xmlFile));
+
+
 	}
 
-	public void generateEdgeCountReportForGCC(String targetFolder) throws FileNotFoundException {
-		
-		diachronicGraph.generateEdgeCountReportForGcc(targetFolder);
-		
-	}
 	
-
 }

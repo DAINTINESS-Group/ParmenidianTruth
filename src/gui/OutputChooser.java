@@ -3,7 +3,6 @@ package gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,10 +10,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Toolkit;
 
+@SuppressWarnings("serial")
 public class OutputChooser extends JDialog {
 	
 	private boolean pptxWanted=true;

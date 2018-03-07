@@ -1,11 +1,12 @@
 package externalTools;
 
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class ForeignKey {
+	
 	private Map<Attribute, Attribute> references;
 
 	public ForeignKey() {
@@ -52,22 +53,19 @@ public class ForeignKey {
 		}
 	}
 	
-	public ArrayList<model.ForeignKey> getForeingKeys(){
-		
-		ArrayList<model.ForeignKey> foreingKeysOfVersion  = new ArrayList<model.ForeignKey>();
-		
-		for (Map.Entry<Attribute, Attribute> entry : this.references.entrySet()) {
-			Attribute or = entry.getKey();
-			Attribute re = entry.getValue();
-			model.ForeignKey fk=new model.ForeignKey(or.getTable().getName(),re.getTable().getName());
-			foreingKeysOfVersion.add(fk);
-		}
-		
-		return foreingKeysOfVersion;
-		
-		
-
-		
-		
-	}
+//	public ArrayList<model.ForeignKey> getForeingKeys(){
+//		
+//		ArrayList<model.ForeignKey> foreingKeysOfVersion  = new ArrayList<model.ForeignKey>();
+//		
+//		for (Map.Entry<Attribute, Attribute> entry : this.references.entrySet()) {
+//			Attribute or = entry.getKey();
+//			Attribute re = entry.getValue();
+//			model.ForeignKey fk=new model.ForeignKey(or.getTable().getName(),re.getTable().getName());
+//			foreingKeysOfVersion.add(fk);
+//		}
+//		
+//		return foreingKeysOfVersion;
+//			
+//		
+//	}
 }

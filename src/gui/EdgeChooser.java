@@ -13,6 +13,7 @@ import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class EdgeChooser extends JDialog {
 	private ButtonGroup buttons = new ButtonGroup();
 	private JRadioButton linearButton = new JRadioButton("Linear");

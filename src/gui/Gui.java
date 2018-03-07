@@ -50,16 +50,16 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import parmenidianEnumerations.Metric_Enums;
-import core.ParmenidianTruthManager;
+import core.IParmenidianTruth;
+import core.ParmenidianTruthManagerFactory;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-
 
 
 public class Gui extends JFrame {
 	
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<String> FileNames= new ArrayList<String>();
+	private ArrayList<String> fileNames= new ArrayList<String>();
 	private String workspace;
 	private final JToolBar toolBar = new JToolBar();
 	private JToggleButton mvNode = new JToggleButton("");
@@ -70,7 +70,7 @@ public class Gui extends JFrame {
 	private ButtonGroup buttons = new ButtonGroup();
 	private String targetFolder;
 	private EdgeChooser edgeChooser;
-	public static  Preferences prefs;
+	public static  Preferences preferences;
 	private String projectName;
 	private JFileChooser fileChooser = new JFileChooser();
 	private String projectIni;
@@ -78,14 +78,19 @@ public class Gui extends JFrame {
 	private JRadioButton radio2 = new JRadioButton("Move Graph");
 	private JToolBar toolBar_1 = new JToolBar();
 	private JPopupMenu pop = new JPopupMenu();
-	private ParmenidianTruthManager manager= new ParmenidianTruthManager();
+	private ParmenidianTruthManagerFactory factory = new ParmenidianTruthManagerFactory();
+	private IParmenidianTruth manager;
+	
 	private Component visualizationViewer;
 	
 	
 	public Gui() {
 		
+		manager=factory.getManager();
+	
+		
 		getContentPane().setBackground(new Color(214,217,223));
-		this.workspace= prefs.get("workspace",null);
+		this.workspace= preferences.get("workspace",null);
 
 		buttons.add(mvNode);
 		buttons.add(mvGraph);
@@ -146,11 +151,9 @@ public class Gui extends JFrame {
 		mvNode.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mvNode.setToolTipText("Move Node");
 		mvNode.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent e) {	
 				manager.setPickingMode();
-//				wholeGraph.setPickingMode();
-//				eg.setPickingMode();
+				
 				radio1.setSelected(true);
 			}
 		});
@@ -163,10 +166,8 @@ public class Gui extends JFrame {
 		mvGraph.setToolTipText("Move Graph");
 		mvGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
 				manager.setTransformingMode();
-//				wholeGraph.setTransformingMode();
-//				eg.setTransformingMode();
+				
 				radio2.setSelected(true);
 				
 			}
@@ -190,20 +191,14 @@ public class Gui extends JFrame {
 		btnNewButton_2.setToolTipText("Load Parmenidian Project");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				
-				
 				 if(fileChooser.showOpenDialog(Gui.this)==JFileChooser.APPROVE_OPTION){
 					 try {
 						loadLifetime(fileChooser.getSelectedFile().getAbsolutePath());
 					} catch (Exception e) {
 						e.printStackTrace();
 						JOptionPane.showMessageDialog(Gui.this, "Invalid Data Entry","Error",JOptionPane.ERROR_MESSAGE);
-//						panel.setVisible(true);
 					}
 				 }
-
 			}
 		});
 		btnNewButton_2.setIcon(new ImageIcon(Gui.class.getResource("/icons/open-task.gif")));
@@ -214,9 +209,7 @@ public class Gui extends JFrame {
 		btnNewButton_6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				createTransitions();
-				
 			}
 		});
 		btnNewButton_6.setIcon(new ImageIcon(Gui.class.getResource("/icons/icon.png")));
@@ -235,13 +228,11 @@ public class Gui extends JFrame {
 				
 				try {
 					manager.saveVertexCoordinates(projectIni);
-//					wholeGraph.saveVertexCoordinates(projectIni);
-//					wholeGraph= eg.saveVertexCoordinates(wholeGraph,projectIni);
+					
 					JOptionPane.showMessageDialog(Gui.this,"Layout changes have been saved");
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}
-				
+				}	
 			}
 		});
 		
@@ -265,12 +256,8 @@ public class Gui extends JFrame {
 		button_1.setToolTipText("Produce PowerPoint Presentation");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				loadImagesForPptx();
-				createPowerPointPresentation();
-				
-
-				
+				createPowerPointPresentation();	
 			}
 		});
 		
@@ -278,9 +265,7 @@ public class Gui extends JFrame {
 		btnNewButton_3.setToolTipText("Create Images Of Each Version");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				visualize(true);
-				
 			}
 		});
 		
@@ -328,45 +313,6 @@ public class Gui extends JFrame {
 		btnNewButton_4.setIcon(new ImageIcon(Gui.class.getResource("/icons/workspace.gif")));
 		toolBar.add(btnNewButton_4);
 		
-//		TransferHandler handler =   new TransferHandler() {
-//
-//	        @Override
-//	        public boolean canImport(TransferHandler.TransferSupport info) {
-//	            // we only import FileList
-//	            return true;
-//	        }
-//
-//	        @Override
-//	        public boolean importData(TransferHandler.TransferSupport info) {
-//	        	
-//	        	Transferable t = info.getTransferable();
-//	        	try {
-//	        		
-//
-//	        		txtDropResourceFolder.setText(getRefinedText(t.getTransferData(DataFlavor.javaFileListFlavor).toString()));
-//					try {
-//						loadLifetime(getDnDFilename(t.getTransferData(DataFlavor.javaFileListFlavor).toString()).getAbsolutePath());
-////						s(eg.getTargetFolder());
-////						createUniversalGraph();
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//						JOptionPane.showMessageDialog(Gui.this, "Invalid Data Entry","Error",JOptionPane.ERROR_MESSAGE);
-//						panel.setVisible(true);
-//					}
-//
-//	        		
-//				} catch (UnsupportedFlavorException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//	            return true;
-//	        }
-//
-//	        private void displayDropLocation(String string) {
-//	            System.out.println(string);
-//	        }
-//	    };
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		toolBar_1.setVisible(false);
@@ -392,12 +338,8 @@ public class Gui extends JFrame {
 		        	
 		        	getContentPane().remove(1);
 		        	getContentPane().add(manager.refresh((double)forceMultiplierSpinner.getValue(),(int)repulsionRangeSpinner.getValue()));
-					getContentPane().invalidate();
+		        	getContentPane().invalidate();
 					getContentPane().repaint();
-		        	
-//					eg.updateVisualizationViewer((double)attractionSpinner.getValue(),(double)repulsionSpinner.getValue(),nowShowing);
-//					getContentPane().invalidate();
-//					getContentPane().repaint();
 		            
 		        }
 		    });
@@ -407,30 +349,18 @@ public class Gui extends JFrame {
 		JLabel lblRepulsion = new JLabel("  Repulsion Range: ");
 		toolBar_1.add(lblRepulsion);
 		lblRepulsion.setFont(new Font("Tahoma", Font.BOLD, 11));
-		
-
 		repulsionRangeSpinner.addChangeListener(new ChangeListener() {
 
 	        @Override
-	        public void stateChanged(ChangeEvent e) {
-	        	
-//				eg.updateVisualizationViewer((double)attractionSpinner.getValue(),(double)repulsionSpinner.getValue(),nowShowing);
-//				getContentPane().invalidate();
-//				getContentPane().repaint();
-	            
+	        public void stateChanged(ChangeEvent e) {     
 	        }
 	    });
 		
 		toolBar_1.add(repulsionRangeSpinner);
 		
-		
 		JMenuItem menuItem = new JMenuItem("Spread..");		
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-//				eg.spreadOut(nowShowing);
-//				getContentPane().invalidate();
-//				getContentPane().repaint();
 			}
 		});
 		menuItem.setIcon(new ImageIcon(Gui.class.getResource("/icons/spread.png")));
@@ -438,7 +368,6 @@ public class Gui extends JFrame {
 		getContentPane().add(pop, BorderLayout.SOUTH);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Gui.class.getResource("/icons/pi.png")));
-		
 		
 		setTitle("Parmenidian Truth");
 		setMinimumSize(new Dimension(1020, 600));
@@ -454,36 +383,22 @@ public class Gui extends JFrame {
 		JMenuItem mntmLoadDbVersion = new JMenuItem("Load Parmenidian Project");
 		mntmLoadDbVersion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				 if(fileChooser.showOpenDialog(Gui.this)==JFileChooser.APPROVE_OPTION){
-				
-					 
+				 if(fileChooser.showOpenDialog(Gui.this)==JFileChooser.APPROVE_OPTION){			 
 					 try {
 						loadLifetime(fileChooser.getSelectedFile().getAbsolutePath());
-//						 createUniversalGraph();
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(Gui.this, "Invalid Data Entry","Error",JOptionPane.ERROR_MESSAGE);
-//						panel.setVisible(true);
 					}
-					
-
-				 }
-
-				
+				 }			
 			}
-
 		});
 		
 		JMenuItem mntmNewParmenidianProject = new JMenuItem("New Parmenidian Project");
 		mntmNewParmenidianProject.setIcon(new ImageIcon(Gui.class.getResource("/icons/create.png")));
 		mntmNewParmenidianProject.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				createNewProject();
-				
+			public void actionPerformed(ActionEvent arg0) {	
+				createNewProject();			
 			}
-
 		});
 		mnFile_1.add(mntmNewParmenidianProject);
 		
@@ -493,7 +408,6 @@ public class Gui extends JFrame {
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Edit Parmenidian Project");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				try {
 					editProject();
 				} catch (IOException e) {
@@ -513,9 +427,7 @@ public class Gui extends JFrame {
 		mntmChangeWorkspace.setIcon(new ImageIcon(Gui.class.getResource("/icons/workspace.gif")));
 		mntmChangeWorkspace.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				changeWorkspace();
-
 			}
 		});
 		
@@ -527,15 +439,12 @@ public class Gui extends JFrame {
 		mntmGenerateOutput.setIcon(new ImageIcon(Gui.class.getResource("/icons/video.png")));
 		mntmGenerateOutput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				try {
 					batchOutput();
 				} catch (IOException e) {					
 					e.printStackTrace();
 				}
-				
 			}
-
 		});
 		
 		
@@ -547,12 +456,8 @@ public class Gui extends JFrame {
 		JMenuItem mntmGenerateMetrics = new JMenuItem("Generate Metrics ");
 		mntmGenerateMetrics.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				openMetricsPanel();
-				
+				openMetricsPanel();	
 			}
-
-
 		});
 		mntmGenerateMetrics.setIcon(new ImageIcon(Gui.class.getResource("/icons/metrics.png")));
 		mnFile.add(mntmGenerateMetrics);
@@ -568,12 +473,8 @@ public class Gui extends JFrame {
 		mnIndividualActions.add(mntmPreview);
 		mntmPreview.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				loadImagesForPptx();
 				createPowerPointPresentation();
-				
-
-				
 			}
 		});
 		mntmPreview.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
@@ -584,11 +485,8 @@ public class Gui extends JFrame {
 		mntmProduceVideojv.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
 		mntmProduceVideojv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				try {
 					createVideo();
-					
-
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -597,9 +495,7 @@ public class Gui extends JFrame {
 		mntmProduceVideojv.setIcon(new ImageIcon(Gui.class.getResource("/icons/Movies.png")));
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				visualize(true);
-				
 			}
 		});
 		
@@ -620,18 +516,15 @@ public class Gui extends JFrame {
 		JMenuItem mntmSaveLayout = new JMenuItem("Save Layout");
 		mntmSaveLayout.setIcon(new ImageIcon(Gui.class.getResource("/icons/layout.png")));
 		mntmSaveLayout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
+			public void actionPerformed(ActionEvent arg0) {	
 				try {
 					manager.saveVertexCoordinates(projectIni);
-//					wholeGraph.saveVertexCoordinates(projectIni);
-//					wholeGraph= eg.saveVertexCoordinates(wholeGraph,projectIni);
+					
 					JOptionPane.showMessageDialog(Gui.this,"Layout changes have been saved");
 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
 			}
 		});
 		mnLayout.add(mntmSaveLayout);
@@ -642,16 +535,13 @@ public class Gui extends JFrame {
 		
 		radio1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				mvNode.doClick();
-				
 			}
 		});
 		mnEditLayout.add(radio1);
 		
 		radio2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				mvGraph.doClick();
 			}
 		});
@@ -668,10 +558,8 @@ public class Gui extends JFrame {
 		mnLayout.add(mntmClear);
 		mntmClear.setIcon(new ImageIcon(Gui.class.getResource("/icons/clear.png")));
 		mntmClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent e) {	
 				clear();
-
 			}
 		});
 		
@@ -680,21 +568,17 @@ public class Gui extends JFrame {
 		
 		JMenuItem mntmAboutTheProject = new JMenuItem("About The Project");
 		mntmAboutTheProject.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {		
-			
-			}
+			public void actionPerformed(ActionEvent arg0) {	}
 		});
 		
 		JMenuItem mntmToolbaronoff = new JMenuItem("ToolBar [On/Off]");
 		mntmToolbaronoff.setIcon(new ImageIcon(Gui.class.getResource("/icons/toolbar.png")));
 		mntmToolbaronoff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				if(toolBar.isVisible())
 					toolBar.setVisible(false);
 				else
 					toolBar.setVisible(true);				
-				
 			}
 		});
 		
@@ -707,9 +591,6 @@ public class Gui extends JFrame {
 		mnAbout.add(separator);
 		mntmAboutTheProject.setIcon(new ImageIcon(Gui.class.getResource("/icons/info.png")));
 		mnAbout.add(mntmAboutTheProject);
-		
-		
-		
 	}
 	
 	protected void createVideo() throws IOException {
@@ -720,46 +601,32 @@ public class Gui extends JFrame {
 		chooser.setFileFilter(filter);
 		
 		if(chooser.showOpenDialog(Gui.this)==JFileChooser.APPROVE_OPTION){
-			
-//			VideoGenerator vg = new VideoGenerator(chooser.getSelectedFile());
-//			vg.exportToVideo();
 			manager.createVideo(chooser.getSelectedFile());
 			JOptionPane.showMessageDialog(Gui.this,"Video was created successfully");
-
 		}
-		
-		
 	}
 	
 	protected void createVideo(File presentation) throws IOException{
-		
-//		VideoGenerator vg = new VideoGenerator(presentation);
-//		vg.exportToVideo();
 		manager.createVideo(presentation);
 		JOptionPane.showMessageDialog(Gui.this,"Video was created successfully");
-
-		
 	}
 	
 
 	public void createTransitions() {
 
-		JFileChooser fileopen = new JFileChooser();
-		fileopen.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		JFileChooser fileOpen = new JFileChooser();
+		fileOpen.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
-		 if(fileopen.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+		 if(fileOpen.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
 			 try {
-//				HecateScript hecate= new HecateScript(fileopen.getSelectedFile());
-//				hecate.createTransitions();
-				 
-				 manager.createTransitions(fileopen.getSelectedFile());
+				 manager.createTransitions(fileOpen.getSelectedFile());
+				
 				
 				JOptionPane.showMessageDialog(this,"Transition file was created successfully");
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Invalid Data Entry","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		 }
-		
 	}
 
 	protected void loadImagesForPptx() {
@@ -768,115 +635,59 @@ public class Gui extends JFrame {
 		fileopen.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
 		if(fileopen.showOpenDialog(Gui.this)==JFileChooser.APPROVE_OPTION){
-			File f = fileopen.getSelectedFile();
-//			presentationName=f.getName();		
-		
-			File dir = new File(f.getPath());				
-			File[] list = dir.listFiles();
+			File f = fileopen.getSelectedFile();	
+			File directory = new File(f.getPath());				
+			File[] list = directory.listFiles();
 			for(int i=0;i<list.length;i++){
-				FileNames.add(list[i].toString());
+				fileNames.add(list[i].toString());
 			}
 		}
 		
 	}
 	
 	protected void loadImagesForPptx(String path) {
-
-		
-			File f = new File(path);
-//			presentationName=f.getName();		
-		
+			File f = new File(path);			
 			File dir = new File(f.getPath());				
 			File[] list = dir.listFiles();
 			
 			for(int i=0;i<list.length;i++)
-				FileNames.add(list[i].toString());
-			
-		
+				fileNames.add(list[i].toString());
 	}
 	
-	
-	
-
 	protected void changeWorkspace() {
 		
 		WorkspaceChooser c = new WorkspaceChooser(Gui.this);
-		c.setVisible(true);
-		
+		c.setVisible(true);	
 	}
 
-	protected void s(Object string) {
-		
-		System.out.println(string);
-		
+	protected void printString(Object string) {	
+		System.out.println(string);	
 	}
 
 	protected File createPowerPointPresentation() {
-		
-		
-		if(FileNames.isEmpty())
+		if(fileNames.isEmpty())
 			return null;
-		
-//		PowerPointGenerator pptx=new PowerPointGenerator(targetFolder,projectName);
-//		
-//		try {
-//			pptx.createPresentation(FileNames);
-//			JOptionPane.showMessageDialog(Gui.this,"Powerpoint Presentation was created successfully");
-//
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		finally{
-//			FileNames.clear();
-//		}
-		
-		
-		try {
-			
-			manager.createPowerPointPresentation(FileNames, targetFolder, projectName);
+		try {	
+			manager.createPowerPointPresentation(fileNames, targetFolder, projectName);
 			JOptionPane.showMessageDialog(Gui.this,"Powerpoint Presentation was created successfully");
-
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		finally{
-			FileNames.clear();
+			fileNames.clear();
 		}
-		
-		
-		
-		return new File(targetFolder+"\\"+projectName+".pptx");
-
-		
+		return new File(targetFolder+"\\"+projectName+".pptx");	
 	}
 
-//	protected void createDiachronicGraph(int mode, String sql,double frameX,double frameY, double scaleX,double scaleY,double centerX,double centerY) {
-//		this.setResizable(true);
-//		this.setLocation(0, 0);
-//
-//		
-//		if(mode==0)
-//			wholeGraph= new DiachronicGraph(lifetime,sql,targetFolder,edgeChooser.getEdgeType(),mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
-//		else
-//			wholeGraph = new DiachronicGraph(savedChanges,sql,targetFolder,edgeChooser.getEdgeType(),mode,frameX,frameY,scaleX,scaleY,centerX,centerY);
-//		
-//		
-//
-//	}
-
-	public void loadLifetime(String selectedFile) throws Exception {
+	public void loadLifetime(String fileSelected) throws Exception {
 		
 		clear();
 		
-		projectIni=selectedFile;
+		projectIni=fileSelected;
 		
 		edgeChooser = new EdgeChooser(this);
-//		manager = new ParmenidianTruthManager();
 		
 		String sql = null,xml = null,graphml=null;
 		double frameX = 0,frameY = 0,scaleX = 0,scaleY = 0,centerX = 0,centerY = 0;
@@ -912,7 +723,6 @@ public class Gui extends JFrame {
 		}
 		reader.close();
 
-		
 		visualizationViewer = manager.loadProject(sql,xml,graphml,frameX,frameY,scaleX,scaleY,centerX,centerY,targetFolder,edgeChooser.getEdgeType());
 		
 		visualizationViewer.addKeyListener(new KeyListener(){
@@ -924,32 +734,18 @@ public class Gui extends JFrame {
 					mvGraph.doClick();
 				else if (e.getKeyChar()=='p' || e.getKeyChar()=='p')
 					mvNode.doClick();
-				
-			
-
 			}
+			@Override
+			public void keyReleased(KeyEvent e) {}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
-				
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-
-				
-			}
-			
+			public void keyTyped(KeyEvent e) {}
 		});
 		
 		getContentPane().add(visualizationViewer);
 
-
 		setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH);
-		
-
-		
+	
 		button.setEnabled(true);
 		btnNewButton_3.setEnabled(true);
 		mvNode.setEnabled(true);
@@ -962,10 +758,8 @@ public class Gui extends JFrame {
 
 		manager.stopConvergence();
 		
-		visualizationViewer.requestFocus();
-			
 		
-			
+		visualizationViewer.requestFocus();	
 	}
 	
 	private void batchOutput() throws IOException {
@@ -974,23 +768,19 @@ public class Gui extends JFrame {
 			JOptionPane.showMessageDialog(Gui.this, "There is no project loaded");
 			return;
 		}
-			
-
 		boolean [] array = new boolean[2];		
+		@SuppressWarnings("unused")
 		OutputChooser a = new OutputChooser(this,array);		
-
-		
 			if(array[0]){
 				visualize(false);
 
 				loadImagesForPptx(manager.getTargetFolder());
+			
 				File pptx = createPowerPointPresentation();
 				
 				if(array[1])
 					createVideo(pptx);	
-				
-			}		
-			
+			}			
 	}
 	
 	private void openMetricsPanel() {
@@ -999,26 +789,19 @@ public class Gui extends JFrame {
 			JOptionPane.showMessageDialog(Gui.this, "There is no project loaded");
 			return;
 		}
-		
-		MetricsChooser m = new MetricsChooser(this);	
-
-		
-		
+		@SuppressWarnings("unused")
+		MetricsChooser m = new MetricsChooser(this);		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private  void visualize(boolean atomically) {
 		
 		try {
-			
-			
-			
 			manager.visualize((VisualizationViewer< String, String>)visualizationViewer,projectIni, targetFolder, edgeChooser.getEdgeType());
 			
 			if(atomically)
 				JOptionPane.showMessageDialog(Gui.this,"Images of each version were created successfully");
 
-			
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1026,8 +809,8 @@ public class Gui extends JFrame {
 	
 	private void createNewProject() {
 		
+		@SuppressWarnings("unused")
 		ProjectEditor pe = new ProjectEditor(Gui.this,Gui.this.workspace,false,null,null,null,null,null,null);
-		
 	}
 	
 
@@ -1058,37 +841,23 @@ public class Gui extends JFrame {
 		}
 		reader.close();
 		
+		@SuppressWarnings("unused")
 		ProjectEditor pe = new ProjectEditor(Gui.this,Gui.this.workspace,true,projectName,sql,xml,graphml,targetFolder,projectIni);
-
-		
 	}
 
 	/**
 	 * Clear the JFrame of any graph,return window to its former position
 	 */
 	private void clear() {
-		
-		
-		
-		FileNames.clear();
-//		lifetime.clear();
-//		transitions.clear();
-//		savedChanges=null;
-//		if(wholeGraph!=null)
-//			wholeGraph.clear();
-//		wholeGraph=null;
-//		if(manager!=null)
+
+		fileNames.clear();
 		manager.clear();
-//		manager=null;
+		
 		targetFolder=null;
+		@SuppressWarnings("unused")
 		EdgeChooser edgeChooser=null;
 		projectName=null;
 		projectIni=null;
-//		nowShowing=null;
-		
-		
-					
-//		panel.setVisible(true);
 		getContentPane().removeAll();
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 
@@ -1103,75 +872,8 @@ public class Gui extends JFrame {
 		mvGraph.setEnabled(false);
 		radio1.setEnabled(false);
 		radio2.setEnabled(false);
-//		toolBar_1.setVisible(false);
-//		txtDropResourceFolder.setText("");
-		
 	}
 
-//	private void updateLifetimeWithTransitions(){
-//		
-//		for(int i=0;i<lifetime.size();++i)
-//			if(i==0)
-//				setFirstVersion(lifetime.get(i));
-//			else if(i==lifetime.size()-1)
-//				setFinalVersion(lifetime.get(i),i);
-//			else
-//				setIntermediateVersion(lifetime.get(i),i);
-//	
-//			
-//		
-//	}
-	
-//	/**
-//	 * Trexw thn prwth version me to prwto Dictionary kai checkarw n dw an sthn
-//	 * 2h version exei svistei kapoios pinakas.Me endiaferei mono to deletion
-//	 * An kapoioi exoun ginei updated tha tous vapsw sthn 2h ekdosh,oxi edw
-//	 * @param fversion :firstVersion
-//	 */
-//	private void setFirstVersion(DBVersion fversion){
-//		
-//		for(int i=0;i<fversion.getTables().size();++i)
-//			if(transitions.get(0).containsKey(fversion.getTables().get(i).getKey())
-//			&& transitions.get(0).get(fversion.getTables().get(i).getKey())==1)
-//				fversion.getTables().get(i).setColorCode(1);		
-//		
-//	}
-//	
-//	/**
-//	 * Trexw thn teleutaia version mou me to teleutaio dictionary mou,h thesh tou
-//	 * teleutaiou dictionary mou einai mia prin apo thn thesh ths teleutaias version mou.
-//	 * Psaxnw gia tables pou periexontai st dictionary mou KAI DEN einai deletions,einai 
-//	 * dhladh mono newTable kai UpdateTable kai tous vafw analoga me thn timh pou exei to
-//	 * dictionary mou.
-//	 * @param fversion :finalVersion
-//	 * @param k :H thesh ths teleutaias Version mou sthn Lista
-//	 */
-//	private void setFinalVersion(DBVersion fversion,int k){
-//		
-//		for(int i=0;i<fversion.getTables().size();++i)
-//			if(transitions.get(k-1).containsKey(fversion.getTables().get(i).getKey())
-//			&& transitions.get(k-1).get(fversion.getTables().get(i).getKey())!=1)
-//				fversion.getTables().get(i).setColorCode(transitions.get(k-1).get(fversion.getTables().get(i).getKey()));
-//		
-//	}
-//	
-//	private void setIntermediateVersion(DBVersion version,int k){
-//		
-//		for(int i=0;i<version.getTables().size();++i){
-//			//koitaw to mellontiko m dictionary
-//			if(transitions.get(k).containsKey(version.getTables().get(i).getKey())
-//			&& transitions.get(k).get(version.getTables().get(i).getKey())==1)
-//				version.getTables().get(i).setColorCode(1);
-//			
-//			//koitaw to palho m dictionary
-//			if(transitions.get(k-1).containsKey(version.getTables().get(i).getKey())
-//			&& transitions.get(k-1).get(version.getTables().get(i).getKey())!=1)
-//				version.getTables().get(i).setColorCode(transitions.get(k-1).get(version.getTables().get(i).getKey()));
-//		
-//				
-//		}
-//	}
-	
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(new Runnable() {
@@ -1196,12 +898,11 @@ public class Gui extends JFrame {
 		});
 	}
 	
-	
 	private static void initiate() throws FileNotFoundException{
 		
 		
-		prefs = Preferences.userRoot().node("preferences");
-		if(prefs.getBoolean("useDefault", false)){
+		preferences = Preferences.userRoot().node("preferences");
+		if(preferences.getBoolean("useDefault", false)){
 			Gui gui = new Gui();
 			gui.setVisible(true);
 		}else{
@@ -1213,14 +914,15 @@ public class Gui extends JFrame {
 	
 	public void refreshWorkspace(){
 		
-		workspace= prefs.get("workspace","66");
+		workspace= preferences.get("workspace","66");
 		fileChooser.setCurrentDirectory(new File(workspace));
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private static String retrieveSelectedWorkspace() throws FileNotFoundException{
 		
-		return prefs.get("workspace",null);
+		return preferences.get("workspace",null);
 	}
 	
 	protected String getRefinedText(String str) {
@@ -1239,23 +941,28 @@ public class Gui extends JFrame {
 		return new File(array[0]);
 	}
 
-	public ParmenidianTruthManager getManager() {
+	public IParmenidianTruth getManager() {
 		return manager;
 	}
-
-
-
+	
+	
+	
+//modified by KD on 13/04/17
 	public void calculateMetrics(ArrayList<Metric_Enums> metrics) {
 		
-		try {
-			manager.calculateMetrics(targetFolder,metrics);
-			JOptionPane.showMessageDialog(Gui.this,"Metrics were created successfully");
+		if (!metrics.isEmpty()){
+			try{
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
+				manager.generateMetricsReport(targetFolder, metrics);
+				JOptionPane.showMessageDialog(Gui.this,"Metrics were created successfully");
+
+			}catch(Exception e){
+
+				System.out.println(e.getClass());
+
+			}
+		}else{
+			JOptionPane.showMessageDialog(Gui.this,"Metrics list is empty");
+		}	
 	}
-
-
 }

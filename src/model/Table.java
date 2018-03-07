@@ -7,7 +7,7 @@ import parmenidianEnumerations.Status;
 public class Table {
 	
 	private String tableName;
-	private Point2D coords;
+	private Point2D coordinates;
 	private int tableStatus = Status.UNDEFINED.getValue();
 	
 	public Table(String name){
@@ -19,7 +19,7 @@ public class Table {
 	public Table(String name,Point2D c){
 		
 		tableName=name.trim();
-		coords=c;
+		coordinates=c;
 		
 	}
 	
@@ -38,11 +38,11 @@ public class Table {
 	}
 
 	public Point2D getCoords() {
-		return coords;
+		return coordinates;
 	}
 
 	public void setCoords(Object object) {
-		this.coords = (Point2D) object;
+		this.coordinates = (Point2D) object;
 	}
 
 }

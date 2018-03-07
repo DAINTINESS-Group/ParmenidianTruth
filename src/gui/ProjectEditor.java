@@ -26,8 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-//import export.HecateScript;
-
+@SuppressWarnings("serial")
 public class ProjectEditor extends JFrame {
 	
 	JFileChooser fileChooser = new JFileChooser();
@@ -206,14 +205,13 @@ public class ProjectEditor extends JFrame {
 										restOfFile+=line+"\n";
 
 							}
-							
 							reader.close();
 							
 						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						}
 						
@@ -221,8 +219,7 @@ public class ProjectEditor extends JFrame {
 						File file = new File(ini);
 						file.delete();
 					}
-						
-					
+
 					try {
 						
 						PrintWriter writer;
@@ -238,30 +235,18 @@ public class ProjectEditor extends JFrame {
 						writer.close();
 						
 					} catch (FileNotFoundException | UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
+				
 						e.printStackTrace();
 					}
-					
 					try {
 						parent.loadLifetime(workspace+"\\"+textField_2.getText().trim()+".ini");
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
-						
-					
-					
-					
-					
-					
-					
-					dispose();
-					
-					
+					dispose();	
 				}else
 					JOptionPane.showMessageDialog(ProjectEditor.this,"Fill in all required fields");
-					
-				
 			}
 		});
 		btnNewButton.setBounds(89, 275, 89, 23);
@@ -279,25 +264,18 @@ public class ProjectEditor extends JFrame {
 		JButton btnNewButton_2 = new JButton("");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-
 					fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 					
 					 if(fileChooser.showOpenDialog(ProjectEditor.this)==JFileChooser.APPROVE_OPTION){
 						 try {
-//							HecateScript hecate= new HecateScript(fileChooser.getSelectedFile());
-//							hecate.createTransitions();
 							 parent.getManager().createTransitions(fileChooser.getSelectedFile());
-							
+														
 							JOptionPane.showMessageDialog(ProjectEditor.this,"Transition file was created successfully");
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(ProjectEditor.this, "Invalid Data Entry","Error",JOptionPane.ERROR_MESSAGE);
 						}
-					 }
-					
+					 }	
 				}
-				
-			
 		});
 		btnNewButton_2.setToolTipText("Create Transition File");
 		btnNewButton_2.setIcon(new ImageIcon(ProjectEditor.class.getResource("/icons/icon.png")));
@@ -320,11 +298,7 @@ public class ProjectEditor extends JFrame {
 			textField_1.setText(xml);
 			textField_4.setText(graphml);
 			textField_3.setText(tf);			
-		}
-		
-
-		
-		
+		}	
 		setLocationRelativeTo(parent);
 		setVisible(true);
 

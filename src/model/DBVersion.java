@@ -1,14 +1,10 @@
 package model;
 
-
-
-
 import java.util.ArrayList;
 import java.util.Map;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-
 
 /**
  * 
@@ -24,29 +20,30 @@ public class DBVersion  {
 	private ArrayList<Table> tablesWithin=new ArrayList<Table>();
 	private ArrayList<ForeignKey> versionForeignKeys= new ArrayList<ForeignKey>();
 	private DBVersionVisualRepresentation visualizationsOfDBVersion;
-	private GraphMetrics graphMetricsOfDBVersion;
+	private IGraphMetrics graphMetricsOfDBVersion;
+	private GraphMetricsFactory gmFactory= new GraphMetricsFactory();
 
-	public DBVersion(ArrayList<Table> tablesWithin,ArrayList<ForeignKey> versionForeignKeys,String vn){
+	public DBVersion(ArrayList<Table> tablesWithin,ArrayList<ForeignKey> versionForeignKeys,String versionNameExtended){
 		
 		//1 set VersionName				
-		String[] array =vn.split(".sql",2);
+		String[] array =versionNameExtended.split(".sql",2);
 		versionName=array[0];
 		
 		//2 set all the tables of the current version		
 		this.tablesWithin=tablesWithin;
-
-		
+	
 		//3 set all the FK dependencies of the current version
 		 this.versionForeignKeys=versionForeignKeys;
 
-		 graphMetricsOfDBVersion = new GraphMetrics(tablesWithin,versionForeignKeys);
+		 graphMetricsOfDBVersion = gmFactory.getGraphMetrics(tablesWithin,versionForeignKeys);
+				 //new GraphMetrics(tablesWithin,versionForeignKeys);
 		 visualizationsOfDBVersion = new DBVersionVisualRepresentation(this,tablesWithin,versionForeignKeys,versionName); 
 		
 	}
 	
-	public void visualizeEpisode(VisualizationViewer< String, String> vv,DiachronicGraph diachronicGraph){
+	public void visualizeEpisode(VisualizationViewer< String, String> visualizationViewer,DiachronicGraph diachronicGraph){
 		
-		visualizationsOfDBVersion.createEpisodes(vv,diachronicGraph.getDictionaryOfGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalBounds(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
+		visualizationsOfDBVersion.createEpisodes(visualizationViewer,diachronicGraph.getDictionaryOfGraph(),diachronicGraph.getUniversalFrame(),diachronicGraph.getUniversalBounds(),diachronicGraph.getUniversalCenter(),diachronicGraph.getFrameX(),diachronicGraph.getFrameY(),diachronicGraph.getScaleX(),diachronicGraph.getScaleY());
 		
 	}
 
@@ -87,6 +84,7 @@ public class DBVersion  {
 		return this.versionName;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public Graph getGraph(){
 		
 		return graphMetricsOfDBVersion.getGraph();
@@ -107,10 +105,6 @@ public class DBVersion  {
 		}
 		
 		return "*,";
-//		return -1+",";
-		
-		
-		
 	}
 	
 	public String generateVertexInDegree(String vertex){
@@ -126,11 +120,7 @@ public class DBVersion  {
 			}
 		}
 		
-		return "*,";
-//		return -1+",";
-		
-		
-		
+		return "*,";	
 	}
 	
 	public String generateVertexOutDegree(String vertex){
@@ -147,9 +137,6 @@ public class DBVersion  {
 		}
 		
 		return "*,";
-//		return -1+",";
-		
-		
 		
 	}
 	
@@ -166,11 +153,7 @@ public class DBVersion  {
 			}
 		}
 		
-		return "*,";
-//		return -1+",";
-		
-		
-		
+		return "*,";	
 	}
 
 	public String generateEdgeBetweenness(String edge) {
@@ -186,11 +169,7 @@ public class DBVersion  {
 			}
 		}
 		
-		return "*,";
-//		return -1+",";
-		
-		
-		
+		return "*,";	
 	}
 	
 	public String getGraphDiameter(){

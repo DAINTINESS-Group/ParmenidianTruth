@@ -24,10 +24,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.layout.AbstractLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout2;
-import edu.uci.ics.jung.graph.DirectedSparseGraph;
-import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.io.GraphMLWriter;
 import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -40,25 +37,30 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 
 public class DiachronicGraphVisualRepresentation {
+
 	private ArrayList<Table> nodes = new ArrayList<Table>();
+	@SuppressWarnings("unused")
 	private ArrayList<ForeignKey> edges= new ArrayList<ForeignKey>();
+	@SuppressWarnings("unused")
 	private String inputFolder;
 	private SpringLayout2<String, String> layout;
 	private static DefaultModalGraphMouse<String, Number> graphMouse = new DefaultModalGraphMouse<String, Number>();
-	private  VisualizationViewer<String, String> vv;
+	private  VisualizationViewer<String, String> visualizationViewer;
 	private Dimension universalFrame;
 	private String targetFolder;
+	private String outputFolder; //added on 2018/03/04
+	@SuppressWarnings("rawtypes")
 	private Transformer edgeType;
 	private  MutableTransformer universalTransformerForTranslation;
 	private  MutableTransformer universalTransformerForScaling;
 	private DiachronicGraph parent;
 
 	
-
+	public DiachronicGraphVisualRepresentation() {}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DiachronicGraphVisualRepresentation(DiachronicGraph p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String in, String tf, int et,int mode,double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY) {		
 		
-
 		edgeType = et == 0 ? new EdgeShape.Line<String, String>(): new EdgeShape.Orthogonal<String, String>();
 		parent=p;
 
@@ -66,42 +68,38 @@ public class DiachronicGraphVisualRepresentation {
 		edges=fks;
 		inputFolder=in;
 		targetFolder = tf+"//screenshots";
+		outputFolder = tf;
 		new File(targetFolder ).mkdir();
 
 		layout= new SpringLayout2<String, String>(parent.getGraph());
 
-
-		
 		universalFrame =new Dimension(nodes.size()*26, nodes.size()*26);
 
 		layout.setSize(universalFrame);
-		vv = new VisualizationViewer<String, String>(layout);
-		vv.setSize(new Dimension(universalFrame.width+300, universalFrame.height+300));
-
-		
-		
+		visualizationViewer = new VisualizationViewer<String, String>(layout);
+		visualizationViewer.setSize(new Dimension(universalFrame.width+300, universalFrame.height+300));
 
 		// Setup up a new vertex to paint transformer...
+		@SuppressWarnings("unused")
 		Transformer<String, Paint> vertexPaint = new Transformer<String, Paint>() {
 			public Paint transform(String i) {
 				return new Color(207, 247, 137, 200);
 			}
 		};
 
-		vv.getRenderContext().setVertexFillPaintTransformer((new PickableVertexPaintTransformer<String>(vv.getPickedVertexState(),new Color(207, 247, 137, 200), Color.yellow)));
-		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.N);
-		vv.setBackground(Color.WHITE);
-		vv.getRenderContext().setEdgeShapeTransformer(edgeType);
+		visualizationViewer.getRenderContext().setVertexFillPaintTransformer((new PickableVertexPaintTransformer<String>(visualizationViewer.getPickedVertexState(),new Color(207, 247, 137, 200), Color.yellow)));
+		visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+		visualizationViewer.getRenderer().getVertexLabelRenderer().setPosition(Position.N);
+		visualizationViewer.setBackground(Color.WHITE);
+		visualizationViewer.getRenderContext().setEdgeShapeTransformer(edgeType);
 
 		// ---------------default graph moving
 		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-		vv.setGraphMouse(graphMouse);
+		visualizationViewer.setGraphMouse(graphMouse);
 		
 		
-		universalTransformerForTranslation = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
-		universalTransformerForScaling  = vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
-		
+		universalTransformerForTranslation = visualizationViewer.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.LAYOUT);
+		universalTransformerForScaling  = visualizationViewer.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW);
 		
 		//ekteleitai mono an exei anoiksei apo arxeio graphml
 		if(mode==1){
@@ -124,43 +122,43 @@ public class DiachronicGraphVisualRepresentation {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public VisualizationViewer show() {
 		
-		vv.repaint();
+		visualizationViewer.repaint();
 
-		return vv;
+		return visualizationViewer;
 	}
 
 	public void setTransformingMode() {
 
 		graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-		vv.setGraphMouse(graphMouse);
+		visualizationViewer.setGraphMouse(graphMouse);
 
 	}
 
 	public void setPickingMode() {
 
 		graphMouse.setMode(ModalGraphMouse.Mode.PICKING);
-		vv.setGraphMouse(graphMouse);
+		visualizationViewer.setGraphMouse(graphMouse);
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void saveVertexCoordinates(String projectIni) throws IOException {
-
-
 		//save sthn mnhmh
 		for (int i = 0; i <nodes.size(); ++i)
 			nodes.get(i).setCoords(layout.transform(nodes.get(i).getKey()));
 		
 		//save sto .graphml arxeio
 		GraphMLWriter<String,String> graphWriter = new GraphMLWriter<String, String> ();
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(inputFolder+"\\uber.graphml")));
-		
+		//modified on 2018-03-04
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFolder+"\\layout.graphml")));
 
-		
 		graphWriter.addVertexData("x", null, "0",
 			    new Transformer<String, String>() {
-			        public String transform(String v) {
+			        @SuppressWarnings({ "rawtypes" })
+					public String transform(String v) {
 			        	
 				            return Double.toString(((AbstractLayout)layout).getX(v));
 			        		
@@ -178,25 +176,20 @@ public class DiachronicGraphVisualRepresentation {
 			        	}			        	
 			        }		    
 			);
-		
-		
-		
+
 		graphWriter.save(parent.getGraph(), out);
 		
 		updateIniFile(projectIni);
 		
-
-
 	}
 
-
-
-
-	public void createEpisode(VisualizationViewer< String, String> vv) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void visualizeDiachronicGraph(VisualizationViewer< String, String> vv) {
 
 		vv.setGraphLayout(layout);
 
 		
+		@SuppressWarnings("unused")
 		Transformer<String, Paint> vertexPaint = new Transformer<String, Paint>() {
 			public Paint transform(String i) {
 				return new Color(207, 247, 137, 200);
@@ -208,8 +201,7 @@ public class DiachronicGraphVisualRepresentation {
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.N);
 		vv.setBackground(Color.WHITE);
 		vv.getRenderContext().setEdgeShapeTransformer(edgeType);
-		
-		
+
 		
 		File file =new File(targetFolder + "/"+	"Diachronic Graph"  + ".jpg");
 		
@@ -232,13 +224,14 @@ public class DiachronicGraphVisualRepresentation {
 	}	
 
 	public VisualizationViewer<String, String> getVv() {
-		return vv;
+		return visualizationViewer;
 	}
 
 	public String getTargetFolder() {
 		return targetFolder;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void stop(){
 		((SpringLayout2)layout).lock(true);
 	}
@@ -268,11 +261,11 @@ public class DiachronicGraphVisualRepresentation {
 				
 				writer = new PrintWriter(new FileWriter(projectIni));
 				writer.println(restOfFile);
-				writer.println("graphml@"+inputFolder+"\\uber.graphml");
+				writer.println("graphml@"+outputFolder+"\\layout.graphml");
 				writer.println("frameX@"+universalTransformerForTranslation.getTranslateX());
 				writer.println("frameY@"+universalTransformerForTranslation.getTranslateY());
-				writer.println("centerX@"+vv.getCenter().getX());
-				writer.println("centerY@"+vv.getCenter().getY());
+				writer.println("centerX@"+visualizationViewer.getCenter().getX());
+				writer.println("centerY@"+visualizationViewer.getCenter().getY());
 				
 				if(universalTransformerForScaling.getScaleX()==1 && universalTransformerForScaling.getScaleY()==1 ){
 					writer.println("scaleX@"+universalTransformerForTranslation.getScaleX());
@@ -327,18 +320,18 @@ public class DiachronicGraphVisualRepresentation {
 	}
 
 	public Point2D getUniversalCenter() {
-		return vv.getCenter();
+		return visualizationViewer.getCenter();
 	}
 
 	public int getWidthOfVisualizationViewer(){
 		
-		return vv.getWidth();
+		return visualizationViewer.getWidth();
 		
 	}
 	
 	public int getHeightOfVisualizationViewer(){
 		
-		return vv.getHeight();
+		return visualizationViewer.getHeight();
 		
 	}
 
@@ -348,18 +341,18 @@ public class DiachronicGraphVisualRepresentation {
 		layout.setRepulsionRange(repulsionRange);
 		
 		
-		vv.removeAll();
+		visualizationViewer.removeAll();
 		
 		
-		vv.setGraphLayout(layout);
+		visualizationViewer.setGraphLayout(layout);
 		
-		return vv;
+		return visualizationViewer;
 	}
 	
 	public Rectangle getUniversalBounds(){
 		
 		
-		return vv.getBounds();
+		return visualizationViewer.getBounds();
 		
 	}
 

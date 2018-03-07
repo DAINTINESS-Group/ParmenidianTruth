@@ -2,9 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections15.Factory;
 
@@ -18,10 +16,11 @@ import edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics;
 import edu.uci.ics.jung.algorithms.transformation.DirectionTransformer;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
-public class GraphMetrics extends BicomponentClusterer{
+@SuppressWarnings("rawtypes")
+public class GraphMetrics extends BicomponentClusterer implements IGraphMetrics{
+	
 	private Graph<String, String> graph;
 
 	
@@ -56,6 +55,7 @@ public class GraphMetrics extends BicomponentClusterer{
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String generateVertexDegree(String vertex){
 		
 		
@@ -69,6 +69,7 @@ public class GraphMetrics extends BicomponentClusterer{
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public String generateVertexBetweenness(String vertex){
 		
 		vertex=vertex.replace(",","").trim();
@@ -82,6 +83,7 @@ public class GraphMetrics extends BicomponentClusterer{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String generateEdgeBetweenness(String edge){
 		
 		
@@ -121,6 +123,7 @@ public class GraphMetrics extends BicomponentClusterer{
 		WeakComponentClusterer<String, String> wcc = new WeakComponentClusterer<String, String>();
 		Collection<Graph<String,String>> ccs = FilterUtils.createAllInducedSubgraphs(wcc.transform(graph),graph);
 		
+		@SuppressWarnings("unused")
 		DistanceStatistics ds = new DistanceStatistics();
 
 		
@@ -153,6 +156,7 @@ public class GraphMetrics extends BicomponentClusterer{
 		WeakComponentClusterer<String, String> wcc = new WeakComponentClusterer<String, String>();
 		Collection<Graph<String,String>> ccs = FilterUtils.createAllInducedSubgraphs(wcc.transform(graph),graph);
 		
+		@SuppressWarnings("unused")
 		DistanceStatistics ds = new DistanceStatistics();
 
 		
@@ -171,6 +175,7 @@ public class GraphMetrics extends BicomponentClusterer{
 		return giantConnectedComponent.getEdgeCount()+",";
 	}
 	
+	@SuppressWarnings({ "static-access", "unchecked" })
 	public String getGraphDiameter(){
 		
 		
@@ -226,6 +231,7 @@ public class GraphMetrics extends BicomponentClusterer{
 	
 	public Map<String,Double> getClusteringCoefficient(){
 		
+		@SuppressWarnings("unused")
 		Metrics metrics = new Metrics();
 		
 		Map<String, Double> collection =Metrics.clusteringCoefficients(graph);

@@ -22,9 +22,6 @@ import javax.swing.TransferHandler;
 
 public class WorkspaceChooser extends JFrame{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private Gui parent=null;
@@ -32,17 +29,15 @@ public class WorkspaceChooser extends JFrame{
 	
 	public WorkspaceChooser(Gui g){
 		parent=g;
-		init();
+		initialize();
 	}
 
 	public WorkspaceChooser(){
 		setAlwaysOnTop(true);
-		
-		init();
-		
+		initialize();	
 	}
 	
-	public void init(){
+	public void initialize(){
 
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkspaceChooser.class.getResource("/icons/pi.png")));
@@ -59,18 +54,19 @@ public class WorkspaceChooser extends JFrame{
 		lblNewLabel.setBounds(10, 37, 77, 14);
 		getContentPane().add(lblNewLabel);
 		
-		Gui.prefs= Preferences.userRoot().node("preferences");
+		Gui.preferences= Preferences.userRoot().node("preferences");
 		
 		
 		JButton btnBrowse = new JButton("Browse...");
 		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser a = new JFileChooser(Gui.prefs.get("workspace", "66"));
+				JFileChooser a = new JFileChooser(Gui.preferences.get("workspace", "66"));
 				a.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				
 				if(a.showOpenDialog(getContentPane())==JFileChooser.APPROVE_OPTION){
 					
 					String[] array ={a.getSelectedFile().getAbsolutePath()};
+					@SuppressWarnings({ "rawtypes", "unchecked" })
 					DefaultComboBoxModel model = new DefaultComboBoxModel(array);
 					textField.setText(model.getElementAt(0).toString());
 				}
@@ -119,10 +115,11 @@ public class WorkspaceChooser extends JFrame{
 		textField.setBounds(82, 33, 272, 25);
 		getContentPane().add(textField);
 		textField.setColumns(10);
-		textField.setText(Gui.prefs.get("workspace",""));
+		textField.setText(Gui.preferences.get("workspace",""));
 		textField.setDragEnabled(true);
 		textField.selectAll();
 		
+		@SuppressWarnings("serial")
 		TransferHandler handler =   new TransferHandler() {
 
 	        @Override
@@ -140,16 +137,17 @@ public class WorkspaceChooser extends JFrame{
 					textField.setText(getRefinedText(t.getTransferData(DataFlavor.javaFileListFlavor).toString()));
 					textField.selectAll();
 				} catch (UnsupportedFlavorException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 	            return true;
 	        }
 
-	        private void displayDropLocation(String string) {
+	        @SuppressWarnings("unused")
+			private void displayDropLocation(String string) {
 	            System.out.println(string);
 	        }
 	    };
@@ -169,8 +167,8 @@ public class WorkspaceChooser extends JFrame{
 
 	public void saveWorkspace(String workspace){
 		
-	Gui.prefs= Preferences.userRoot().node("preferences");
-	Gui.prefs.put("workspace",workspace);
+	Gui.preferences= Preferences.userRoot().node("preferences");
+	Gui.preferences.put("workspace",workspace);
 	
 	if(parent!=null)
 		parent.refreshWorkspace();
@@ -179,8 +177,8 @@ public class WorkspaceChooser extends JFrame{
 	}
    public void savePreferences(boolean token){
 	   
-	   Gui.prefs= Preferences.userRoot().node("preferences");
-	   Gui.prefs.putBoolean("useDefault",token);
+	   Gui.preferences= Preferences.userRoot().node("preferences");
+	   Gui.preferences.putBoolean("useDefault",token);
 
 
    }

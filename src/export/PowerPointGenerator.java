@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
+
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
@@ -19,17 +21,18 @@ import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
 import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
 
-
 public class PowerPointGenerator {
+	
+	
 	private String targetWorkspace;
 	private String presentation;
 	private int width,height;
 
 	
-	public PowerPointGenerator(String workspace,String pres){
+	public PowerPointGenerator(String workspace,String presentation){
 		
 		targetWorkspace=workspace;
-		presentation=pres;
+		this.presentation=presentation;
 		
 	}
 	
@@ -63,9 +66,9 @@ public class PowerPointGenerator {
                 XSLFSlide slide0 = ppt.createSlide(title);
                 
         		
-                BufferedImage bimg = ImageIO.read(new File(files.get(i)));
-                width = bimg.getWidth();
-                height = bimg.getHeight(); 
+                BufferedImage bufferedImage = ImageIO.read(new File(files.get(i)));
+                width = bufferedImage.getWidth();
+                height = bufferedImage.getHeight(); 
                 
                 XSLFTextShape title1 = slide0.getPlaceholder(0);
                 title1.setAnchor(new Rectangle(0,0,width,100));
@@ -78,7 +81,7 @@ public class PowerPointGenerator {
                 shape.setAnchor(new Rectangle(0,100,width,height));        
 
                 
-//                ppt.setPageSize(new java.awt.Dimension(1100,height+100));   
+ 
                 ppt.setPageSize(new java.awt.Dimension(width,height));
                 
         		
@@ -95,9 +98,9 @@ public class PowerPointGenerator {
 		return ppt;
 	}
 
-	private XMLSlideShow appendSlideShow(String imgPath,XMLSlideShow ppt) throws FileNotFoundException, IOException{
+	private XMLSlideShow appendSlideShow(String imagePath,XMLSlideShow ppt) throws FileNotFoundException, IOException{
 
-        if(!imgPath.contains(".jpg")|| imgPath.contains("Universal Graph"))
+        if(!imagePath.contains(".jpg")|| imagePath.contains("Universal Graph"))
         	return ppt;
 		
         
@@ -108,33 +111,33 @@ public class PowerPointGenerator {
        
         XSLFTextShape title1 = slide.getPlaceholder(0);
         title1.setAnchor(new Rectangle(0,0,width,100));
-        title1.setText(setSlideTitle(imgPath));
+        title1.setText(setSlideTitle(imagePath));
         
         
-        BufferedImage bimg = ImageIO.read(new File(imgPath));
+        @SuppressWarnings("unused")
+		BufferedImage bufferedImage = ImageIO.read(new File(imagePath));
 
         
         
-        byte[] data = IOUtils.toByteArray(new FileInputStream(imgPath));
+        byte[] data = IOUtils.toByteArray(new FileInputStream(imagePath));
         int pictureIndex = ppt.addPicture(data, XSLFPictureData.PICTURE_TYPE_JPEG);
         XSLFPictureShape shape = slide.createPicture(pictureIndex);
         shape.setAnchor(new Rectangle(0,100,width,height));        
         
-//        ppt.setPageSize(new java.awt.Dimension(1100,height+100));
+
         ppt.setPageSize(new java.awt.Dimension(width,height+100));
         
         return ppt;			
 		
 	}
 
-	private String setSlideTitle(String imgPath) {
+	private String setSlideTitle(String imagePath) {
 
-		String[] leftArray = imgPath.split(".jpg",2);
+		String[] leftArray = imagePath.split(".jpg",2);
 		String[] rightArray = leftArray[0].split("\\\\");
 		return rightArray[rightArray.length-1];
 
 	}
-	
 	
 
 }

@@ -12,32 +12,32 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 
 import org.apache.commons.collections15.Transformer;
 
 import parmenidianEnumerations.Status;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
-import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
-import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 
 public class DBVersionVisualRepresentation {
 	public Layout<String, String> layout;
 	public String targetFolder;
+	@SuppressWarnings("rawtypes")
 	public Transformer edgeType;
 	private ArrayList<Table> nodes = new ArrayList<Table>();
+	@SuppressWarnings("unused")
 	private ArrayList<ForeignKey> edges= new ArrayList<ForeignKey>();
 	private String episodeName;
+	@SuppressWarnings("unused")
 	private int width,height;
 	private DBVersion parent;
-	private VisualizationViewer<String, String> vv ;
+	private VisualizationViewer<String, String> visualizationViewer ;
 
-	public DBVersionVisualRepresentation (DBVersion p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String versionName/*, String tf, int et*/) {		
+	public DBVersionVisualRepresentation (DBVersion p,ArrayList<Table> tables,ArrayList<ForeignKey> fks,String versionName) {		
 
 		parent=p;
 		
@@ -45,9 +45,6 @@ public class DBVersionVisualRepresentation {
 		edges=fks;
 
 		episodeName=versionName;
-
-
-
 	}
 	
 	public void setDetails(String tf, int et,int width,int height){
@@ -62,14 +59,15 @@ public class DBVersionVisualRepresentation {
 
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createEpisodes(VisualizationViewer< String, String> avv,ConcurrentHashMap<String, Table> graph,Dimension universalFrame,Rectangle universalBounds,Point2D universalCenter,double frameX,double frameY,double scaleX,double scaleY) {
 
 		
 		layout = new StaticLayout<String, String>(parent.getGraph());
 
 		layout.setSize(universalFrame);
-		this.vv =  avv;
-		this.vv.setGraphLayout(layout);
+		this.visualizationViewer =  avv;
+		this.visualizationViewer.setGraphLayout(layout);
 
 		
 		// Setup up a new vertex to paint transformer...
@@ -99,22 +97,15 @@ public class DBVersionVisualRepresentation {
 			layout.setLocation(nodes.get(i).getKey(),(graph.get(nodes.get(i).getKey()).getCoords()));
 			layout.lock(nodes.get(i).getKey(), true);
 		}
-		
-		
 
-
-
-		
-
-		vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
-		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.N);
-		vv.getRenderContext().setEdgeShapeTransformer(edgeType);
-		vv.setBackground(Color.WHITE);
+		visualizationViewer.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
+		visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+		visualizationViewer.getRenderer().getVertexLabelRenderer().setPosition(Position.N);
+		visualizationViewer.getRenderContext().setEdgeShapeTransformer(edgeType);
+		visualizationViewer.setBackground(Color.WHITE);
 
 		
-		writeJPEGImage(vv,new File(targetFolder + "/"+ episodeName + ".jpg"));
-		
+		writeJPEGImage(visualizationViewer,new File(targetFolder + "/"+ episodeName + ".jpg"));	
 
 	}
 	

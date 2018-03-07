@@ -14,7 +14,4 @@ public enum Status {
     	return value;
     }
     
-};  
-
-
-
+}
