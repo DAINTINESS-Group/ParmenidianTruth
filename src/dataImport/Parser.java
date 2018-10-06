@@ -47,6 +47,13 @@ public class Parser implements IParser {
 		
 		graphmlLoader = gmlLoaderFactory.createGraphmlLoader(graphml);
 	}
+	
+	//2018-10-04
+	@Override
+	public IGraphmlLoader getGraphmlLoader() throws FileNotFoundException {
+		
+		return graphmlLoader;
+	}
 
 
 	@Override

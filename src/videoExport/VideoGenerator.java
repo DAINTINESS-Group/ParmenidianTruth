@@ -1,4 +1,4 @@
-package export;
+package videoExport;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -8,28 +8,24 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
-
 import javax.imageio.ImageIO;
-
 import org.apache.poi.xslf.util.PPTX2PNG;
-
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import com.xuggle.xuggler.ICodec;
 
 import fileFilter.ImageFileFilter;
 
-
 public class VideoGenerator {
-
 	private File presentationSelected;
 	private String filenameOfPresentation;
     private  final double FRAME_RATE = 24;
     private  String outputFilename ;
     private String sourceFolder=new String();
 
+
+	
 
 	public VideoGenerator(File presentation){
 		
@@ -59,7 +55,6 @@ public class VideoGenerator {
 		
 	}
 	
-	
 	private void createVideo() throws IOException{
 		
 		
@@ -78,31 +73,7 @@ public class VideoGenerator {
 			filenames.add(list[i]);
 		}
 		
-
-		Collections.sort(filenames,new Comparator<File>() {
-			
-			@Override
-			public int compare(File c1,File c2) {
-				if(getFname(c1) > getFname(c2))
-					return 1;
-				else if(getFname(c1) < getFname(c2))
-					return -1;
-				else
-					return 0;
-			}
-
-			public int getFname(File file){
-
-				String[] leftArray = file.getAbsolutePath().split("\\.",2);	
-				String[] leftovers = leftArray[0].split("\\-",2);
-
-				return Integer.parseInt(leftovers[1]);
-
-			}
-
-			
-			
-		});
+		Collections.sort(filenames,new FilenameSorter());
         
         for (int index = 0; index < filenames.size(); index++) {
 	            BufferedImage screen = ImageIO.read(filenames.get(index));
@@ -179,5 +150,32 @@ public class VideoGenerator {
         
     }
     
+	class FilenameSorter2 implements java.util.Comparator<File> {
+		
+		public int compare(File c1,File c2) {
+					return c1.compareTo(c2);
+		}
+	}
+    
+	class FilenameSorter implements java.util.Comparator<File> {
+		
+		public int compare(File c1,File c2) {
+					if(getFname(c1) > getFname(c2))
+							return 1;
+					else if(getFname(c1) < getFname(c2))
+							return -1;
+					else
+							return 0;
+		}
+		
+		public int getFname(File file){
+			
+			String[] leftArray = file.getAbsolutePath().split("\\.",2);	
+			String[] leftovers = leftArray[0].split("\\-",2);
+
+			return Integer.parseInt(leftovers[1]);
+			
+		}
+	}
 	
 }

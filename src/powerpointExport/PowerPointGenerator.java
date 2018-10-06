@@ -1,4 +1,4 @@
-package export;
+package powerpointExport;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -8,9 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
@@ -21,9 +19,8 @@ import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
 import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
 
+
 public class PowerPointGenerator {
-	
-	
 	private String targetWorkspace;
 	private String presentation;
 	private int width,height;
@@ -81,7 +78,7 @@ public class PowerPointGenerator {
                 shape.setAnchor(new Rectangle(0,100,width,height));        
 
                 
- 
+//                ppt.setPageSize(new java.awt.Dimension(1100,height+100));   
                 ppt.setPageSize(new java.awt.Dimension(width,height));
                 
         		
@@ -114,8 +111,7 @@ public class PowerPointGenerator {
         title1.setText(setSlideTitle(imagePath));
         
         
-        @SuppressWarnings("unused")
-		BufferedImage bufferedImage = ImageIO.read(new File(imagePath));
+        BufferedImage bufferedImage = ImageIO.read(new File(imagePath));
 
         
         
@@ -124,7 +120,7 @@ public class PowerPointGenerator {
         XSLFPictureShape shape = slide.createPicture(pictureIndex);
         shape.setAnchor(new Rectangle(0,100,width,height));        
         
-
+//        ppt.setPageSize(new java.awt.Dimension(1100,height+100));
         ppt.setPageSize(new java.awt.Dimension(width,height+100));
         
         return ppt;			
@@ -138,6 +134,7 @@ public class PowerPointGenerator {
 		return rightArray[rightArray.length-1];
 
 	}
+	
 	
 
 }

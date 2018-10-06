@@ -31,77 +31,77 @@ public class GraphmlLoader implements IGraphmlLoader {
 	public GraphmlLoader(String filename) throws FileNotFoundException{
 		
 		BufferedReader fileReader = new BufferedReader(new FileReader(filename));
-		
-		
-	/* Create the Graph Transformer */
-	Transformer<GraphMetadata, Graph<String, String>>
-	graphTransformer = new Transformer<GraphMetadata,
-	                          Graph<String, String>>() {
-	 
-	  public Graph<String, String>
-	      transform(GraphMetadata metadata) {
-	        metadata.getEdgeDefault();
-			if (metadata.getEdgeDefault().equals(
-	        EdgeDefault.DIRECTED)) {
-	            return new
-	            DirectedSparseGraph<String, String>();
-	        } else {
-	            return new
-	            UndirectedSparseGraph<String, String>();
-	        }
-	      }
-	};
-	
-	Transformer<NodeMetadata, String> vertexTransformer
-	= new Transformer<NodeMetadata, String>() {
-	    public String transform(NodeMetadata metadata) {
-	        String v = "";//  new Table(metadata.getDescription());
-	        printString(metadata.getId());
-	        printString(metadata.getProperty("x"));
-	        printString(metadata.getProperty("y"));
-	        
-	        Table t= new Table(metadata.getId(),new Point2D.Double(Double.valueOf(metadata.getProperty("x")),Double.valueOf(metadata.getProperty("y"))));
-	        vertices.add(t);
-	        
-	        return v;
-	    }
-	};
-	
-	
-	/* Create the Edge Transformer */
-	 Transformer<EdgeMetadata, String> edgeTransformer =new Transformer<EdgeMetadata, String>() {
-	     public String transform(EdgeMetadata metadata) {
-	    	 String e = "";
-	    	 printString(metadata.getSource()+"------->"+metadata.getTarget());
-	    	 
-	    	 ForeignKey f = new ForeignKey(metadata.getSource(),metadata.getTarget());
-	    	 edges.add(f);
-	    	 
-	         return e;
-	     }
-	 };
-	 
-	 /* Create the Hyperedge Transformer */
-	 Transformer<HyperEdgeMetadata, String> hyperEdgeTransformer = new Transformer<HyperEdgeMetadata, String>() {
-	      public String transform(HyperEdgeMetadata metadata) {
-	          String e= "";
-	          return e;
-	      }
-	 };
 
-	 
-	 /* Create the graphMLReader2 */
-	 GraphMLReader2<Graph<String, String>, String, String>
-	 graphReader = new
-	 GraphMLReader2<Graph<String, String>, String, String>
-	       (fileReader, graphTransformer, vertexTransformer,
-	        edgeTransformer, hyperEdgeTransformer);
-	 
-	 try {
-		    /* Get the new graph object from the GraphML file */
-		    Graph g = graphReader.readGraph();
+
+		/* Create the Graph Transformer */
+		Transformer<GraphMetadata, Graph<String, String>>
+		graphTransformer = new Transformer<GraphMetadata,
+		Graph<String, String>>() {
+
+			public Graph<String, String>
+			transform(GraphMetadata metadata) {
+				metadata.getEdgeDefault();
+				if (metadata.getEdgeDefault().equals(
+						EdgeDefault.DIRECTED)) {
+					return new
+							DirectedSparseGraph<String, String>();
+				} else {
+					return new
+							UndirectedSparseGraph<String, String>();
+				}
+			}
+		};
+
+		Transformer<NodeMetadata, String> vertexTransformer
+		= new Transformer<NodeMetadata, String>() {
+			public String transform(NodeMetadata metadata) {
+				String v = "";//  new Table(metadata.getDescription());
+				printString(metadata.getId());
+				printString(metadata.getProperty("x"));
+				printString(metadata.getProperty("y"));
+
+				Table t= new Table(metadata.getId(),new Point2D.Double(Double.valueOf(metadata.getProperty("x")),Double.valueOf(metadata.getProperty("y"))));
+				vertices.add(t);
+
+				return v;
+			}
+		};
+
+
+		/* Create the Edge Transformer */
+		Transformer<EdgeMetadata, String> edgeTransformer =new Transformer<EdgeMetadata, String>() {
+			public String transform(EdgeMetadata metadata) {
+				String e = "";
+				printString(metadata.getSource()+"------->"+metadata.getTarget());
+
+				ForeignKey f = new ForeignKey(metadata.getSource(),metadata.getTarget());
+				edges.add(f);
+
+				return e;
+			}
+		};
+
+		/* Create the Hyperedge Transformer */
+		Transformer<HyperEdgeMetadata, String> hyperEdgeTransformer = new Transformer<HyperEdgeMetadata, String>() {
+			public String transform(HyperEdgeMetadata metadata) {
+				String e= "";
+				return e;
+			}
+		};
+
+
+		/* Create the graphMLReader2 */
+		GraphMLReader2<Graph<String, String>, String, String>
+		graphReader = new
+		GraphMLReader2<Graph<String, String>, String, String>
+		(fileReader, graphTransformer, vertexTransformer,
+				edgeTransformer, hyperEdgeTransformer);
+
+		try {
+			/* Get the new graph object from the GraphML file */
+			Graph g = graphReader.readGraph();
 		} catch (GraphIOException ex) {}
-	
+
 	
 	}
 	

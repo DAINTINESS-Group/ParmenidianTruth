@@ -1,4 +1,4 @@
-package dataImport;
+package model;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,75 +15,44 @@ import javax.xml.bind.Unmarshaller;
 
 import org.antlr.v4.runtime.RecognitionException;
 
-import externalTools.Attribute;
+import parmenidianEnumerations.Status;
 import externalTools.Deletion;
 import externalTools.Delta;
 import externalTools.HecateParser;
 import externalTools.Insersion;
 import externalTools.Schema;
 import externalTools.Table;
-import externalTools.Transition;
 import externalTools.TransitionList;
 import externalTools.Transitions;
 import externalTools.Update;
 import fileFilter.SQLFileFilter;
-import model.DBVersion;
-import model.ForeignKey;
 
-import parmenidianEnumerations.Status;
-
-public class HecateImportManager implements IHecateImportManager {
-
-	private File directorySelected;
-	private File[] sqlFiles;
+public class HecateManager implements IHecateManager{
 	private ArrayList<DBVersion> lifetime= new ArrayList<DBVersion>();
 	private ArrayList<Map<String,Integer>> transitions = new ArrayList<Map<String,Integer>>();
-	
-	public HecateImportManager() {}
-	
-	
-	
-	@Override
-	public void createTransitions(File f) throws Exception {
-		
-	
-		
-		Exception wrong = new Exception();
 
-		directorySelected=f;
-		sqlFiles = directorySelected.listFiles(new SQLFileFilter());
+	
+	public ArrayList<DBVersion> parseSql(String sqlFiles){
 		
-		if(sqlFiles.length==0){
-			throw wrong;
-		}	
-		
-
-		createTransitions(sqlFiles,directorySelected);
-
-	}
-
-	@Override
-	public ArrayList<DBVersion> parseSql(String sqlFiles) {
-		
-		
+		//parsarw ta sql arxeia kai t organwnw sthn mnhmh
 		File[] versions = new File(sqlFiles).listFiles(new SQLFileFilter());
 		for(int i=0;i<versions.length;++i)
 			parseLifetime(versions[i]);
 		
 		return lifetime;
+		
 	}
-
-	@Override
-	public ArrayList<Map<String, Integer>> parseXml(String xmlFile) {
+	
+	public ArrayList<Map<String,Integer>> parseXml(String xmlFile){
 		
-		
+		//parsarw kai to xml me ta transitions
 		parseTransitions(new File(xmlFile));
 		
 		return transitions;
+		
 	}
 	
-	
-	private void createTransitions(File[] sqlFiles,File directorySelected){
+	public void createTransitions(File[] sqlFiles,File directorySelected){
 		
 		HecateParser parser= new HecateParser();
 		Schema currentSchema;
@@ -91,8 +60,6 @@ public class HecateImportManager implements IHecateImportManager {
 
 		//create schema per sql and store them
 		for(int i=0;i<sqlFiles.length;++i){			
-
-			//currentSchema=HecateParser.parse(sqlFiles[i].getAbsolutePath());
 			currentSchema=parser.parse(sqlFiles[i].getAbsolutePath());
 			currentSchema.setTitle(String.valueOf(i));
 			schemata.add(currentSchema);
@@ -104,8 +71,6 @@ public class HecateImportManager implements IHecateImportManager {
 
 		
 		for(int i=0;i<schemata.size()-1;++i){
-		
-			//tl=(Delta.minus(schemata.get(i),schemata.get(i+1))).tl;
 			tl=(delta.minus(schemata.get(i),schemata.get(i+1))).tl;
 			transitions.add(tl);			
 		}
@@ -125,9 +90,7 @@ public class HecateImportManager implements IHecateImportManager {
 		}
 		
 	}
-	
-	
-	
+
 	@SuppressWarnings("static-access")
 	private void parseLifetime(File version){
 		
@@ -152,9 +115,7 @@ public class HecateImportManager implements IHecateImportManager {
 			
 		 for(Map.Entry<String, Table> iterator : versionTables.entrySet())			 
 			 for(int i=0;i<iterator.getValue().getfKey().getForeingKeys().size();++i)
-
-		 		 versionForeignKeys.add(iterator.getValue().getfKey().getForeingKeys().get(i));
-
+				 versionForeignKeys.add(iterator.getValue().getfKey().getForeingKeys().get(i));
 			  
 		  DBVersion current = new DBVersion(tablesWithin,versionForeignKeys,version.getName());
 		  lifetime.add(current);
@@ -164,44 +125,20 @@ public class HecateImportManager implements IHecateImportManager {
 		
 	}
 	
-	
-//	/**
-//	 * 
-//	 * @param references denote a mapping (infer a FK relation) between attributes of tables of the current version.
-//	 * @return foreign keys of each schema version.
-//	 * @since 2018-02-16
-//	 */
-//	private ArrayList<model.ForeignKey> getForeingKeys(Map<Attribute, Attribute> references){
-//		
-//		ArrayList<model.ForeignKey> foreingKeysOfVersion  = new ArrayList<model.ForeignKey>();
-//		
-//		for (Map.Entry<Attribute, Attribute> entry : references.entrySet()) {
-//			Attribute or = entry.getKey();
-//			Attribute re = entry.getValue();
-//			model.ForeignKey fk=new model.ForeignKey(or.getTable().getName(),re.getTable().getName());
-//			foreingKeysOfVersion.add(fk);
-//		}
-//		
-//		return foreingKeysOfVersion;
-//		
-//		
-//	}
-	
 	private void parseTransitions(File transition){
-
+		
 		// Unmarshal
 		InputStream inputStream;
 		Transitions t = null;
 		try {
 			inputStream = new FileInputStream(transition.getAbsolutePath());
-			//add Transition.class as param (KD on 2018-10-04)
-			JAXBContext jaxbContext = JAXBContext.newInstance(Update.class, Deletion.class, Insersion.class, TransitionList.class, Transitions.class, Transition.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(Update.class, Deletion.class, Insersion.class, TransitionList.class, Transitions.class);
 			Unmarshaller u = jaxbContext.createUnmarshaller();
 			t = (Transitions)u.unmarshal( inputStream );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		for(TransitionList tl :t.getList()){
 
 			Map<String,Integer>  temp = new HashMap<String,Integer>();
@@ -211,15 +148,15 @@ public class HecateImportManager implements IHecateImportManager {
 			if(tl.getTransitionList()!=null){
 
 				for(int i=0;i<tl.getTransitionList().size();++i){
-
-
+					
+					
 					if(tl.getTransitionList().get(i).getType().equals("NewTable"))
 						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),Status.CREATION.getValue());
 					else if(tl.getTransitionList().get(i).getType().equals("DeleteTable"))
 						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),Status.DELETION.getValue());
 					else if(tl.getTransitionList().get(i).getType().equals("UpdateTable"))//sketo t else pianei k to keychange pou den me endiaferei emena
 						temp.put(tl.getTransitionList().get(i).getAffTable().getName(),Status.UPDATE.getValue());
-
+					
 				}			
 			}
 			transitions.add(temp);

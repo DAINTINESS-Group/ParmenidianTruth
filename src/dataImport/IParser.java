@@ -24,5 +24,6 @@ public interface IParser {
 	public ArrayList<model.Table> getNodes();
 	public ArrayList<model.ForeignKey> getEdges();
 	public void createTransitions(File selectedFile) throws Exception;
+	public IGraphmlLoader getGraphmlLoader() throws FileNotFoundException;//2018-10-04
 
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 import dataImport.ParserFactory;
-
+import dataImport.IGraphmlLoader;
 import dataImport.IParser;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 
@@ -22,6 +22,7 @@ import parmenidianEnumerations.Metric_Enums;
  * Operating as a manager that communicates with {@link model}
  * @author MK
  * @version {2.0 - modified by KD-MZ-IK}
+ * @modified by KD on 2018-10-05
  */
 
 public class ModelManager {
@@ -98,20 +99,21 @@ public class ModelManager {
 	
 	public Component loadProject(String sql,String xml,String graphml, double frameX,double frameY,double scaleX,double scaleY,double centerX,double centerY,String targetFolder,int edgeType) throws Exception{
 		
-
+		IGraphmlLoader gl; 
 		diachronicGraph=factory.createDiachronicGraph();
 		
 		this.setVersions(sql);
 		this.setTransitions(xml);
 		diachronicGraph.updateLifetimeWithTransitions();
-		
+		parser = parserFactory.createHecateParser();//added on 2018-10-05 by KD
 		if (graphml != null) {
+			
 			parser.createGraphmlLoader(graphml);
-			diachronicGraph.loadDiachronicGraph(parser.getNodes(),parser.getEdges(), sql, targetFolder, edgeType, frameX, frameY, scaleX, scaleY, centerX, centerY);
+			gl = parser.getGraphmlLoader();
+			diachronicGraph.loadDiachronicGraph(gl.getNodes(),gl.getEdges(), sql, targetFolder, edgeType, frameX, frameY, scaleX, scaleY, centerX, centerY);
 		}else
 			diachronicGraph.createDiachronicGraph(sql, targetFolder, edgeType, frameX, frameY, scaleX, scaleY, centerX, centerY);
 		
-	
 		
 		return diachronicGraph.show();
 		
